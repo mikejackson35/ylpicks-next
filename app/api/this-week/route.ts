@@ -12,15 +12,25 @@ export async function GET(request: Request) {
 
   const now = new Date();
 
-  // Preview mode: load last finalized tournament
+  // Preview mode: load last finalized tournament with real data
   if (preview) {
-    const prevResult = await pool.query(
+    // Try: finalized and 5-day window already closed
+    let prevResult = await pool.query(
       `SELECT tournament_id, name, start_time, org_id, tourn_id, year
        FROM tournaments
        WHERE is_finalized = TRUE
        AND start_time + INTERVAL '5 days' <= NOW()
        ORDER BY start_time DESC LIMIT 1`
     );
+    // Fallback: skip the most-recently-finalized (may be prematurely finalized)
+    if (!prevResult.rows[0]) {
+      prevResult = await pool.query(
+        `SELECT tournament_id, name, start_time, org_id, tourn_id, year
+         FROM tournaments
+         WHERE is_finalized = TRUE
+         ORDER BY start_time DESC LIMIT 1 OFFSET 1`
+      );
+    }
     if (prevResult.rows[0]) {
       const t = prevResult.rows[0];
       const tid = t.tournament_id;
