@@ -126,7 +126,7 @@ export default function ThisWeekClient() {
 
       {/* Tournament header */}
       <div className="mb-6 text-center">
-        <h2 className="text-2xl font-bold text-white">{tournament.name}</h2>
+        <h2 className="text-lg md:text-2xl font-bold text-white">{tournament.name}</h2>
       </div>
 
       {/* Picks grid — score cards in header, aligned to columns */}
@@ -135,7 +135,7 @@ export default function ThisWeekClient() {
           <thead>
             {/* Score cards row */}
             <tr className="border-b border-slate-700">
-              <th className="w-16" />
+              <th className="w-16 hidden md:table-cell" />
               {users.map((u) => {
                 const pts = wkPts[u.name] ?? 0;
                 const lead = teamLeaders.has(u.name) && tournament.locked;
@@ -155,7 +155,7 @@ export default function ThisWeekClient() {
           <tbody>
             {/* Team total row */}
             <tr className="border-b border-slate-700 bg-slate-900/50">
-              <td className="px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase">Team</td>
+              <td className="px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase hidden md:table-cell">Team</td>
               {users.map((u) => {
                 const s = teamTotals[u.name];
                 const lead = teamLeaders.has(u.name);
@@ -172,7 +172,7 @@ export default function ThisWeekClient() {
             {/* Tier rows */}
             {[1,2,3,4,5,6].map((tier) => (
               <tr key={tier} className="border-b border-slate-700 last:border-0">
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 hidden md:table-cell">
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 rounded-full ${TIER_DOT[tier]}`} />
                     <span className="text-xs font-medium text-slate-400">T{tier}</span>
