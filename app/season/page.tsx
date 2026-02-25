@@ -55,7 +55,7 @@ export default async function SeasonPage() {
       </div>
 
       {/* Scoring */}
-      <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-3">Scoring</p>
+      <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-3 text-center">Scoring</p>
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
         {SCORING.map(({ label, pts }) => (
           <div key={label} className="flex justify-between items-center px-5 py-3.5 border-b border-slate-700 last:border-0">
