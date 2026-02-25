@@ -123,8 +123,8 @@ export default function ResultsClient() {
                                 const ln = ps.player_name ? ps.player_name.split(" ").pop() : "?";
                                 const win = ps.tier_winner;
                                 const mc = ps.missed_cut;
-                                const cls = win && !mc ? "font-bold text-white"
-                                  : !win && mc ? "line-through text-slate-500"
+                                const cls = win && !mc ? "font-bold text-emerald-400"
+                                  : !win && mc ? "line-through text-red-400"
                                   : "text-slate-200";
                                 return <td key={u.username} className={`px-3 py-2.5 text-center ${cls}`}>{ln}</td>;
                               })}
