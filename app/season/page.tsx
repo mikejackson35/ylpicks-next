@@ -41,11 +41,11 @@ export default async function SeasonPage() {
 
   return (
     <div className="max-w-sm">
-      <h2 className="text-2xl font-bold text-white mb-1">Season</h2>
-      <p className="text-xs text-slate-400 mb-6">{thruText}</p>
+      <h2 className="text-2xl font-bold text-white mb-1 text-center">Season</h2>
+      <p className="text-xs text-slate-400 mb-6 text-center">{thruText}</p>
 
       {/* Standings */}
-      <div className="flex flex-col gap-3 mb-8">
+      <div className="flex flex-col gap-3 mb-14">
         {standings.map((row) => (
           <div key={row.name} className="flex justify-between items-center">
             <span className="text-white text-lg font-medium">{row.name}</span>
@@ -55,7 +55,7 @@ export default async function SeasonPage() {
       </div>
 
       {/* Scoring */}
-      <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-3 text-center">Scoring</p>
+      <p className="text-xs font-semibold uppercase tracking-widest text-white mb-3 text-center">Scoring</p>
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
         {SCORING.map(({ label, pts }) => (
           <div key={label} className="flex justify-between items-center px-5 py-3.5 border-b border-slate-700 last:border-0">
