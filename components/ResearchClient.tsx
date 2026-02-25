@@ -30,6 +30,7 @@ export default function ResearchClient() {
   const [rows, setRows] = useState<Row[]>([]);
   const [sortKey, setSortKey] = useState<SortKey>("SG T2G");
   const [sortAsc, setSortAsc] = useState(false);
+  const [tierFilter, setTierFilter] = useState<number | "all">("all");
 
   useEffect(() => { fetch("/api/research").then((r) => r.json()).then((d) => { setRows(d.rows ?? []); setLoading(false); }); }, []);
 
@@ -38,7 +39,9 @@ export default function ResearchClient() {
     else { setSortKey(key); setSortAsc(key === "Player"); }
   }
 
-  const sorted = [...rows].sort((a, b) => {
+  const filtered = tierFilter === "all" ? rows : rows.filter((r) => Number(r.tier) === tierFilter);
+
+  const sorted = [...filtered].sort((a, b) => {
     if (sortKey === "Player") {
       return sortAsc ? a.Player.localeCompare(b.Player) : b.Player.localeCompare(a.Player);
     }
@@ -63,8 +66,22 @@ export default function ResearchClient() {
 
   return (
     <div className="max-w-2xl">
-      <h2 className="text-2xl font-bold text-white mb-1">Research</h2>
-      <p className="text-xs text-slate-400 mb-5">Strokes gained — last 6 months · click column to sort</p>
+      <div className="flex items-end justify-between mb-5">
+        <div>
+          <h2 className="text-2xl font-bold text-white mb-1">Research</h2>
+          <p className="text-xs text-slate-400">Strokes gained — last 6 months · click column to sort</p>
+        </div>
+        <select
+          value={tierFilter}
+          onChange={(e) => setTierFilter(e.target.value === "all" ? "all" : Number(e.target.value))}
+          className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        >
+          <option value="all">All Tiers</option>
+          {[1,2,3,4,5,6].map((t) => (
+            <option key={t} value={t}>Tier {t}</option>
+          ))}
+        </select>
+      </div>
       {!rows.length ? <p className="text-sm text-slate-400">No data available.</p> : (
         <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-x-auto">
           <table className="text-sm w-full border-collapse">
