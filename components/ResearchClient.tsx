@@ -95,7 +95,7 @@ export default function ResearchClient() {
                   Evts {sortKey === "Events" ? (sortAsc ? "↑" : "↓") : ""}
                 </th>
                 {SG_COLS.map((c) => (
-                  <th key={c} onClick={() => handleSort(c)} className={thCls(c, c === "SG T2G")}>
+                  <th key={c} onClick={() => handleSort(c)} className={`${thCls(c, c === "SG T2G")} ${c !== "SG T2G" ? "hidden md:table-cell" : ""}`}>
                     {LABELS[c]} {sortKey === c ? (sortAsc ? "↑" : "↓") : ""}
                   </th>
                 ))}
@@ -118,7 +118,7 @@ export default function ResearchClient() {
                     const n = num(row[c]);
                     return (
                       <td key={c}
-                        className={`px-3 py-2.5 text-center tabular-nums ${n !== null && n < 0 ? "text-red-400" : n !== null && n > 0 ? "text-emerald-400" : "text-slate-400"}`}
+                        className={`px-3 py-2.5 text-center tabular-nums ${n !== null && n < 0 ? "text-red-400" : n !== null && n > 0 ? "text-emerald-400" : "text-slate-400"} ${c !== "SG T2G" ? "hidden md:table-cell" : ""}`}
                         style={c === "SG T2G" ? { backgroundColor: t2gBg(row[c]) } : {}}
                       >
                         {fmt(row[c])}
