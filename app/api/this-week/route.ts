@@ -17,8 +17,10 @@ export async function GET(request: Request) {
     const prevResult = await pool.query(
       `SELECT DISTINCT t.tournament_id, t.name, t.start_time, t.org_id, t.tourn_id, t.year
        FROM tournaments t
-       JOIN player_score_cache psc ON psc.tournament_id = t.tournament_id
        WHERE t.is_finalized = TRUE
+       AND EXISTS (
+         SELECT 1 FROM pick_scores ps WHERE ps.tournament_id = t.tournament_id
+       )
        ORDER BY t.start_time DESC LIMIT 1`
     );
     if (prevResult.rows[0]) {
