@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 type Tournament = {
   tournament_id: string; name: string; start_time: string;
@@ -32,6 +33,9 @@ function fmtScore(n: number): string {
 }
 
 export default function ThisWeekClient() {
+  const searchParams = useSearchParams();
+  const previewLocked = searchParams.get("preview") === "true";
+
   const [loading, setLoading] = useState(true);
   const [tournament, setTournament] = useState<Tournament | null>(null);
   const [users, setUsers] = useState<User[]>([]);
@@ -56,6 +60,9 @@ export default function ThisWeekClient() {
       .then((r) => r.json()).then((d) => { setLbRows(d.rows ?? []); setLbLoading(false); })
       .catch(() => setLbLoading(false));
   }
+
+  // Apply preview override after data loads
+  if (tournament && previewLocked) tournament.locked = true;
 
   if (loading) return (
     <div className="flex items-center gap-2 text-slate-400 text-sm">
