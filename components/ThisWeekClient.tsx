@@ -125,7 +125,7 @@ export default function ThisWeekClient() {
     <div className="max-w-3xl">
 
       {/* Tournament header */}
-      <div className="mb-6">
+      <div className="mb-6 text-center">
         <h2 className="text-2xl font-bold text-white">{tournament.name}</h2>
       </div>
 
@@ -141,16 +141,11 @@ export default function ThisWeekClient() {
                 const lead = teamLeaders.has(u.name) && tournament.locked;
                 return (
                   <th key={u.username} className="px-2 py-3">
-                    <div className={`rounded-xl px-2 py-3 text-center border ${
-                      lead ? "bg-emerald-950 border-emerald-700" : "bg-slate-900 border-slate-700"
-                    }`}>
+                    <div className="rounded-xl px-2 py-3 text-center border bg-slate-900 border-slate-700">
                       <p className="text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
-                      <p className={`text-2xl font-bold tabular-nums ${
-                        pts > 0 ? "text-emerald-400" : pts < 0 ? "text-red-400" : "text-slate-500"
-                      }`}>
+                      <p className="text-2xl font-bold tabular-nums text-white">
                         {pts > 0 ? `+${pts}` : pts}
                       </p>
-                      {lead && <p className="text-xs text-emerald-400 mt-1">🏆</p>}
                     </div>
                   </th>
                 );
@@ -190,13 +185,12 @@ export default function ThisWeekClient() {
                   const name = lastNames[pid ?? ""] ?? "?";
                   const txt = !tournament.locked ? "🔒"
                     : !pid ? "—"
-                    : mc && !win ? `❌ ${name}`
                     : name;
                   return (
                     <td key={u.username} className={`px-4 py-3 text-center text-sm ${
                       !tournament.locked ? "text-slate-600"
-                      : win && !mc ? "font-bold text-emerald-400"
-                      : mc && !win ? "text-red-400 line-through"
+                      : win && !mc ? "font-bold text-white"
+                      : mc ? "line-through text-slate-500"
                       : "text-slate-200"
                     }`}>
                       {txt}
