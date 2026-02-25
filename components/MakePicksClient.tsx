@@ -57,8 +57,8 @@ export default function MakePicksClient() {
   if (tournament.locked) return (
     <div className="max-w-md">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-white">{tournament.name}</h2>
-        <p className="text-sm text-slate-400 mt-1">Picks are locked — tournament has started</p>
+        <h2 className="text-2xl font-bold text-white">Make Picks</h2>
+        <p className="text-sm text-slate-400 mt-1">{tournament.name}</p>
       </div>
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
         {[1,2,3,4,5,6].map((tier) => {
@@ -83,8 +83,8 @@ export default function MakePicksClient() {
   return (
     <div className="max-w-md">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-white">{tournament.name}</h2>
-        <p className="text-sm text-slate-400 mt-1">Select one player per tier</p>
+        <h2 className="text-2xl font-bold text-white">Make Picks</h2>
+        <p className="text-sm text-slate-400 mt-1">{tournament.name}</p>
       </div>
 
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-5">
