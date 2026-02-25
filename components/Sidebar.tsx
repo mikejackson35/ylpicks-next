@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+
 
 type StandingRow = { name: string; points: number };
 
@@ -23,7 +23,6 @@ export default function Sidebar({ standings, thruText }: Props) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const isAdmin = session?.user?.isAdmin ?? false;
-  const [standingsOpen, setStandingsOpen] = useState(true);
 
   const allNav = isAdmin
     ? [...NAV, { label: "Admin", href: "/admin", icon: "⚙️" }]
@@ -32,19 +31,19 @@ export default function Sidebar({ standings, thruText }: Props) {
   return (
     <>
       {/* ── Desktop Sidebar (md+) ── */}
-      <aside className="hidden md:flex flex-col w-52 shrink-0 min-h-screen bg-slate-900 border-r border-slate-800 text-white">
+      <aside className="hidden md:flex flex-col w-56 shrink-0 min-h-screen bg-slate-900 border-r border-slate-800 text-white">
         {/* Title */}
-        <div className="px-4 py-5 border-b border-slate-800">
-          <p className="text-lg font-bold tracking-wide text-white">⛳ YL Picks</p>
+        <div className="px-5 py-6 border-b border-slate-800">
+          <p className="text-xl font-bold tracking-wide text-white">YL Picks</p>
         </div>
 
         {/* Nav links */}
-        <nav className="px-3 py-4 flex flex-col gap-0.5">
+        <nav className="px-3 py-5 flex flex-col gap-1">
           {allNav.map(({ label, href, icon }) => (
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-base transition-colors ${
                 pathname === href
                   ? "bg-slate-700 text-emerald-400 font-semibold"
                   : "text-slate-300 hover:bg-slate-800 hover:text-white"
@@ -56,41 +55,28 @@ export default function Sidebar({ standings, thruText }: Props) {
           ))}
         </nav>
 
-        {/* Season Standings — collapsible */}
-        <div className="px-4 py-3 border-t border-slate-800">
-          <button
-            onClick={() => setStandingsOpen(!standingsOpen)}
-            className="w-full flex items-center justify-between text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-2"
-          >
-            <span>Season</span>
-            <span className="text-slate-500">{standingsOpen ? "▲" : "▼"}</span>
-          </button>
-          {standingsOpen && (
-            <>
-              <p className="text-xs text-slate-500 mb-2">{thruText}</p>
-              <div className="flex flex-col gap-1">
-                {standings.map((row, i) => (
-                  <div key={row.name} className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-slate-500 w-3">{i + 1}</span>
-                      <span className="text-sm text-white">{row.name}</span>
-                    </div>
-                    <span
-                      className={`text-sm font-bold tabular-nums ${
-                        row.points > 0
-                          ? "text-emerald-400"
-                          : row.points < 0
-                          ? "text-red-400"
-                          : "text-slate-400"
-                      }`}
-                    >
-                      {row.points > 0 ? `+${row.points}` : row.points}
-                    </span>
-                  </div>
-                ))}
+        {/* Season Standings — always visible */}
+        <div className="px-5 py-4 border-t border-slate-800">
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-1">Season</p>
+          <p className="text-xs text-slate-500 mb-3">{thruText}</p>
+          <div className="flex flex-col gap-2">
+            {standings.map((row) => (
+              <div key={row.name} className="flex justify-between items-center">
+                <span className="text-base text-white">{row.name}</span>
+                <span
+                  className={`text-base font-bold tabular-nums ${
+                    row.points > 0
+                      ? "text-emerald-400"
+                      : row.points < 0
+                      ? "text-red-400"
+                      : "text-slate-400"
+                  }`}
+                >
+                  {row.points > 0 ? `+${row.points}` : row.points}
+                </span>
               </div>
-            </>
-          )}
+            ))}
+          </div>
         </div>
 
         {/* Scoring guide — collapsible */}
