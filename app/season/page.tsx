@@ -45,11 +45,11 @@ export default async function SeasonPage() {
       <p className="text-xs text-slate-400 mb-6">{thruText}</p>
 
       {/* Standings */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-6">
-        {standings.map((row, i) => (
-          <div key={row.name} className="flex justify-between items-center px-5 py-4 border-b border-slate-700 last:border-0">
-            <span className="text-white font-medium">{row.name}</span>
-            <span className="text-xl font-bold tabular-nums text-white">{row.points}</span>
+      <div className="flex flex-col gap-3 mb-8">
+        {standings.map((row) => (
+          <div key={row.name} className="flex justify-between items-center">
+            <span className="text-white text-lg font-medium">{row.name}</span>
+            <span className="text-lg font-bold tabular-nums text-white">{row.points}</span>
           </div>
         ))}
       </div>
