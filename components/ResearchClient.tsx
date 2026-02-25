@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-type Row = { Player: string; Events: string | number; "SG Putt": string | number; "SG ARG": string | number; "SG APP": string | number; "SG OTT": string | number; "SG T2G": string | number; "SG Total": string | number };
+type Row = { Player: string; Events: string | number; "SG Putt": string | number; "SG ARG": string | number; "SG APP": string | number; "SG OTT": string | number; "SG T2G": string | number; "SG Total": string | number; tier: number | null };
 type SortKey = "Player" | "Events" | typeof SG_COLS[number];
 
 const SG_COLS = ["SG Putt","SG ARG","SG APP","SG OTT","SG T2G","SG Total"] as const;
+const TIER_DOT: Record<number, string> = {
+  1: "bg-rose-400", 2: "bg-slate-400", 3: "bg-amber-400",
+  4: "bg-emerald-400", 5: "bg-sky-400", 6: "bg-violet-400",
+};
 const LABELS: Record<string, string> = { "SG Putt":"Putt","SG ARG":"ARG","SG APP":"APP","SG OTT":"OTT","SG T2G":"T2G","SG Total":"Total" };
 
 function num(v: unknown): number | null { if (v === null || v === undefined || v === "") return null; const n = parseFloat(String(v)); return isNaN(n) ? null : n; }
@@ -83,7 +87,15 @@ export default function ResearchClient() {
             <tbody>
               {sorted.map((row, i) => (
                 <tr key={i} className="border-b border-slate-700 last:border-0">
-                  <td className="px-3 py-2.5 font-medium text-white sticky left-0 bg-slate-800">{row.Player}</td>
+                  <td className="px-3 py-2.5 font-medium text-white sticky left-0 bg-slate-800">
+                    <div className="flex items-center gap-2">
+                      {row.tier !== null
+                        ? <div className={`w-2 h-2 rounded-full shrink-0 ${TIER_DOT[row.tier] ?? "bg-slate-600"}`} />
+                        : <div className="w-2 h-2 rounded-full shrink-0 bg-slate-700" />
+                      }
+                      {row.Player}
+                    </div>
+                  </td>
                   <td className="px-3 py-2.5 text-center text-slate-400">{fmt(row.Events, true)}</td>
                   {SG_COLS.map((c) => {
                     const n = num(row[c]);
