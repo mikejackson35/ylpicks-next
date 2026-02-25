@@ -85,14 +85,14 @@ export default function ResultsClient() {
               {isOpen && (
                 <div className="px-5 pb-5 border-t border-slate-700">
                   {/* Weekly points score cards */}
-                  <div className="grid grid-cols-4 gap-3 my-4">
+                  <div className="grid grid-cols-4 gap-1 md:gap-3 my-4">
                     {users.map((u) => {
                       const pts = tWeekly[u.username];
                       const display = pts === undefined ? "-" : pts > 0 ? `+${pts}` : String(pts);
                       return (
-                        <div key={u.username} className="text-center rounded-xl p-2 bg-slate-900 border border-slate-700">
-                          <p className="text-xs text-slate-400 mb-0.5 uppercase tracking-wide">{u.name}</p>
-                          <p className="text-lg font-bold tabular-nums text-white">{display}</p>
+                        <div key={u.username} className="text-center rounded-xl p-1 md:p-2 bg-slate-900 border border-slate-700">
+                          <p className="text-[10px] md:text-xs text-slate-400 mb-0.5 uppercase tracking-wide">{u.name}</p>
+                          <p className="text-base md:text-lg font-bold tabular-nums text-white">{display}</p>
                         </div>
                       );
                     })}
@@ -107,7 +107,7 @@ export default function ResultsClient() {
                               const tot = teamTotals[u.username];
                               const best = tot !== null && tot === bestTotal;
                               return (
-                                <th key={u.username} className={`px-3 py-2 text-center text-sm font-semibold ${best ? "text-emerald-400" : "text-slate-400"}`}>
+                                <th key={u.username} className={`px-1 py-2 md:px-3 text-center text-xs md:text-sm font-semibold ${best ? "text-emerald-400" : "text-slate-400"}`}>
                                   {tot === null ? "-" : fmtScore(tot)}
                                 </th>
                               );
@@ -126,7 +126,7 @@ export default function ResultsClient() {
                                 const cls = win && !mc ? "font-bold text-emerald-400"
                                   : !win && mc ? "line-through text-red-400"
                                   : "text-slate-200";
-                                return <td key={u.username} className={`px-3 py-2.5 text-center ${cls}`}>{ln}</td>;
+                                return <td key={u.username} className={`px-1 py-2 md:px-3 md:py-2.5 text-center text-xs md:text-sm ${cls}`}>{ln}</td>;
                               })}
                             </tr>
                           ))}
