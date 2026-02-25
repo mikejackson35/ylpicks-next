@@ -7,10 +7,6 @@ type User = { username: string; name: string };
 type WeeklyScore = { tournament_id: string; username: string; points: number };
 type PickScore = { tournament_id: string; username: string; tier_number: number; player_name: string; player_score: string; tier_winner: boolean; missed_cut: boolean; points: number };
 
-const TIER_DOT: Record<number, string> = {
-  1: "bg-rose-400", 2: "bg-slate-400", 3: "bg-amber-400",
-  4: "bg-emerald-400", 5: "bg-sky-400", 6: "bg-violet-400",
-};
 
 function parseScore(s?: string | null): number | null {
   if (!s || s === "-") return null;
@@ -96,7 +92,7 @@ export default function ResultsClient() {
                       return (
                         <div key={u.username} className="text-center rounded-xl p-2 bg-slate-900 border border-slate-700">
                           <p className="text-xs text-slate-400 mb-0.5 uppercase tracking-wide">{u.name}</p>
-                          <p className={`text-lg font-bold tabular-nums ${pts > 0 ? "text-white" : pts < 0 ? "text-red-400" : "text-slate-400"}`}>{display}</p>
+                          <p className="text-lg font-bold tabular-nums text-white">{display}</p>
                         </div>
                       );
                     })}
@@ -104,24 +100,23 @@ export default function ResultsClient() {
 
                   {!tPicks.length ? <p className="text-sm text-slate-400">No pick data.</p> : (
                     <div className="overflow-x-auto">
-                      <table className="text-sm w-full border-collapse">
+                      <table className="text-sm w-full border-collapse table-fixed">
                         <thead>
-                          <tr className="bg-slate-900 border-b border-slate-700">
-                            <th className="px-3 py-2 w-14" />
-                            {users.map((u) => (
-                              <th key={u.username} className="px-3 py-2 text-center text-xs font-semibold text-slate-400 uppercase">{u.name}</th>
-                            ))}
+                          <tr className="bg-slate-900/50 border-b border-slate-700">
+                            {users.map((u) => {
+                              const tot = teamTotals[u.username];
+                              const best = tot !== null && tot === bestTotal;
+                              return (
+                                <th key={u.username} className={`px-3 py-2 text-center text-sm font-semibold ${best ? "text-white" : "text-slate-400"}`}>
+                                  {tot === null ? "-" : fmtScore(tot)}
+                                </th>
+                              );
+                            })}
                           </tr>
                         </thead>
                         <tbody>
                           {tiers.map((tier) => (
                             <tr key={tier} className="border-b border-slate-700 last:border-0">
-                              <td className="px-3 py-2.5">
-                                <div className="flex items-center gap-2">
-                                  <div className={`w-3 h-3 rounded-full ${TIER_DOT[tier]}`} />
-                                  <span className="text-xs text-slate-400 font-medium">T{tier}</span>
-                                </div>
-                              </td>
                               {users.map((u) => {
                                 const ps = tierData[tier]?.[u.username];
                                 if (!ps) return <td key={u.username} className="px-3 py-2.5" />;
@@ -135,18 +130,6 @@ export default function ResultsClient() {
                               })}
                             </tr>
                           ))}
-                          <tr className="border-t border-slate-600 bg-slate-900/50">
-                            <td className="px-3 py-2 text-xs text-slate-500 font-semibold uppercase">Team</td>
-                            {users.map((u) => {
-                              const tot = teamTotals[u.username];
-                              const best = tot !== null && tot === bestTotal;
-                              return (
-                                <td key={u.username} className={`px-3 py-2 text-center text-sm font-semibold ${best ? "font-bold text-white" : "text-slate-400"}`}>
-                                  {tot === null ? "-" : fmtScore(tot)}
-                                </td>
-                              );
-                            })}
-                          </tr>
                         </tbody>
                       </table>
                     </div>
