@@ -29,7 +29,6 @@ export default function ResultsClient() {
     fetch("/api/results").then((r) => r.json()).then((data) => {
       setTournaments(data.tournaments ?? []); setUsers(data.users ?? []);
       setWeeklyScores(data.weeklyScores ?? []); setPickScores(data.pickScores ?? []);
-      if (data.tournaments?.length) setOpen(new Set([data.tournaments[0].tournament_id]));
       setLoading(false);
     });
   }, []);
