@@ -228,7 +228,12 @@ export default function ThisWeekClient() {
                     return (
                       <tr key={row.playerId} className={`border-b border-slate-700 last:border-0 ${TIER_BG[tierOf[row.playerId]] ?? ""}`}>
                         <td className="px-4 py-3 text-slate-400 text-xs">{row.pos}</td>
-                        <td className="px-4 py-3 font-medium text-slate-100">{row.player}</td>
+                        <td className="px-4 py-3 font-medium text-slate-100">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
+                            {row.player}
+                          </div>
+                        </td>
                         <td className="px-4 py-3 text-center font-bold tabular-nums text-white">
                           {row.score}
                         </td>
