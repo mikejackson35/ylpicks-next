@@ -107,8 +107,8 @@ export default function ResearchClient() {
                   <td className="px-3 py-2.5 font-medium text-white sticky left-0 bg-slate-800">
                     <div className="flex items-center gap-2">
                       {row.tier !== null
-                        ? <div className={`w-2 h-2 rounded-full shrink-0 ${TIER_DOT[row.tier] ?? "bg-slate-600"}`} />
-                        : <div className="w-2 h-2 rounded-full shrink-0 bg-slate-700" />
+                        ? <div className={`w-3 h-3 rounded-full shrink-0 ${TIER_DOT[row.tier] ?? "bg-slate-600"}`} />
+                        : <div className="w-3 h-3 rounded-full shrink-0 bg-slate-700" />
                       }
                       {row.Player}
                     </div>

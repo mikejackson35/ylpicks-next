@@ -226,7 +226,7 @@ export default function ThisWeekClient() {
                         <td className="px-4 py-3 text-slate-400 text-xs">{row.pos}</td>
                         <td className="px-4 py-3 font-medium text-slate-100">
                           <div className="flex items-center gap-2">
-                            <div className={`w-2 h-2 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
+                            <div className={`w-3 h-3 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
                             {row.player}
                           </div>
                         </td>
