@@ -48,13 +48,8 @@ export default async function SeasonPage() {
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-6">
         {standings.map((row, i) => (
           <div key={row.name} className="flex justify-between items-center px-5 py-4 border-b border-slate-700 last:border-0">
-            <div className="flex items-center gap-3">
-              <span className="text-slate-500 text-sm w-4">{i + 1}</span>
-              <span className="text-white font-medium">{row.name}</span>
-            </div>
-            <span className="text-xl font-bold tabular-nums text-white">
-              {row.points > 0 ? `+${row.points}` : row.points}
-            </span>
+            <span className="text-white font-medium">{row.name}</span>
+            <span className="text-xl font-bold tabular-nums text-white">{row.points}</span>
           </div>
         ))}
       </div>

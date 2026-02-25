@@ -64,7 +64,7 @@ export default function Sidebar({ standings, thruText }: Props) {
               <div key={row.name} className="flex justify-between items-center">
                 <span className="text-base text-white">{row.name}</span>
                 <span className="text-base font-bold tabular-nums text-white">
-                  {row.points > 0 ? `+${row.points}` : row.points}
+                  {row.points}
                 </span>
               </div>
             ))}
@@ -102,7 +102,7 @@ export default function Sidebar({ standings, thruText }: Props) {
 
       {/* ── Mobile Bottom Nav (< md) ── */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-slate-800 flex items-center justify-around h-16">
-        {[...allNav, { label: "Season", href: "/season", icon: "🏆" }].map(({ label, href, icon }) => {
+        {[...NAV, { label: "Season", href: "/season", icon: "🏆" }].map(({ label, href, icon }) => {
           const active = pathname === href;
           return (
             <Link
