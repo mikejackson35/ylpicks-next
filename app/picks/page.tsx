@@ -1,12 +1,12 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
-import ThisWeekClient from "@/components/ThisWeekClient";
+import MakePicksClient from "@/components/MakePicksClient";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export default async function PicksPage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
-  return <ThisWeekClient />;
+  return <MakePicksClient />;
 }
