@@ -16,19 +16,31 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
-        const result = await pool.query(
-          "SELECT username, name, password_hash FROM users WHERE username = $1",
-          [credentials.username]
-        );
+        let result;
+        try {
+          result = await pool.query(
+            "SELECT username, name, password_hash FROM users WHERE username = $1",
+            [credentials.username]
+          );
+        } catch (err) {
+          console.error("[auth] DB query failed:", err);
+          return null;
+        }
 
         const user = result.rows[0];
-        if (!user) return null;
+        if (!user) {
+          console.error("[auth] User not found:", credentials.username);
+          return null;
+        }
 
         const valid = await bcrypt.compare(
           credentials.password,
           user.password_hash
         );
-        if (!valid) return null;
+        if (!valid) {
+          console.error("[auth] Password mismatch for:", credentials.username);
+          return null;
+        }
 
         return {
           id: user.username,
