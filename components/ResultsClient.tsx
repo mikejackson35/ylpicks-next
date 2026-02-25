@@ -83,7 +83,7 @@ export default function ResultsClient() {
               </button>
 
               {isOpen && (
-                <div className="px-5 pb-5 border-t border-slate-700">
+                <div className="px-2 md:px-5 pb-4 md:pb-5 border-t border-slate-700">
                   {/* Weekly points score cards */}
                   <div className="grid grid-cols-4 gap-1 md:gap-3 my-4">
                     {users.map((u) => {
@@ -91,7 +91,7 @@ export default function ResultsClient() {
                       const display = pts === undefined ? "-" : pts > 0 ? `+${pts}` : String(pts);
                       return (
                         <div key={u.username} className="text-center rounded-xl p-1 md:p-2 bg-slate-900 border border-slate-700">
-                          <p className="text-[10px] md:text-xs text-slate-400 mb-0.5 uppercase tracking-wide">{u.name}</p>
+                          <p className="text-[10px] md:text-xs text-slate-400 mb-0.5 uppercase tracking-wide truncate">{u.name}</p>
                           <p className="text-base md:text-lg font-bold tabular-nums text-white">{display}</p>
                         </div>
                       );
@@ -126,7 +126,7 @@ export default function ResultsClient() {
                                 const cls = win && !mc ? "font-bold text-emerald-400"
                                   : !win && mc ? "line-through text-red-400"
                                   : "text-slate-200";
-                                return <td key={u.username} className={`px-1 py-2 md:px-3 md:py-2.5 text-center text-xs md:text-sm ${cls}`}>{ln}</td>;
+                                return <td key={u.username} className={`px-1 py-2 md:px-3 md:py-2.5 text-center text-xs md:text-sm truncate max-w-0 ${cls}`}>{ln}</td>;
                               })}
                             </tr>
                           ))}
