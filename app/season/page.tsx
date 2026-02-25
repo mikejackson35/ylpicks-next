@@ -55,18 +55,23 @@ export default async function SeasonPage() {
       </div>
 
       {/* Scoring */}
-      <p className="text-xs font-semibold uppercase tracking-widest text-white mb-3 text-center">Scoring</p>
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-        {SCORING.map(({ label, pts }) => (
-          <div key={label} className="flex justify-between items-center px-5 py-3.5 border-b border-slate-700 last:border-0">
-            <span className="text-slate-300 text-sm">{label}</span>
-            <span className="text-white font-semibold text-sm">{pts}</span>
+      <details className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+        <summary className="px-5 py-3.5 text-xs font-semibold uppercase tracking-widest text-white cursor-pointer select-none list-none flex justify-between items-center">
+          Scoring
+          <span className="text-slate-400 text-base">›</span>
+        </summary>
+        <div className="border-t border-slate-700">
+          {SCORING.map(({ label, pts }) => (
+            <div key={label} className="flex justify-between items-center px-5 py-3.5 border-b border-slate-700 last:border-0">
+              <span className="text-slate-300 text-sm">{label}</span>
+              <span className="text-white font-semibold text-sm">{pts}</span>
+            </div>
+          ))}
+          <div className="px-5 py-3.5">
+            <p className="text-slate-500 text-sm">$100 to season winner</p>
           </div>
-        ))}
-        <div className="px-5 py-3.5">
-          <p className="text-slate-500 text-sm">$100 to season winner</p>
         </div>
-      </div>
+      </details>
     </div>
   );
 }
