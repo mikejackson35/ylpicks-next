@@ -31,10 +31,10 @@ export default function Sidebar({ standings, thruText }: Props) {
   return (
     <>
       {/* ── Desktop Sidebar (md+) ── */}
-      <aside className="hidden md:flex flex-col w-56 shrink-0 min-h-screen bg-slate-900 border-r border-slate-800 text-white">
+      <aside className="hidden md:flex flex-col w-64 shrink-0 min-h-screen bg-slate-900 border-r border-slate-800 text-white">
         {/* Title */}
         <div className="px-5 py-6 border-b border-slate-800">
-          <p className="text-xl font-bold tracking-wide text-white">YL Picks</p>
+          <p className="text-2xl font-bold tracking-wide text-white text-center">YL Picks</p>
         </div>
 
         {/* Nav links */}
@@ -63,15 +63,7 @@ export default function Sidebar({ standings, thruText }: Props) {
             {standings.map((row) => (
               <div key={row.name} className="flex justify-between items-center">
                 <span className="text-base text-white">{row.name}</span>
-                <span
-                  className={`text-base font-bold tabular-nums ${
-                    row.points > 0
-                      ? "text-emerald-400"
-                      : row.points < 0
-                      ? "text-red-400"
-                      : "text-slate-400"
-                  }`}
-                >
+                <span className="text-base font-bold tabular-nums text-white">
                   {row.points > 0 ? `+${row.points}` : row.points}
                 </span>
               </div>
@@ -85,7 +77,7 @@ export default function Sidebar({ standings, thruText }: Props) {
             <summary className="text-xs font-semibold uppercase tracking-widest text-emerald-400 select-none">
               Scoring
             </summary>
-            <div className="mt-2 space-y-1 text-xs text-slate-400">
+            <div className="mt-2 space-y-1.5 text-sm text-slate-400">
               <p>+1pt · Tier winner</p>
               <p>+1pt · Best team score</p>
               <p>−1pt · Missed cut</p>
