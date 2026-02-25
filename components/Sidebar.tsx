@@ -102,7 +102,7 @@ export default function Sidebar({ standings, thruText }: Props) {
 
       {/* ── Mobile Bottom Nav (< md) ── */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-slate-800 flex items-center justify-around h-16">
-        {allNav.map(({ label, href, icon }) => {
+        {[...allNav, { label: "Season", href: "/season", icon: "🏆" }].map(({ label, href, icon }) => {
           const active = pathname === href;
           return (
             <Link
