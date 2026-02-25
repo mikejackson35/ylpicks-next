@@ -14,8 +14,8 @@ type CacheRow = { player_id: string; score_to_par: string; status: string };
 type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string };
 
 const TIER_BG: Record<number, string> = {
-  1: "bg-rose-950",   2: "bg-slate-800",    3: "bg-amber-950",
-  4: "bg-emerald-950", 5: "bg-sky-950",     6: "bg-violet-950",
+  1: "bg-rose-900",   2: "bg-slate-700",    3: "bg-amber-900",
+  4: "bg-emerald-900", 5: "bg-sky-900",     6: "bg-violet-900",
 };
 const TIER_DOT: Record<number, string> = {
   1: "bg-rose-400", 2: "bg-slate-400", 3: "bg-amber-400",
@@ -229,9 +229,7 @@ export default function ThisWeekClient() {
                       <tr key={row.playerId} className={`border-b border-slate-700 last:border-0 ${TIER_BG[tierOf[row.playerId]] ?? ""}`}>
                         <td className="px-4 py-3 text-slate-400 text-xs">{row.pos}</td>
                         <td className="px-4 py-3 font-medium text-slate-100">{row.player}</td>
-                        <td className={`px-4 py-3 text-center font-bold tabular-nums ${
-                          s < 0 ? "text-red-400" : s > 0 ? "text-slate-400" : "text-white"
-                        }`}>
+                        <td className="px-4 py-3 text-center font-bold tabular-nums text-white">
                           {row.score}
                         </td>
                       </tr>

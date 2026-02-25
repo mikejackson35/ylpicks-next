@@ -15,8 +15,11 @@ export async function GET(request: Request) {
   // Preview mode: load last finalized tournament
   if (preview) {
     const prevResult = await pool.query(
-      `SELECT tournament_id, name, start_time, org_id, tourn_id, year
-       FROM tournaments WHERE is_finalized = TRUE ORDER BY start_time DESC LIMIT 1`
+      `SELECT DISTINCT t.tournament_id, t.name, t.start_time, t.org_id, t.tourn_id, t.year
+       FROM tournaments t
+       JOIN player_score_cache psc ON psc.tournament_id = t.tournament_id
+       WHERE t.is_finalized = TRUE
+       ORDER BY t.start_time DESC LIMIT 1`
     );
     if (prevResult.rows[0]) {
       const t = prevResult.rows[0];
