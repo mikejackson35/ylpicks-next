@@ -107,7 +107,7 @@ export default function ResultsClient() {
                               const tot = teamTotals[u.username];
                               const best = tot !== null && tot === bestTotal;
                               return (
-                                <th key={u.username} className={`px-3 py-2 text-center text-sm font-semibold ${best ? "text-white" : "text-slate-400"}`}>
+                                <th key={u.username} className={`px-3 py-2 text-center text-sm font-semibold ${best ? "text-emerald-400" : "text-slate-400"}`}>
                                   {tot === null ? "-" : fmtScore(tot)}
                                 </th>
                               );
