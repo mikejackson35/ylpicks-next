@@ -119,43 +119,34 @@ export default function ThisWeekClient() {
       {/* Tournament header */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-white">{tournament.name}</h2>
-        {!tournament.locked && (
-          <p className="text-sm text-amber-400 mt-1">⏰ Tournament has not started — picks are hidden</p>
-        )}
       </div>
 
-      {/* Score cards */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
-        {users.map((u) => {
-          const pts = wkPts[u.name] ?? 0;
-          const lead = teamLeaders.has(u.name) && tournament.locked;
-          return (
-            <div key={u.username} className={`rounded-xl p-4 text-center border ${
-              lead ? "bg-emerald-950 border-emerald-700" : "bg-slate-800 border-slate-700"
-            }`}>
-              <p className="text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
-              <p className={`text-3xl font-bold tabular-nums ${
-                pts > 0 ? "text-emerald-400" : pts < 0 ? "text-red-400" : "text-slate-500"
-              }`}>
-                {pts > 0 ? `+${pts}` : pts}
-              </p>
-              {lead && <p className="text-xs text-emerald-400 mt-1">🏆 lead</p>}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Picks grid */}
+      {/* Picks grid — score cards in header, aligned to columns */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-6">
         <table className="text-sm w-full border-collapse">
           <thead>
-            <tr className="bg-slate-900 border-b border-slate-700">
-              <th className="px-4 py-3 text-xs font-semibold text-slate-500 w-16"></th>
-              {users.map((u) => (
-                <th key={u.username} className="px-4 py-3 text-center text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                  {u.name}
-                </th>
-              ))}
+            {/* Score cards row */}
+            <tr className="border-b border-slate-700">
+              <th className="w-16" />
+              {users.map((u) => {
+                const pts = wkPts[u.name] ?? 0;
+                const lead = teamLeaders.has(u.name) && tournament.locked;
+                return (
+                  <th key={u.username} className="px-2 py-3">
+                    <div className={`rounded-xl px-2 py-3 text-center border ${
+                      lead ? "bg-emerald-950 border-emerald-700" : "bg-slate-900 border-slate-700"
+                    }`}>
+                      <p className="text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
+                      <p className={`text-2xl font-bold tabular-nums ${
+                        pts > 0 ? "text-emerald-400" : pts < 0 ? "text-red-400" : "text-slate-500"
+                      }`}>
+                        {pts > 0 ? `+${pts}` : pts}
+                      </p>
+                      {lead && <p className="text-xs text-emerald-400 mt-1">🏆</p>}
+                    </div>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>
@@ -189,12 +180,14 @@ export default function ThisWeekClient() {
                   const win = pid ? tierWin[tier]?.has(pid) : false;
                   const mc = pid ? cut[pid] : false;
                   const name = lastNames[pid ?? ""] ?? "?";
-                  const txt = !pid || !tournament.locked ? "—"
+                  const txt = !tournament.locked ? "🔒"
+                    : !pid ? "—"
                     : mc && !win ? `❌ ${name}`
                     : name;
                   return (
                     <td key={u.username} className={`px-4 py-3 text-center text-sm ${
-                      win && !mc ? "font-bold text-emerald-400"
+                      !tournament.locked ? "text-slate-600"
+                      : win && !mc ? "font-bold text-emerald-400"
                       : mc && !win ? "text-red-400 line-through"
                       : "text-slate-200"
                     }`}>
