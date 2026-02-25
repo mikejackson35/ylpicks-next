@@ -40,7 +40,7 @@ export default async function SeasonPage() {
   const { standings, thruText } = await getStandings();
 
   return (
-    <div className="max-w-sm">
+    <div className="max-w-sm pt-6">
       <h2 className="text-2xl font-bold text-white mb-1 text-center">Season</h2>
       <p className="text-xs text-slate-400 mb-6 text-center">{thruText}</p>
 
