@@ -6,6 +6,11 @@ import { useRouter } from "next/navigation";
 type Tournament = { tournament_id: string; name: string; start_time: string; locked: boolean };
 type Player = { player_id: string; name: string };
 
+const TIER_DOT: Record<number, string> = {
+  1: "bg-rose-400", 2: "bg-slate-400", 3: "bg-amber-400",
+  4: "bg-emerald-400", 5: "bg-sky-400", 6: "bg-violet-400",
+};
+
 export default function MakePicksClient() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -38,25 +43,33 @@ export default function MakePicksClient() {
     else { const e = await res.json(); setMessage({ type: "error", text: e.error ?? "Failed to save" }); }
   }
 
-  if (loading) return <div className="flex items-center gap-2 text-slate-500 text-sm"><div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />Loading...</div>;
+  if (loading) return (
+    <div className="flex items-center gap-2 text-slate-400 text-sm">
+      <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      Loading...
+    </div>
+  );
   if (!tournament) return <p className="text-slate-400">No upcoming tournament available for picks.</p>;
 
   const missing = [1,2,3,4,5,6].filter((t) => !picks[t]);
 
+  // Locked view
   if (tournament.locked) return (
     <div className="max-w-md">
-      <h2 className="text-xl font-bold text-slate-800 mb-1">Make Picks</h2>
-      <p className="text-sm text-slate-500 mb-4">{tournament.name}</p>
-      <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-700 mb-5">
-        ⏰ Picks are locked — tournament has started
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-white">{tournament.name}</h2>
+        <p className="text-sm text-slate-400 mt-1">Picks are locked — tournament has started</p>
       </div>
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
         {[1,2,3,4,5,6].map((tier) => {
           const selected = (playersByTier[tier] ?? []).find((p) => p.player_id === picks[tier]);
           return (
-            <div key={tier} className="flex items-center gap-4 px-4 py-3 border-b border-slate-100 last:border-0">
-              <span className="text-xs font-semibold text-slate-400 uppercase w-12">Tier {tier}</span>
-              <span className={`text-sm ${selected ? "font-medium text-slate-800" : "text-amber-500"}`}>
+            <div key={tier} className="flex items-center gap-4 px-4 py-3.5 border-b border-slate-700 last:border-0">
+              <div className="flex items-center gap-2 w-14 shrink-0">
+                <div className={`w-3 h-3 rounded-full ${TIER_DOT[tier]}`} />
+                <span className="text-xs font-medium text-slate-400">T{tier}</span>
+              </div>
+              <span className={`text-sm ${selected ? "font-medium text-white" : "text-amber-400"}`}>
                 {selected ? selected.name : "No pick submitted"}
               </span>
             </div>
@@ -66,23 +79,32 @@ export default function MakePicksClient() {
     </div>
   );
 
+  // Open picks view
   return (
     <div className="max-w-md">
-      <h2 className="text-xl font-bold text-slate-800 mb-1">Make Picks</h2>
-      <p className="text-sm text-slate-500 mb-6">{tournament.name}</p>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-white">{tournament.name}</h2>
+        <p className="text-sm text-slate-400 mt-1">Select one player per tier</p>
+      </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-4">
+      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-5">
         {[1,2,3,4,5,6].map((tier) => {
           const players = playersByTier[tier] ?? [];
           const sel = picks[tier] ?? "";
           return (
-            <div key={tier} className="flex items-center gap-4 px-4 py-3 border-b border-slate-100 last:border-0">
-              <label className="text-xs font-semibold text-slate-400 uppercase w-12 shrink-0">Tier {tier}</label>
+            <div key={tier} className="flex items-center gap-4 px-4 py-3 border-b border-slate-700 last:border-0">
+              <div className="flex items-center gap-2 w-14 shrink-0">
+                <div className={`w-3 h-3 rounded-full ${TIER_DOT[tier]}`} />
+                <span className="text-xs font-medium text-slate-400">T{tier}</span>
+              </div>
               {players.length === 0 ? (
-                <p className="text-sm text-slate-400">No players assigned</p>
+                <p className="text-sm text-slate-500">No players assigned</p>
               ) : (
-                <select value={sel} onChange={(e) => setPicks((prev) => ({ ...prev, [tier]: e.target.value }))}
-                  className="flex-1 border border-slate-200 rounded-lg px-3 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                <select
+                  value={sel}
+                  onChange={(e) => setPicks((prev) => ({ ...prev, [tier]: e.target.value }))}
+                  className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
                   <option value="">— Select player —</option>
                   {players.map((p) => <option key={p.player_id} value={p.player_id}>{p.name}</option>)}
                 </select>
@@ -93,21 +115,26 @@ export default function MakePicksClient() {
       </div>
 
       {missing.length > 0 && (
-        <p className="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
-          ⚠️ Missing: Tier {missing.join(", Tier ")}
+        <p className="text-sm text-amber-400 bg-amber-950/50 border border-amber-800 rounded-lg px-3 py-2 mb-4">
+          Missing: Tier {missing.join(", Tier ")}
         </p>
       )}
 
-      <p className="text-xs text-slate-400 mb-3">Remember to save your picks!</p>
-
-      <button onClick={handleSave} disabled={saving || missing.length > 0}
-        className="bg-emerald-700 text-white rounded-lg px-5 py-2.5 text-sm font-semibold hover:bg-emerald-600 disabled:opacity-40 transition-colors">
-        {saving ? "Saving..." : "💾 Save Picks"}
+      <button
+        onClick={handleSave}
+        disabled={saving || missing.length > 0}
+        className="bg-emerald-600 text-white rounded-lg px-6 py-2.5 text-sm font-semibold hover:bg-emerald-500 disabled:opacity-40 transition-colors"
+      >
+        {saving ? "Saving..." : "Save Picks"}
       </button>
 
       {message && (
-        <p className={`mt-3 text-sm px-3 py-2 rounded-lg border ${message.type === "success" ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-red-600 bg-red-50 border-red-200"}`}>
-          {message.type === "success" ? "✅ " : "❌ "}{message.text}
+        <p className={`mt-3 text-sm px-3 py-2 rounded-lg border ${
+          message.type === "success"
+            ? "text-emerald-400 bg-emerald-950/50 border-emerald-800"
+            : "text-red-400 bg-red-950/50 border-red-800"
+        }`}>
+          {message.text}
         </p>
       )}
     </div>
