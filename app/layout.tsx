@@ -59,12 +59,12 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="antialiased bg-slate-950 text-white">
         <SessionProvider>
           {session ? (
-            <div className="flex min-h-screen">
+            <div className="md:flex min-h-screen">
               <Sidebar standings={standings} thruText={thruText} />
-              <main className="flex-1 p-6 overflow-auto">{children}</main>
+              <main className="flex-1 p-4 md:p-6 overflow-auto pb-20 md:pb-6">{children}</main>
             </div>
           ) : (
             <main className="flex-1">{children}</main>
