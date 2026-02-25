@@ -124,7 +124,7 @@ export default function ResultsClient() {
                                 const win = ps.tier_winner;
                                 const mc = ps.missed_cut;
                                 const cls = win && !mc ? "font-bold text-emerald-400"
-                                  : !win && mc ? "line-through text-red-400"
+                                  : !win && mc ? "text-red-400"
                                   : "text-slate-200";
                                 return <td key={u.username} className={`px-1 py-2 md:px-3 md:py-2.5 text-center text-xs md:text-sm truncate max-w-0 ${cls}`}>{ln}</td>;
                               })}
