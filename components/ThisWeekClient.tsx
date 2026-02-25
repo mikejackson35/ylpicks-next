@@ -51,6 +51,7 @@ export default function ThisWeekClient() {
       setPicks(data.picks ?? []); setTiers(data.tiers ?? []);
       setCached(data.cached ?? []); setLoading(false);
       if (data.tournament?.locked && data.tournament?.tourn_id) loadLb(data.tournament);
+      else if (previewLocked) loadLb({ ...data.tournament, org_id: "1", tourn_id: "007", year: "2026" });
     });
   }, []);
 
