@@ -82,9 +82,19 @@ export default function MakePicksClient() {
   // Open picks view
   return (
     <div className="max-w-md">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-white">Make Picks</h2>
-        <p className="text-sm text-slate-400 mt-1">{tournament.name}</p>
+      <div className="mb-6 flex items-center justify-between md:block">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Make Picks</h2>
+          <p className="text-sm text-slate-400 mt-1">{tournament.name}</p>
+        </div>
+        {/* Save button in header — mobile only */}
+        <button
+          onClick={handleSave}
+          disabled={saving || missing.length > 0}
+          className="md:hidden bg-emerald-600 text-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-emerald-500 disabled:opacity-40 transition-colors"
+        >
+          {saving ? "Saving..." : "Save"}
+        </button>
       </div>
 
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-5">
@@ -120,10 +130,11 @@ export default function MakePicksClient() {
         </p>
       )}
 
+      {/* Save button below — desktop only */}
       <button
         onClick={handleSave}
         disabled={saving || missing.length > 0}
-        className="bg-emerald-600 text-white rounded-lg px-6 py-2.5 text-sm font-semibold hover:bg-emerald-500 disabled:opacity-40 transition-colors"
+        className="hidden md:block bg-emerald-600 text-white rounded-lg px-6 py-2.5 text-sm font-semibold hover:bg-emerald-500 disabled:opacity-40 transition-colors"
       >
         {saving ? "Saving..." : "Save Picks"}
       </button>
