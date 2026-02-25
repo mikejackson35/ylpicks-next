@@ -46,12 +46,12 @@ export default function ThisWeekClient() {
   const [lbLoading, setLbLoading] = useState(false);
 
   useEffect(() => {
-    fetch("/api/this-week").then((r) => r.json()).then((data) => {
+    const url = previewLocked ? "/api/this-week?preview=true" : "/api/this-week";
+    fetch(url).then((r) => r.json()).then((data) => {
       setTournament(data.tournament); setUsers(data.users ?? []);
       setPicks(data.picks ?? []); setTiers(data.tiers ?? []);
       setCached(data.cached ?? []); setLoading(false);
-      if (data.tournament?.locked && data.tournament?.tourn_id) loadLb(data.tournament);
-      else if (previewLocked) loadLb({ ...data.tournament, org_id: "1", tourn_id: "007", year: "2026" });
+      if (data.tournament?.tourn_id) loadLb(data.tournament);
     });
   }, []);
 
