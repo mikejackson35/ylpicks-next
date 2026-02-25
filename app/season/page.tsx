@@ -48,8 +48,8 @@ export default async function SeasonPage() {
       <div className="flex flex-col gap-3 mb-14 px-16">
         {standings.map((row) => (
           <div key={row.name} className="flex justify-between items-center">
-            <span className="text-white text-lg font-medium">{row.name}</span>
-            <span className="text-lg font-bold tabular-nums text-white">{row.points}</span>
+            <span className="text-white text-3xl font-medium">{row.name}</span>
+            <span className="text-3xl font-bold tabular-nums text-white">{row.points}</span>
           </div>
         ))}
       </div>
