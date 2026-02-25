@@ -189,8 +189,8 @@ export default function ThisWeekClient() {
                   return (
                     <td key={u.username} className={`px-2 py-3 md:px-4 text-center text-xs md:text-sm ${
                       !tournament.locked ? "text-slate-600"
-                      : win && !mc ? "font-bold text-white"
-                      : !win && mc ? "line-through text-slate-500"
+                      : win && !mc ? "font-bold text-emerald-400"
+                      : !win && mc ? "text-red-400"
                       : "text-slate-200"
                     }`}>
                       {txt}
