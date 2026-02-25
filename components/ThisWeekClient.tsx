@@ -131,7 +131,7 @@ export default function ThisWeekClient() {
 
       {/* Picks grid — score cards in header, aligned to columns */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-6">
-        <table className="text-sm w-full border-collapse">
+        <table className="text-sm w-full border-collapse table-fixed">
           <thead>
             {/* Score cards row */}
             <tr className="border-b border-slate-700">
@@ -143,7 +143,7 @@ export default function ThisWeekClient() {
                   <th key={u.username} className="px-1 py-2 md:px-2 md:py-3">
                     <div className="rounded-xl px-1 py-2 md:px-2 md:py-3 text-center border bg-slate-900 border-slate-700">
                       <p className="text-[10px] md:text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
-                      <p className="text-xl md:text-2xl font-bold tabular-nums text-white">
+                      <p className="text-lg md:text-2xl font-bold tabular-nums text-white">
                         {pts > 0 ? `+${pts}` : pts}
                       </p>
                     </div>
