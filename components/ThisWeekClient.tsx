@@ -13,12 +13,12 @@ type CacheRow = { player_id: string; score_to_par: string; status: string };
 type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string };
 
 const TIER_BG: Record<number, string> = {
-  1: "bg-rose-50", 2: "bg-slate-50", 3: "bg-amber-50",
-  4: "bg-emerald-50", 5: "bg-sky-50", 6: "bg-violet-50",
+  1: "bg-rose-950",   2: "bg-slate-800",    3: "bg-amber-950",
+  4: "bg-emerald-950", 5: "bg-sky-950",     6: "bg-violet-950",
 };
 const TIER_DOT: Record<number, string> = {
   1: "bg-rose-400", 2: "bg-slate-400", 3: "bg-amber-400",
-  4: "bg-emerald-500", 5: "bg-sky-400", 6: "bg-violet-400",
+  4: "bg-emerald-400", 5: "bg-sky-400", 6: "bg-violet-400",
 };
 
 function parseScore(s?: string | null): number {
@@ -57,8 +57,13 @@ export default function ThisWeekClient() {
       .catch(() => setLbLoading(false));
   }
 
-  if (loading) return <div className="flex items-center gap-2 text-slate-500 text-sm"><div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />Loading...</div>;
-  if (!tournament) return <p className="text-slate-500">Season complete — check Results for final standings.</p>;
+  if (loading) return (
+    <div className="flex items-center gap-2 text-slate-400 text-sm">
+      <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      Loading...
+    </div>
+  );
+  if (!tournament) return <p className="text-slate-400">Season complete — check Results for final standings.</p>;
 
   const lastNames: Record<string, string> = {};
   tiers.forEach((t) => { lastNames[t.player_id] = t.name_last; });
@@ -110,9 +115,13 @@ export default function ThisWeekClient() {
 
   return (
     <div className="max-w-3xl">
+
+      {/* Tournament header */}
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-800">{tournament.name}</h2>
-        {!tournament.locked && <p className="text-sm text-amber-600 mt-1">⏰ Tournament has not started — picks are hidden</p>}
+        <h2 className="text-2xl font-bold text-white">{tournament.name}</h2>
+        {!tournament.locked && (
+          <p className="text-sm text-amber-400 mt-1">⏰ Tournament has not started — picks are hidden</p>
+        )}
       </div>
 
       {/* Score cards */}
@@ -121,50 +130,77 @@ export default function ThisWeekClient() {
           const pts = wkPts[u.name] ?? 0;
           const lead = teamLeaders.has(u.name) && tournament.locked;
           return (
-            <div key={u.username} className={`rounded-xl p-3 text-center border ${lead ? "bg-emerald-50 border-emerald-300" : "bg-white border-slate-200"}`}>
-              <p className="text-xs text-slate-500 font-medium mb-1">{u.name}</p>
-              <p className={`text-2xl font-bold tabular-nums ${pts > 0 ? "text-emerald-600" : pts < 0 ? "text-red-500" : "text-slate-400"}`}>
+            <div key={u.username} className={`rounded-xl p-4 text-center border ${
+              lead ? "bg-emerald-950 border-emerald-700" : "bg-slate-800 border-slate-700"
+            }`}>
+              <p className="text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
+              <p className={`text-3xl font-bold tabular-nums ${
+                pts > 0 ? "text-emerald-400" : pts < 0 ? "text-red-400" : "text-slate-500"
+              }`}>
                 {pts > 0 ? `+${pts}` : pts}
               </p>
+              {lead && <p className="text-xs text-emerald-400 mt-1">🏆 lead</p>}
             </div>
           );
         })}
       </div>
 
       {/* Picks grid */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-6">
         <table className="text-sm w-full border-collapse">
           <thead>
-            <tr className="bg-slate-50 border-b border-slate-200">
-              <th className="px-4 py-2.5 text-xs font-semibold text-slate-400 w-16"></th>
-              {users.map((u) => <th key={u.username} className="px-4 py-2.5 text-center text-xs font-semibold text-slate-600 uppercase tracking-wide">{u.name}</th>)}
+            <tr className="bg-slate-900 border-b border-slate-700">
+              <th className="px-4 py-3 text-xs font-semibold text-slate-500 w-16"></th>
+              {users.map((u) => (
+                <th key={u.username} className="px-4 py-3 text-center text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                  {u.name}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-slate-100 bg-slate-50">
-              <td className="px-4 py-2 text-xs font-semibold text-slate-400 uppercase">Team</td>
+            {/* Team total row */}
+            <tr className="border-b border-slate-700 bg-slate-900/50">
+              <td className="px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase">Team</td>
               {users.map((u) => {
-                const s = teamTotals[u.name]; const lead = teamLeaders.has(u.name);
+                const s = teamTotals[u.name];
+                const lead = teamLeaders.has(u.name);
                 const disp = !tournament.locked ? "—" : s === 999 ? "E" : fmtScore(s);
-                return <td key={u.username} className={`px-4 py-2 text-center text-sm font-semibold ${lead && tournament.locked && s !== 999 ? "text-emerald-600" : "text-slate-500"}`}>
-                  {lead && tournament.locked && s !== 999 ? `🏆 ${disp}` : disp}
-                </td>;
+                return (
+                  <td key={u.username} className={`px-4 py-2.5 text-center text-sm font-semibold ${
+                    lead && tournament.locked && s !== 999 ? "text-emerald-400" : "text-slate-400"
+                  }`}>
+                    {disp}
+                  </td>
+                );
               })}
             </tr>
+            {/* Tier rows */}
             {[1,2,3,4,5,6].map((tier) => (
-              <tr key={tier} className="border-b border-slate-100 last:border-0">
-                <td className="px-4 py-2.5">
+              <tr key={tier} className="border-b border-slate-700 last:border-0">
+                <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${TIER_DOT[tier]}`} />
-                    <span className="text-xs font-medium text-slate-500">T{tier}</span>
+                    <div className={`w-2.5 h-2.5 rounded-full ${TIER_DOT[tier]}`} />
+                    <span className="text-xs font-medium text-slate-400">T{tier}</span>
                   </div>
                 </td>
                 {users.map((u) => {
                   const pid = pickMap[u.username][tier];
                   const win = pid ? tierWin[tier]?.has(pid) : false;
                   const mc = pid ? cut[pid] : false;
-                  const txt = !pid || !tournament.locked ? "—" : mc && !win ? `❌ ${lastNames[pid] ?? "?"}` : (lastNames[pid] ?? "?");
-                  return <td key={u.username} className={`px-4 py-2.5 text-center text-sm ${win && !mc ? "font-bold text-emerald-700" : mc && !win ? "text-red-400 line-through" : "text-slate-700"}`}>{txt}</td>;
+                  const name = lastNames[pid ?? ""] ?? "?";
+                  const txt = !pid || !tournament.locked ? "—"
+                    : mc && !win ? `❌ ${name}`
+                    : name;
+                  return (
+                    <td key={u.username} className={`px-4 py-3 text-center text-sm ${
+                      win && !mc ? "font-bold text-emerald-400"
+                      : mc && !win ? "text-red-400 line-through"
+                      : "text-slate-200"
+                    }`}>
+                      {txt}
+                    </td>
+                  );
                 })}
               </tr>
             ))}
@@ -175,32 +211,51 @@ export default function ThisWeekClient() {
       {/* Leaderboard */}
       {tournament.locked ? (
         lbLoading ? (
-          <div className="flex items-center gap-2 text-slate-500 text-sm"><div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />Loading leaderboard...</div>
+          <div className="flex items-center gap-2 text-slate-400 text-sm">
+            <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+            Loading leaderboard...
+          </div>
         ) : hasLb ? (
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Live Leaderboard</p>
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Live Leaderboard</p>
+            <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
               <table className="text-sm w-full border-collapse">
-                <thead><tr className="bg-slate-50 border-b border-slate-200">
-                  <th className="px-4 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Pos</th>
-                  <th className="px-4 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Player</th>
-                  <th className="px-4 py-2.5 text-center text-xs font-semibold text-slate-400 uppercase">Score</th>
-                </tr></thead>
+                <thead>
+                  <tr className="bg-slate-900 border-b border-slate-700">
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Pos</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
+                    <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
+                  </tr>
+                </thead>
                 <tbody>
                   {lb.map((row) => {
                     const s = parseScore(String(row.score));
-                    return <tr key={row.playerId} className={`border-b border-slate-100 last:border-0 ${TIER_BG[tierOf[row.playerId]] ?? ""}`}>
-                      <td className="px-4 py-2.5 text-slate-400 text-xs">{row.pos}</td>
-                      <td className="px-4 py-2.5 font-medium text-slate-800">{row.player}</td>
-                      <td className={`px-4 py-2.5 text-center font-bold tabular-nums ${s < 0 ? "text-red-600" : s > 0 ? "text-slate-500" : "text-slate-800"}`}>{row.score}</td>
-                    </tr>;
+                    return (
+                      <tr key={row.playerId} className={`border-b border-slate-700 last:border-0 ${TIER_BG[tierOf[row.playerId]] ?? ""}`}>
+                        <td className="px-4 py-3 text-slate-400 text-xs">{row.pos}</td>
+                        <td className="px-4 py-3 font-medium text-slate-100">{row.player}</td>
+                        <td className={`px-4 py-3 text-center font-bold tabular-nums ${
+                          s < 0 ? "text-red-400" : s > 0 ? "text-slate-400" : "text-white"
+                        }`}>
+                          {row.score}
+                        </td>
+                      </tr>
+                    );
                   })}
                 </tbody>
               </table>
             </div>
           </div>
-        ) : <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 text-center text-slate-400 text-sm">🏌️ Live leaderboard will appear once play begins</div>
-      ) : <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 text-center text-slate-400 text-sm">🏌️ Live leaderboard will appear when the tournament begins</div>}
+        ) : (
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-500 text-sm">
+            🏌️ Live leaderboard will appear once play begins
+          </div>
+        )
+      ) : (
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-500 text-sm">
+          🏌️ Live leaderboard will appear when the tournament begins
+        </div>
+      )}
     </div>
   );
 }
