@@ -162,7 +162,7 @@ export default function ThisWeekClient() {
                 const disp = !tournament.locked ? "—" : s === 999 ? "E" : fmtScore(s);
                 return (
                   <td key={u.username} className={`px-4 py-2.5 text-center text-sm font-semibold ${
-                    lead && tournament.locked && s !== 999 ? "text-emerald-400" : "text-slate-400"
+                    lead && tournament.locked && s !== 999 ? "font-bold text-white" : "text-slate-400"
                   }`}>
                     {disp}
                   </td>
@@ -174,7 +174,7 @@ export default function ThisWeekClient() {
               <tr key={tier} className="border-b border-slate-700 last:border-0">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <div className={`w-2.5 h-2.5 rounded-full ${TIER_DOT[tier]}`} />
+                    <div className={`w-4 h-4 rounded-full ${TIER_DOT[tier]}`} />
                     <span className="text-xs font-medium text-slate-400">T{tier}</span>
                   </div>
                 </td>
@@ -190,7 +190,7 @@ export default function ThisWeekClient() {
                     <td key={u.username} className={`px-4 py-3 text-center text-sm ${
                       !tournament.locked ? "text-slate-600"
                       : win && !mc ? "font-bold text-white"
-                      : mc ? "line-through text-slate-500"
+                      : !win && mc ? "line-through text-slate-500"
                       : "text-slate-200"
                     }`}>
                       {txt}
