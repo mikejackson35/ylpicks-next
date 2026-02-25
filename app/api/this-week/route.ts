@@ -15,13 +15,11 @@ export async function GET(request: Request) {
   // Preview mode: load last finalized tournament
   if (preview) {
     const prevResult = await pool.query(
-      `SELECT DISTINCT t.tournament_id, t.name, t.start_time, t.org_id, t.tourn_id, t.year
-       FROM tournaments t
-       WHERE t.is_finalized = TRUE
-       AND EXISTS (
-         SELECT 1 FROM pick_scores ps WHERE ps.tournament_id = t.tournament_id
-       )
-       ORDER BY t.start_time DESC LIMIT 1`
+      `SELECT tournament_id, name, start_time, org_id, tourn_id, year
+       FROM tournaments
+       WHERE is_finalized = TRUE
+       AND start_time + INTERVAL '5 days' <= NOW()
+       ORDER BY start_time DESC LIMIT 1`
     );
     if (prevResult.rows[0]) {
       const t = prevResult.rows[0];
