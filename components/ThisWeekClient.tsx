@@ -14,8 +14,12 @@ type CacheRow = { player_id: string; score_to_par: string; status: string };
 type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string };
 
 const TIER_DOT: Record<number, string> = {
-  1: "bg-white", 2: "bg-yellow-400", 3: "bg-sky-300",
-  4: "bg-pink-400", 5: "bg-violet-800", 6: "bg-slate-400",
+  1: "border-2 border-slate-400 bg-white",
+  2: "border-2 border-yellow-600 bg-yellow-300",
+  3: "border-2 border-sky-500 bg-sky-200",
+  4: "border-2 border-pink-600 bg-pink-300",
+  5: "border-2 border-violet-700 bg-violet-400",
+  6: "border-2 border-slate-500 bg-slate-300",
 };
 
 function parseScore(s?: string | null): number {
