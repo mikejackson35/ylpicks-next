@@ -140,7 +140,7 @@ export default function ThisWeekClient() {
                     <div className="rounded-xl px-1 py-2 md:px-2 md:py-3 text-center border bg-slate-900 border-slate-700">
                       <p className="text-[10px] md:text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
                       <p className="text-lg md:text-2xl font-bold tabular-nums text-white">
-                        {pts > 0 ? `+${pts}` : pts}
+                        {pts}
                       </p>
                     </div>
                   </th>
