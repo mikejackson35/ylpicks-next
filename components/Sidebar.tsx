@@ -57,8 +57,8 @@ export default function Sidebar({ standings, thruText }: Props) {
 
         {/* Season Standings — always visible */}
         <div className="px-5 py-4 border-t border-slate-800">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-1">Season</p>
-          <p className="text-xs text-slate-500 mb-3">{thruText}</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-1 text-center">Season</p>
+          <p className="text-xs text-slate-500 mb-3 text-center">{thruText}</p>
           <div className="flex flex-col gap-2">
             {standings.map((row) => (
               <div key={row.name} className="flex justify-between items-center">
