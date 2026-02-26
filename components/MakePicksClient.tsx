@@ -64,10 +64,10 @@ export default function MakePicksClient() {
         {[1,2,3,4,5,6].map((tier) => {
           const selected = (playersByTier[tier] ?? []).find((p) => p.player_id === picks[tier]);
           return (
-            <div key={tier} className="flex items-center gap-4 px-4 py-3.5 border-b border-slate-700 last:border-0">
-              <div className="flex items-center gap-2 w-14 shrink-0">
+            <div key={tier} className="flex items-center gap-4 px-4 py-4 border-b border-slate-700 last:border-0">
+              <div className="flex items-center gap-2.5 w-14 shrink-0">
                 <div className={`w-4 h-4 rounded-full ${TIER_DOT[tier]}`} />
-                <span className="text-xs font-medium text-slate-400">T{tier}</span>
+                <span className="text-sm font-medium text-slate-400">T{tier}</span>
               </div>
               <span className={`text-sm ${selected ? "font-medium text-white" : "text-amber-400"}`}>
                 {selected ? selected.name : "No pick submitted"}
@@ -91,7 +91,7 @@ export default function MakePicksClient() {
         <button
           onClick={handleSave}
           disabled={saving || missing.length > 0}
-          className="md:hidden bg-emerald-600 text-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-emerald-500 disabled:opacity-40 transition-colors"
+          className="md:hidden bg-emerald-600 text-white rounded-xl px-5 py-2.5 text-base font-semibold hover:bg-emerald-500 disabled:opacity-40 transition-colors"
         >
           {saving ? "Saving..." : "Save"}
         </button>
@@ -102,10 +102,10 @@ export default function MakePicksClient() {
           const players = playersByTier[tier] ?? [];
           const sel = picks[tier] ?? "";
           return (
-            <div key={tier} className="flex items-center gap-4 px-4 py-3 border-b border-slate-700 last:border-0">
-              <div className="flex items-center gap-2 w-14 shrink-0">
+            <div key={tier} className="flex items-center gap-4 px-4 py-4 border-b border-slate-700 last:border-0">
+              <div className="flex items-center gap-2.5 w-14 shrink-0">
                 <div className={`w-4 h-4 rounded-full ${TIER_DOT[tier]}`} />
-                <span className="text-xs font-medium text-slate-400">T{tier}</span>
+                <span className="text-sm font-medium text-slate-400">T{tier}</span>
               </div>
               {players.length === 0 ? (
                 <p className="text-sm text-slate-500">No players assigned</p>
@@ -113,7 +113,7 @@ export default function MakePicksClient() {
                 <select
                   value={sel}
                   onChange={(e) => setPicks((prev) => ({ ...prev, [tier]: e.target.value }))}
-                  className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   <option value="">— Select player —</option>
                   {players.map((p) => <option key={p.player_id} value={p.player_id}>{p.name}</option>)}
