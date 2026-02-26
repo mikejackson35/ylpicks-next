@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { pool } from "@/lib/db";
+import { assignMissingPicks } from "@/lib/auto-picks";
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
@@ -86,6 +87,9 @@ export async function GET(request: Request) {
 
   const tid = tournament.tournament_id;
   const locked = now >= new Date(tournament.start_time);
+
+  // Auto-assign random picks for any user missing picks at lock time
+  if (locked) await assignMissingPicks(tid);
 
   const [usersRes, picksRes, tiersRes, cacheRes] = await Promise.all([
     pool.query<{ username: string; name: string }>(
