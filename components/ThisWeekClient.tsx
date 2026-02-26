@@ -213,7 +213,8 @@ export default function ThisWeekClient() {
               <table className="text-sm w-full border-collapse">
                 <thead>
                   <tr className="bg-slate-900 border-b border-slate-700">
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Pos</th>
+                    <th className="w-8 py-3 pl-3" />
+                    <th className="px-2 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Pos</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
                     <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
                   </tr>
@@ -223,13 +224,11 @@ export default function ThisWeekClient() {
                     const s = parseScore(String(row.score));
                     return (
                       <tr key={row.playerId} className="border-b border-slate-700 last:border-0">
-                        <td className="px-4 py-3 text-slate-400 text-xs">{row.pos}</td>
-                        <td className="px-4 py-3 font-medium text-slate-100">
-                          <div className="flex items-center gap-2">
-                            <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
-                            {row.player}
-                          </div>
+                        <td className="pl-3 py-3">
+                          <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
                         </td>
+                        <td className="px-2 py-3 text-slate-400 text-xs">{row.pos}</td>
+                        <td className="px-4 py-3 font-medium text-slate-100">{row.player}</td>
                         <td className="px-4 py-3 text-center font-bold tabular-nums text-white">
                           {row.score}
                         </td>
