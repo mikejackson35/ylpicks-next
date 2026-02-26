@@ -7,8 +7,8 @@ type Tournament = { tournament_id: string; name: string; start_time: string; loc
 type Player = { player_id: string; name: string };
 
 const TIER_DOT: Record<number, string> = {
-  1: "bg-slate-300 ring-1 ring-slate-500", 2: "bg-black ring-1 ring-slate-500", 3: "bg-blue-500 ring-1 ring-slate-500",
-  4: "bg-fuchsia-400 ring-1 ring-slate-500", 5: "bg-violet-500 ring-1 ring-slate-500", 6: "bg-orange-400 ring-1 ring-slate-500",
+  1: "bg-slate-300 ring-1 ring-white", 2: "bg-black ring-1 ring-white", 3: "bg-blue-500 ring-1 ring-white",
+  4: "bg-fuchsia-400 ring-1 ring-white", 5: "bg-violet-500 ring-1 ring-white", 6: "bg-orange-400 ring-1 ring-white",
 };
 
 export default function MakePicksClient() {
