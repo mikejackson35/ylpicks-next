@@ -55,7 +55,7 @@ export default async function SeasonPage() {
       </div>
 
       {/* Scoring */}
-      <details className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+      <details className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mx-10">
         <summary className="px-5 py-3.5 text-xs font-semibold uppercase tracking-widest text-white cursor-pointer select-none list-none flex justify-between items-center">
           Scoring
           <span className="text-slate-400 text-base">›</span>
