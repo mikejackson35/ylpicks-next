@@ -14,8 +14,8 @@ type CacheRow = { player_id: string; score_to_par: string; status: string };
 type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string };
 
 const TIER_DOT: Record<number, string> = {
-  1: "bg-rose-400", 2: "bg-slate-400", 3: "bg-amber-400",
-  4: "bg-emerald-400", 5: "bg-sky-400", 6: "bg-violet-400",
+  1: "bg-white", 2: "bg-yellow-400", 3: "bg-sky-300",
+  4: "bg-pink-400", 5: "bg-violet-800", 6: "bg-slate-400",
 };
 
 function parseScore(s?: string | null): number {
