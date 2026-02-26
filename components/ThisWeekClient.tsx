@@ -170,7 +170,7 @@ export default function ThisWeekClient() {
               <tr key={tier} className="border-b border-slate-700 last:border-0">
                 <td className="px-4 py-3 hidden md:table-cell">
                   <div className="flex items-center gap-2">
-                    <div className={`w-4 h-4 rounded-full ${TIER_DOT[tier]}`} />
+                    <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tier]}`} />
                     <span className="text-xs font-medium text-slate-400">T{tier}</span>
                   </div>
                 </td>
