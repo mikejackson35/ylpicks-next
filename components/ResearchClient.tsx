@@ -7,8 +7,8 @@ type SortKey = "Player" | "Events" | typeof SG_COLS[number];
 
 const SG_COLS = ["SG Putt","SG ARG","SG APP","SG OTT","SG T2G","SG Total"] as const;
 const TIER_DOT: Record<number, string> = {
-  1: "bg-slate-300", 2: "bg-black ring-1 ring-slate-500", 3: "bg-blue-500",
-  4: "bg-fuchsia-400", 5: "bg-violet-500", 6: "bg-orange-400",
+  1: "bg-slate-300 ring-1 ring-slate-500", 2: "bg-black ring-1 ring-slate-500", 3: "bg-blue-500 ring-1 ring-slate-500",
+  4: "bg-fuchsia-400 ring-1 ring-slate-500", 5: "bg-violet-500 ring-1 ring-slate-500", 6: "bg-orange-400 ring-1 ring-slate-500",
 };
 const LABELS: Record<string, string> = { "SG Putt":"Putt","SG ARG":"ARG","SG APP":"APP","SG OTT":"OTT","SG T2G":"T2G","SG Total":"Total" };
 
