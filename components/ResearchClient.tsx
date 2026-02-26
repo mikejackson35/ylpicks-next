@@ -7,12 +7,8 @@ type SortKey = "Player" | "Events" | typeof SG_COLS[number];
 
 const SG_COLS = ["SG Putt","SG ARG","SG APP","SG OTT","SG T2G","SG Total"] as const;
 const TIER_DOT: Record<number, string> = {
-  1: "border-2 border-slate-400 bg-white",
-  2: "border-2 border-amber-500 bg-amber-200",
-  3: "border-2 border-sky-500 bg-sky-200",
-  4: "border-2 border-fuchsia-500 bg-fuchsia-200",
-  5: "border-2 border-violet-700 bg-violet-400",
-  6: "border-2 border-slate-500 bg-slate-300",
+  1: "bg-white", 2: "bg-amber-300", 3: "bg-sky-300",
+  4: "bg-fuchsia-300", 5: "bg-violet-500", 6: "bg-slate-400",
 };
 const LABELS: Record<string, string> = { "SG Putt":"Putt","SG ARG":"ARG","SG APP":"APP","SG OTT":"OTT","SG T2G":"T2G","SG Total":"Total" };
 
@@ -111,8 +107,8 @@ export default function ResearchClient() {
                   <td className="px-3 py-2.5 font-medium text-white sticky left-0 bg-slate-800">
                     <div className="flex items-center gap-2">
                       {row.tier !== null
-                        ? <div className={`w-3 h-3 rounded-full shrink-0 ${TIER_DOT[row.tier] ?? "bg-slate-600"}`} />
-                        : <div className="w-3 h-3 rounded-full shrink-0 bg-slate-700" />
+                        ? <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[row.tier] ?? "bg-slate-600"}`} />
+                        : <div className="w-4 h-4 rounded-full shrink-0 bg-slate-700" />
                       }
                       {row.Player}
                     </div>

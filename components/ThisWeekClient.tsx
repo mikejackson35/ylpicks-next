@@ -14,12 +14,8 @@ type CacheRow = { player_id: string; score_to_par: string; status: string };
 type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string };
 
 const TIER_DOT: Record<number, string> = {
-  1: "border-2 border-slate-400 bg-white",
-  2: "border-2 border-amber-500 bg-amber-200",
-  3: "border-2 border-sky-500 bg-sky-200",
-  4: "border-2 border-fuchsia-500 bg-fuchsia-200",
-  5: "border-2 border-violet-700 bg-violet-400",
-  6: "border-2 border-slate-500 bg-slate-300",
+  1: "bg-white", 2: "bg-amber-300", 3: "bg-sky-300",
+  4: "bg-fuchsia-300", 5: "bg-violet-500", 6: "bg-slate-400",
 };
 
 function parseScore(s?: string | null): number {
@@ -230,7 +226,7 @@ export default function ThisWeekClient() {
                         <td className="px-4 py-3 text-slate-400 text-xs">{row.pos}</td>
                         <td className="px-4 py-3 font-medium text-slate-100">
                           <div className="flex items-center gap-2">
-                            <div className={`w-3 h-3 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
+                            <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
                             {row.player}
                           </div>
                         </td>
