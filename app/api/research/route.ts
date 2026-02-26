@@ -7,18 +7,36 @@ export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const now = new Date();
+
+  // Find current tournament using same logic as this-week route
+  let tournResult = await pool.query(
+    `SELECT tournament_id FROM tournaments
+     WHERE start_time <= $1 AND start_time + INTERVAL '5 days' > $1
+     ORDER BY start_time DESC LIMIT 1`,
+    [now]
+  );
+  if (!tournResult.rows[0]) {
+    tournResult = await pool.query(
+      `SELECT tournament_id FROM tournaments
+       WHERE start_time > $1 ORDER BY start_time ASC LIMIT 1`,
+      [now]
+    );
+  }
+  const tid = tournResult.rows[0]?.tournament_id ?? null;
+
   const [resRows, tierRows] = await Promise.all([
     pool.query(
       `SELECT "Player", "Events", "SG Putt", "SG ARG", "SG APP", "SG OTT", "SG T2G", "SG Total"
        FROM research ORDER BY "SG T2G" DESC NULLS LAST`
     ),
-    pool.query(
+    tid ? pool.query(
       `SELECT tt.tier_number, p.name
        FROM tournament_tiers tt
-       JOIN players p ON p.player_id = tt.player_id
-       JOIN tournaments t ON t.tournament_id = tt.tournament_id
-       WHERE t.start_time = (SELECT MAX(start_time) FROM tournaments WHERE start_time <= NOW() + INTERVAL '7 days')`
-    ),
+       JOIN players p ON CAST(p.player_id AS TEXT) = CAST(tt.player_id AS TEXT)
+       WHERE tt.tournament_id = $1`,
+      [tid]
+    ) : Promise.resolve({ rows: [] }),
   ]);
 
   // Build map: normalized player name -> tier number
