@@ -7,7 +7,7 @@ type Tournament = { tournament_id: string; name: string; start_time: string; loc
 type Player = { player_id: string; name: string };
 
 const TIER_DOT: Record<number, string> = {
-  1: "bg-white", 2: "bg-yellow-400", 3: "bg-blue-500",
+  1: "bg-slate-300", 2: "bg-yellow-400", 3: "bg-blue-500",
   4: "bg-fuchsia-400", 5: "bg-violet-500", 6: "bg-orange-400",
 };
 
