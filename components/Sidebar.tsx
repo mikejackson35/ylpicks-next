@@ -32,9 +32,9 @@ export default function Sidebar({ standings, thruText }: Props) {
     <>
       {/* ── Desktop Sidebar (md+) ── */}
       <aside className="hidden md:flex flex-col w-64 shrink-0 min-h-screen bg-slate-900 border-r border-slate-800 text-white">
-        {/* Title */}
+        {/* Title — logo placeholder */}
         <div className="px-5 py-6 border-b border-slate-800">
-          <p className="text-2xl font-bold tracking-wide text-white text-center">YL Picks</p>
+          <p className="text-2xl font-bold tracking-wide text-transparent select-none">YL Picks</p>
         </div>
 
         {/* Nav links */}
@@ -57,7 +57,7 @@ export default function Sidebar({ standings, thruText }: Props) {
 
         {/* Season Standings — always visible */}
         <div className="px-5 py-4 border-t border-slate-800">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-1 text-center">Season</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-white mb-1 text-center">Season</p>
           <p className="text-xs text-slate-500 mb-3 text-center">{thruText}</p>
           <div className="flex flex-col gap-2">
             {standings.map((row) => (
@@ -74,7 +74,7 @@ export default function Sidebar({ standings, thruText }: Props) {
         {/* Scoring guide — collapsible */}
         <div className="px-4 py-3 border-t border-slate-800">
           <details className="cursor-pointer">
-            <summary className="text-xs font-semibold uppercase tracking-widest text-emerald-400 select-none">
+            <summary className="text-xs font-semibold uppercase tracking-widest text-slate-300 select-none">
               Scoring
             </summary>
             <div className="mt-2 space-y-1.5 text-sm text-slate-400">
