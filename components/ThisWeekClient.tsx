@@ -139,7 +139,7 @@ export default function ThisWeekClient() {
                   <th key={u.username} className="px-1 py-2 md:px-2 md:py-3">
                     <div className="rounded-xl px-1 py-2 md:px-2 md:py-3 text-center border bg-slate-900 border-slate-700">
                       <p className="text-[10px] md:text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
-                      <p className={`text-lg md:text-2xl font-bold tabular-nums ${lead ? "text-emerald-400" : "text-white"}`}>
+                      <p className="text-lg md:text-2xl font-bold tabular-nums text-white">
                         {pts}
                       </p>
                     </div>
@@ -158,7 +158,7 @@ export default function ThisWeekClient() {
                 const disp = !tournament.locked ? "—" : s === 999 ? "E" : fmtScore(s);
                 return (
                   <td key={u.username} className={`px-2 py-2 md:px-4 md:py-2.5 text-center text-xs md:text-sm font-semibold ${
-                    lead && tournament.locked && s !== 999 ? "font-bold text-white" : "text-slate-400"
+                    lead && tournament.locked && s !== 999 ? "font-bold text-emerald-400" : "text-slate-400"
                   }`}>
                     {disp}
                   </td>
