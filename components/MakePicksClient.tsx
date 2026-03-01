@@ -55,21 +55,21 @@ export default function MakePicksClient() {
 
   // Locked view
   if (tournament.locked) return (
-    <div className="max-w-md">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-white">Make Picks</h2>
-        <p className="text-sm text-slate-400 mt-1">{tournament.name}</p>
+    <div className="max-w-md md:max-w-xl">
+      <div className="mb-5 md:mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-white">Make Picks</h2>
+        <p className="text-sm md:text-base text-slate-400 mt-1">{tournament.name}</p>
       </div>
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
         {[1,2,3,4,5,6].map((tier) => {
           const selected = (playersByTier[tier] ?? []).find((p) => p.player_id === picks[tier]);
           return (
-            <div key={tier} className="flex items-center gap-4 px-4 py-4 border-b border-slate-700 last:border-0">
+            <div key={tier} className="flex items-center gap-4 px-4 py-4 md:py-5 border-b border-slate-700 last:border-0">
               <div className="flex items-center gap-2.5 w-14 shrink-0">
                 <div className={`w-4 h-4 rounded-full ${TIER_DOT[tier]}`} />
-                <span className="text-sm font-medium text-slate-400">T{tier}</span>
+                <span className="text-sm md:text-base font-medium text-slate-400">T{tier}</span>
               </div>
-              <span className={`text-sm ${selected ? "font-medium text-white" : "text-amber-400"}`}>
+              <span className={`text-sm md:text-base ${selected ? "font-medium text-white" : "text-amber-400"}`}>
                 {selected ? selected.name : "No pick submitted"}
               </span>
             </div>
@@ -81,11 +81,11 @@ export default function MakePicksClient() {
 
   // Open picks view
   return (
-    <div className="max-w-md">
-      <div className="mb-6 flex items-center justify-between md:block">
+    <div className="max-w-md md:max-w-xl">
+      <div className="mb-5 md:mb-8 flex items-center justify-between md:block">
         <div>
-          <h2 className="text-2xl font-bold text-white">Make Picks</h2>
-          <p className="text-sm text-slate-400 mt-1">{tournament.name}</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-white">Make Picks</h2>
+          <p className="text-sm md:text-base text-slate-400 mt-1">{tournament.name}</p>
         </div>
         {/* Save button in header — mobile only */}
         <button
@@ -97,23 +97,23 @@ export default function MakePicksClient() {
         </button>
       </div>
 
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-5">
+      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-5 md:mb-6">
         {[1,2,3,4,5,6].map((tier) => {
           const players = playersByTier[tier] ?? [];
           const sel = picks[tier] ?? "";
           return (
-            <div key={tier} className="flex items-center gap-4 px-4 py-4 border-b border-slate-700 last:border-0">
+            <div key={tier} className="flex items-center gap-4 px-4 py-4 md:py-5 border-b border-slate-700 last:border-0">
               <div className="flex items-center gap-2.5 w-14 shrink-0">
                 <div className={`w-4 h-4 rounded-full ${TIER_DOT[tier]}`} />
-                <span className="text-sm font-medium text-slate-400">T{tier}</span>
+                <span className="text-sm md:text-base font-medium text-slate-400">T{tier}</span>
               </div>
               {players.length === 0 ? (
-                <p className="text-sm text-slate-500">No players assigned</p>
+                <p className="text-sm md:text-base text-slate-500">No players assigned</p>
               ) : (
                 <select
                   value={sel}
                   onChange={(e) => setPicks((prev) => ({ ...prev, [tier]: e.target.value }))}
-                  className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 md:py-3 text-sm md:text-base text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   <option value="">— Select player —</option>
                   {players.map((p) => <option key={p.player_id} value={p.player_id}>{p.name}</option>)}
@@ -125,7 +125,7 @@ export default function MakePicksClient() {
       </div>
 
       {missing.length > 0 && (
-        <p className="text-sm text-amber-400 bg-amber-950/50 border border-amber-800 rounded-lg px-3 py-2 mb-4">
+        <p className="text-sm md:text-base text-amber-400 bg-amber-950/50 border border-amber-800 rounded-lg px-3 py-2 mb-4 md:mb-5">
           Missing: Tier {missing.join(", Tier ")}
         </p>
       )}
@@ -134,7 +134,7 @@ export default function MakePicksClient() {
       <button
         onClick={handleSave}
         disabled={saving || missing.length > 0}
-        className="hidden md:block bg-emerald-600 text-white rounded-lg px-6 py-2.5 text-sm font-semibold hover:bg-emerald-500 disabled:opacity-40 transition-colors"
+        className="hidden md:block bg-emerald-600 text-white rounded-lg px-8 py-3 text-base font-semibold hover:bg-emerald-500 disabled:opacity-40 transition-colors"
       >
         {saving ? "Saving..." : "Save Picks"}
       </button>
