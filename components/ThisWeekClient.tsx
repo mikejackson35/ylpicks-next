@@ -41,6 +41,7 @@ export default function ThisWeekClient() {
   const [lbRows, setLbRows] = useState<LeaderboardRow[]>([]);
   const [lbLoading, setLbLoading] = useState(false);
   const [autoPickedUsernames, setAutoPickedUsernames] = useState<Set<string>>(new Set());
+  const [lbOpen, setLbOpen] = useState(false);
 
   useEffect(() => {
     const url = previewLocked ? "/api/this-week?preview=true" : "/api/this-week";
@@ -123,12 +124,12 @@ export default function ThisWeekClient() {
     <div className="max-w-3xl">
 
       {/* Tournament header */}
-      <div className="mb-6 text-center">
+      <div className="mb-4 text-center">
         <h2 className="text-lg md:text-2xl font-bold text-white">{tournament.name}</h2>
       </div>
 
       {/* Picks grid — score cards in header, aligned to columns */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-6">
+      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-2">
         <table className="text-sm w-full border-collapse table-fixed">
           <thead>
             {/* Score cards row */}
@@ -172,7 +173,7 @@ export default function ThisWeekClient() {
             {/* Tier rows */}
             {[1,2,3,4,5,6].map((tier) => (
               <tr key={tier} className="border-b border-slate-700 last:border-0">
-                <td className="px-4 py-3 hidden md:table-cell">
+                <td className="px-4 py-2 hidden md:table-cell">
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tier]}`} />
                     <span className="text-xs font-medium text-slate-400">T{tier}</span>
@@ -187,7 +188,7 @@ export default function ThisWeekClient() {
                     : !pid ? "—"
                     : name;
                   return (
-                    <td key={u.username} className={`px-2 py-3 md:px-4 text-center text-xs md:text-sm ${
+                    <td key={u.username} className={`px-2 py-2 md:px-4 text-center text-xs md:text-sm ${
                       !tournament.locked ? "text-slate-600"
                       : win && !mc ? "font-bold text-emerald-400"
                       : !win && mc ? "text-red-400"
@@ -205,57 +206,64 @@ export default function ThisWeekClient() {
 
       {/* Auto-picks footnote */}
       {autoPickedUsernames.size > 0 && (
-        <p className="text-[10px] text-slate-500 italic mb-8 text-right">* denotes lazy player using auto-picks this week</p>
+        <p className="text-[10px] text-slate-500 italic mt-2 mb-4 text-right">* denotes lazy player using auto-picks this week</p>
       )}
 
-      {/* Leaderboard */}
-      {tournament.locked ? (
-        lbLoading ? (
-          <div className="flex items-center gap-2 text-slate-400 text-sm">
-            <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-            Loading leaderboard...
-          </div>
-        ) : hasLb ? (
-          <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Live Leaderboard</p>
-            <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-              <table className="text-sm w-full border-collapse">
-                <thead>
-                  <tr className="bg-slate-900 border-b border-slate-700">
-                    <th className="w-8 py-3 pl-3" />
-                    <th className="px-2 py-3 text-center text-xs font-semibold text-slate-500 uppercase">Pos</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
-                    <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {lb.map((row) => {
-                    const s = parseScore(String(row.score));
-                    return (
-                      <tr key={row.playerId} className="border-b border-slate-700 last:border-0">
-                        <td className="pl-3 py-3">
-                          <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
-                        </td>
-                        <td className="px-2 py-3 text-center text-slate-400 text-xs">{row.pos}</td>
-                        <td className="px-4 py-3 font-medium text-slate-100">{row.player}</td>
-                        <td className="px-4 py-3 text-center font-bold tabular-nums text-white">
-                          {row.score}
-                        </td>
+      {/* Leaderboard dropdown */}
+      {tournament.locked && (
+        <div className="mt-4">
+          <button
+            onClick={() => setLbOpen((o) => !o)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-700 transition-colors"
+          >
+            <span>Live Leaderboard</span>
+            <svg
+              className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${lbOpen ? "rotate-180" : ""}`}
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {lbOpen && (
+            <div className="mt-2">
+              {lbLoading ? (
+                <div className="flex items-center gap-2 text-slate-400 text-sm px-1 py-4">
+                  <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                  Loading leaderboard...
+                </div>
+              ) : hasLb ? (
+                <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                  <table className="text-sm w-full border-collapse">
+                    <thead>
+                      <tr className="bg-slate-900 border-b border-slate-700">
+                        <th className="w-8 py-2 pl-3" />
+                        <th className="px-2 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Pos</th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
+                        <th className="px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                    </thead>
+                    <tbody>
+                      {lb.map((row) => (
+                        <tr key={row.playerId} className="border-b border-slate-700 last:border-0">
+                          <td className="pl-3 py-2">
+                            <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
+                          </td>
+                          <td className="px-2 py-2 text-center text-slate-400 text-xs">{row.pos}</td>
+                          <td className="px-4 py-2 font-medium text-slate-100">{row.player}</td>
+                          <td className="px-4 py-2 text-center font-bold tabular-nums text-white">{row.score}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 text-center text-slate-500 text-sm">
+                  🏌️ Live leaderboard will appear once play begins
+                </div>
+              )}
             </div>
-          </div>
-        ) : (
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-500 text-sm">
-            🏌️ Live leaderboard will appear once play begins
-          </div>
-        )
-      ) : (
-        <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-500 text-sm">
-          🏌️ Live leaderboard will appear when the tournament begins
+          )}
         </div>
       )}
     </div>
