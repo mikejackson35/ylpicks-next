@@ -91,7 +91,7 @@ export async function GET(request: Request) {
   // Auto-assign random picks for any user missing picks at lock time
   if (locked) await assignMissingPicks(tid);
 
-  const [usersRes, picksRes, tiersRes, cacheRes] = await Promise.all([
+  const [usersRes, picksRes, tiersRes, cacheRes, manualPickersRes] = await Promise.all([
     pool.query<{ username: string; name: string }>(
       "SELECT username, name FROM users"
     ),
@@ -110,7 +110,16 @@ export async function GET(request: Request) {
       "SELECT player_id, score_to_par, status FROM player_score_cache WHERE tournament_id = $1",
       [tid]
     ),
+    pool.query<{ username: string }>(
+      `SELECT DISTINCT username FROM picks WHERE tournament_id = $1 AND timestamp::timestamptz < $2`,
+      [tid, tournament.start_time]
+    ),
   ]);
+
+  const manualPickers = new Set(manualPickersRes.rows.map((r) => r.username));
+  const autoPickedUsernames = locked
+    ? usersRes.rows.map((u) => u.username).filter((un) => !manualPickers.has(un))
+    : [];
 
   return NextResponse.json({
     tournament: { ...tournament, locked },
@@ -118,5 +127,6 @@ export async function GET(request: Request) {
     picks: picksRes.rows,
     tiers: tiersRes.rows,
     cached: cacheRes.rows,
+    autoPickedUsernames,
   });
 }

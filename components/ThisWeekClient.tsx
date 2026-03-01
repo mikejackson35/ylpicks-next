@@ -40,13 +40,15 @@ export default function ThisWeekClient() {
   const [cached, setCached] = useState<CacheRow[]>([]);
   const [lbRows, setLbRows] = useState<LeaderboardRow[]>([]);
   const [lbLoading, setLbLoading] = useState(false);
+  const [autoPickedUsernames, setAutoPickedUsernames] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const url = previewLocked ? "/api/this-week?preview=true" : "/api/this-week";
     fetch(url).then((r) => r.json()).then((data) => {
       setTournament(data.tournament); setUsers(data.users ?? []);
       setPicks(data.picks ?? []); setTiers(data.tiers ?? []);
-      setCached(data.cached ?? []); setLoading(false);
+      setCached(data.cached ?? []); setAutoPickedUsernames(new Set(data.autoPickedUsernames ?? []));
+      setLoading(false);
       if (data.tournament?.tourn_id) loadLb(data.tournament);
     });
   }, []);
@@ -138,7 +140,9 @@ export default function ThisWeekClient() {
                 return (
                   <th key={u.username} className="px-1 py-2 md:px-2 md:py-3">
                     <div className="rounded-xl px-1 py-2 md:px-2 md:py-3 text-center border bg-slate-900 border-slate-700">
-                      <p className="text-[10px] md:text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
+                      <p className="text-[10px] md:text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">
+                        {u.name}{autoPickedUsernames.has(u.username) ? "*" : ""}
+                      </p>
                       <p className="text-lg md:text-2xl font-bold tabular-nums text-white">
                         {pts}
                       </p>
