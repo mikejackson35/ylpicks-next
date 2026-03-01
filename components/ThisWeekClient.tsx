@@ -203,6 +203,11 @@ export default function ThisWeekClient() {
         </table>
       </div>
 
+      {/* Auto-picks footnote */}
+      {autoPickedUsernames.size > 0 && (
+        <p className="text-[10px] text-slate-500 italic mb-4">* denotes lazy player using auto-picks this week</p>
+      )}
+
       {/* Leaderboard */}
       {tournament.locked ? (
         lbLoading ? (
