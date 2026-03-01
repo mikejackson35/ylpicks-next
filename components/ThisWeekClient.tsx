@@ -124,7 +124,7 @@ export default function ThisWeekClient() {
     <div className="max-w-3xl">
 
       {/* Tournament header */}
-      <div className="mb-4 text-center">
+      <div className="mb-5 text-center">
         <h2 className="text-lg md:text-2xl font-bold text-white">{tournament.name}</h2>
       </div>
 
@@ -140,7 +140,7 @@ export default function ThisWeekClient() {
                 const lead = teamLeaders.has(u.name) && tournament.locked;
                 return (
                   <th key={u.username} className="px-1 py-2 md:px-2 md:py-3">
-                    <div className="rounded-xl px-1 py-2 md:px-2 md:py-3 text-center border bg-slate-900 border-slate-700">
+                    <div className="rounded-xl px-1 py-3 md:px-2 md:py-4 text-center border bg-slate-900 border-slate-700">
                       <p className="text-[10px] md:text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">
                         {u.name}{autoPickedUsernames.has(u.username) ? "*" : ""}
                       </p>
