@@ -124,12 +124,12 @@ export default function ThisWeekClient() {
     <div className="max-w-3xl">
 
       {/* Tournament header */}
-      <div className="mb-5 text-center">
-        <h2 className="text-lg md:text-2xl font-bold text-white">{tournament.name}</h2>
+      <div className="mb-5 md:mb-8 text-center">
+        <h2 className="text-lg md:text-3xl font-bold text-white">{tournament.name}</h2>
       </div>
 
       {/* Picks grid — score cards in header, aligned to columns */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-2">
+      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-2 md:mb-4">
         <table className="text-sm w-full border-collapse table-fixed">
           <thead>
             {/* Score cards row */}
@@ -139,12 +139,12 @@ export default function ThisWeekClient() {
                 const pts = wkPts[u.name] ?? 0;
                 const lead = teamLeaders.has(u.name) && tournament.locked;
                 return (
-                  <th key={u.username} className="px-1 py-2 md:px-2 md:py-3">
-                    <div className="rounded-xl px-1 py-3 md:px-2 md:py-4 text-center border bg-slate-900 border-slate-700">
-                      <p className="text-[10px] md:text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">
+                  <th key={u.username} className="px-1 py-2 md:px-3 md:py-4">
+                    <div className="rounded-xl px-1 py-3 md:px-3 md:py-5 text-center border bg-slate-900 border-slate-700">
+                      <p className="text-[10px] md:text-sm text-slate-400 font-medium mb-1 uppercase tracking-wide">
                         {u.name}{autoPickedUsernames.has(u.username) ? "*" : ""}
                       </p>
-                      <p className="text-lg md:text-2xl font-bold tabular-nums text-white">
+                      <p className="text-lg md:text-3xl font-bold tabular-nums text-white">
                         {pts}
                       </p>
                     </div>
@@ -156,13 +156,13 @@ export default function ThisWeekClient() {
           <tbody>
             {/* Team total row */}
             <tr className="border-b border-slate-700 bg-slate-900/50">
-              <td className="px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase hidden md:table-cell">Team</td>
+              <td className="px-4 py-2.5 md:py-3 text-xs md:text-sm font-semibold text-slate-500 uppercase hidden md:table-cell">Team</td>
               {users.map((u) => {
                 const s = teamTotals[u.name];
                 const lead = teamLeaders.has(u.name);
                 const disp = !tournament.locked ? "—" : s === 999 ? "E" : fmtScore(s);
                 return (
-                  <td key={u.username} className={`px-2 py-2 md:px-4 md:py-2.5 text-center text-xs md:text-sm font-semibold ${
+                  <td key={u.username} className={`px-2 py-2 md:px-4 md:py-3 text-center text-xs md:text-base font-semibold ${
                     lead && tournament.locked && s !== 999 ? "font-bold text-emerald-400" : "text-slate-400"
                   }`}>
                     {disp}
@@ -173,7 +173,7 @@ export default function ThisWeekClient() {
             {/* Tier rows */}
             {[1,2,3,4,5,6].map((tier) => (
               <tr key={tier} className="border-b border-slate-700 last:border-0">
-                <td className="px-4 py-2 hidden md:table-cell">
+                <td className="px-4 py-2 md:py-3 hidden md:table-cell">
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tier]}`} />
                     <span className="text-xs font-medium text-slate-400">T{tier}</span>
@@ -188,7 +188,7 @@ export default function ThisWeekClient() {
                     : !pid ? "—"
                     : name;
                   return (
-                    <td key={u.username} className={`px-2 py-2 md:px-4 text-center text-xs md:text-sm ${
+                    <td key={u.username} className={`px-2 py-2 md:px-4 md:py-3 text-center text-xs md:text-base ${
                       !tournament.locked ? "text-slate-600"
                       : win && !mc ? "font-bold text-emerald-400"
                       : !win && mc ? "text-red-400"
@@ -206,12 +206,12 @@ export default function ThisWeekClient() {
 
       {/* Auto-picks footnote */}
       {autoPickedUsernames.size > 0 && (
-        <p className="text-[10px] text-slate-500 italic mt-2 mb-4 text-right">* denotes lazy player using auto-picks this week</p>
+        <p className="text-[10px] md:text-xs text-slate-500 italic mt-2 mb-4 md:mb-6 text-right">* denotes lazy player using auto-picks this week</p>
       )}
 
       {/* Leaderboard dropdown */}
       {tournament.locked && (
-        <div className="mt-4">
+        <div className="mt-4 md:mt-6">
           <button
             onClick={() => setLbOpen((o) => !o)}
             className="w-full flex items-center justify-between px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-700 transition-colors"
