@@ -139,7 +139,7 @@ export default function ThisWeekClient() {
                   <th key={u.username} className="px-1 py-2 md:px-2 md:py-3">
                     <div className="rounded-xl px-1 py-2 md:px-2 md:py-3 text-center border bg-slate-900 border-slate-700">
                       <p className="text-[10px] md:text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{u.name}</p>
-                      <p className="text-lg md:text-2xl font-bold tabular-nums text-white">
+                      <p className={`text-lg md:text-2xl font-bold tabular-nums ${lead ? "text-emerald-400" : "text-white"}`}>
                         {pts}
                       </p>
                     </div>
