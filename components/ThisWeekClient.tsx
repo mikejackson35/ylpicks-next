@@ -205,7 +205,7 @@ export default function ThisWeekClient() {
 
       {/* Auto-picks footnote */}
       {autoPickedUsernames.size > 0 && (
-        <p className="text-[10px] text-slate-500 italic mb-4">* denotes lazy player using auto-picks this week</p>
+        <p className="text-[10px] text-slate-500 italic mb-8 text-right">* denotes lazy player using auto-picks this week</p>
       )}
 
       {/* Leaderboard */}
