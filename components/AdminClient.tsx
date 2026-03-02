@@ -32,7 +32,7 @@ export default function AdminClient() {
         // Default to current/upcoming tournament
         const now = new Date();
         const current = tourns.find(
-          (t) => new Date(t.start_time).getTime() + 5 * 86400000 > now.getTime()
+          (t) => new Date(t.start_time).getTime() + 4 * 86400000 > now.getTime()
         );
         const defaultTid = current?.tournament_id ?? tourns[tourns.length - 1]?.tournament_id ?? "";
         setSelectedTid(defaultTid);

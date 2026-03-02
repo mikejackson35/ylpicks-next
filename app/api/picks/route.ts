@@ -15,7 +15,7 @@ export async function GET() {
   const tournRes = await pool.query(
     `SELECT tournament_id, name, start_time
      FROM tournaments
-     WHERE start_time + INTERVAL '5 days' > $1
+     WHERE start_time + INTERVAL '4 days' > $1
      ORDER BY start_time ASC LIMIT 1`,
     [now]
   );

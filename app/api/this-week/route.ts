@@ -20,7 +20,7 @@ export async function GET(request: Request) {
       `SELECT tournament_id, name, start_time, org_id, tourn_id, year
        FROM tournaments
        WHERE is_finalized = TRUE
-       AND start_time + INTERVAL '5 days' <= NOW()
+       AND start_time + INTERVAL '4 days' <= NOW()
        ORDER BY start_time DESC LIMIT 1`
     );
     // Fallback: skip the most-recently-finalized (may be prematurely finalized)
@@ -60,11 +60,11 @@ export async function GET(request: Request) {
     }
   }
 
-  // Get current tournament (active within 5-day window)
+  // Get current tournament (active within 4-day window)
   let tournResult = await pool.query(
     `SELECT tournament_id, name, start_time, org_id, tourn_id, year
      FROM tournaments
-     WHERE start_time <= $1 AND start_time + INTERVAL '5 days' > $1
+     WHERE start_time <= $1 AND start_time + INTERVAL '4 days' > $1
      ORDER BY start_time DESC LIMIT 1`,
     [now]
   );

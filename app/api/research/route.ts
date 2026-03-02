@@ -12,7 +12,7 @@ export async function GET() {
   // Find current tournament using same logic as this-week route
   let tournResult = await pool.query(
     `SELECT tournament_id FROM tournaments
-     WHERE start_time <= $1 AND start_time + INTERVAL '5 days' > $1
+     WHERE start_time <= $1 AND start_time + INTERVAL '4 days' > $1
      ORDER BY start_time DESC LIMIT 1`,
     [now]
   );
