@@ -195,9 +195,9 @@ export async function finalizeTournament(
 
       const tournScoresId = `${tournament_id}_${uname}`;
       await client.query(
-        `INSERT INTO tournament_scores (tournament_id, username, points, tournament_scores_id)
-         VALUES ($1,$2,$3,$4)
-         ON CONFLICT (tournament_scores_id) DO UPDATE SET points = EXCLUDED.points`,
+        `INSERT INTO tournament_scores (weekly_results_id, tournament_id, username, points, tournament_scores_id)
+         VALUES ($4,$1,$2,$3,$4)
+         ON CONFLICT (weekly_results_id) DO UPDATE SET points = EXCLUDED.points`,
         [tournament_id, uname, totalPoints, tournScoresId]
       );
     }
