@@ -169,9 +169,10 @@ export async function finalizeTournament(
       const pickScoresId = `${tournament_id}_${uname}_${tierNumber}`;
       await client.query(
         `INSERT INTO pick_scores
-           (pick_scores_id, tournament_id, username, tier_number, player_id, points, tier_winner, missed_cut, player_score)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-         ON CONFLICT (pick_scores_id) DO UPDATE SET
+           (tiers_results_id, pick_scores_id, tournament_id, username, tier_number, player_id, points, tier_winner, missed_cut, player_score)
+         VALUES ($1,$1,$2,$3,$4,$5,$6,$7,$8,$9)
+         ON CONFLICT (tiers_results_id) DO UPDATE SET
+           pick_scores_id = EXCLUDED.pick_scores_id,
            points = EXCLUDED.points,
            tier_winner = EXCLUDED.tier_winner,
            missed_cut = EXCLUDED.missed_cut,
