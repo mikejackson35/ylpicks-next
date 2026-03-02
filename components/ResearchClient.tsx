@@ -69,7 +69,7 @@ export default function ResearchClient() {
       <div className="flex items-end justify-between mb-5">
         <div>
           <h2 className="text-2xl font-bold text-white mb-1">Research</h2>
-          <p className="text-xs text-slate-400">SG Last 6 Months</p>
+          <p className="text-xs text-slate-400">SG Last 20 Rounds</p>
         </div>
         <select
           value={tierFilter}
