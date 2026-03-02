@@ -67,9 +67,10 @@ export async function POST(req: NextRequest) {
     for (const [tierStr, playerIds] of Object.entries(tiers)) {
       const tierNum = parseInt(tierStr, 10);
       for (const pid of playerIds) {
+        const tiersId = `${tournamentId}_${tierNum}_${pid}`;
         await client.query(
-          "INSERT INTO tournament_tiers (tournament_id, tier_number, player_id) VALUES ($1, $2, $3)",
-          [tournamentId, tierNum, pid]
+          "INSERT INTO tournament_tiers (tiers_id, tournament_id, tier_number, player_id) VALUES ($1, $2, $3, $4)",
+          [tiersId, tournamentId, tierNum, pid]
         );
       }
     }
