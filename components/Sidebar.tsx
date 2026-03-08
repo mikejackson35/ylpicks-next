@@ -24,8 +24,8 @@ const MOBILE_NAV = [
   { label: "This Week", href: "/", icon: "⛳" },
   { label: "Picks", href: "/picks", icon: "🎯" },
   { label: "Results", href: "/results", icon: "📊" },
+  { label: "Raw Room", href: "/blog", icon: "📰" },
   { label: "Season", href: "/season", icon: "🏆" },
-  { label: "The Raw Room", href: "/blog", icon: "📰" },
 ];
 
 export default function Sidebar({ standings, thruText }: Props) {
