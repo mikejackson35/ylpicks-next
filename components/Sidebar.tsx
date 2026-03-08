@@ -17,7 +17,7 @@ const DESKTOP_NAV = [
   { label: "Picks", href: "/picks", icon: "🎯" },
   { label: "Results", href: "/results", icon: "📊" },
   { label: "Research", href: "/research", icon: "📈" },
-  { label: "The Wire", href: "/blog", icon: "📰" },
+  { label: "Weekly Chicken", href: "/blog", icon: "📰" },
 ];
 
 const MOBILE_NAV = [
@@ -25,7 +25,7 @@ const MOBILE_NAV = [
   { label: "Picks", href: "/picks", icon: "🎯" },
   { label: "Results", href: "/results", icon: "📊" },
   { label: "Season", href: "/season", icon: "🏆" },
-  { label: "The Wire", href: "/blog", icon: "📰" },
+  { label: "Weekly Chicken", href: "/blog", icon: "📰" },
 ];
 
 export default function Sidebar({ standings, thruText }: Props) {

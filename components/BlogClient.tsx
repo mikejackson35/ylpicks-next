@@ -33,16 +33,16 @@ export default function BlogClient() {
   if (posts.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-10">
-        <h2 className="text-2xl font-bold text-white mb-1">The Wire</h2>
+        <h2 className="text-2xl font-bold text-white mb-1">Weekly Chicken</h2>
         <p className="text-xs text-slate-400 mb-8">AI-generated weekly recaps</p>
-        <p className="text-slate-500 text-sm">No recaps yet. Check back after the first tournament is finalized.</p>
+        <p className="text-slate-500 text-sm">The Weekly Chicken is a blog for blogsters and others in the league so stay tuned for that maybe</p>
       </div>
     );
   }
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <h2 className="text-2xl font-bold text-white mb-1">The Wire</h2>
+      <h2 className="text-2xl font-bold text-white mb-1">Weekly Chicken</h2>
       <p className="text-xs text-slate-400 mb-8">AI-generated weekly recaps</p>
 
       <div className="flex flex-col gap-10">
