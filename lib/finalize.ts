@@ -1,4 +1,5 @@
 import { Pool, PoolClient } from "pg";
+import { generateRecap } from "./generate-recap";
 
 const RAPIDAPI_HOST = "live-golf-data.p.rapidapi.com";
 
@@ -209,6 +210,15 @@ export async function finalizeTournament(
     );
 
     await client.query("COMMIT");
+
+    // --- Step 9: Generate AI recap (outside transaction — failure won't roll back finalization) ---
+    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    if (anthropicKey) {
+      generateRecap(pool, tournament_id, anthropicKey).catch((err) => {
+        console.error("Blog recap generation failed (non-fatal):", err);
+      });
+    }
+
     return { ok: true, message: `${name} finalized successfully.` };
   } catch (err) {
     await client.query("ROLLBACK");

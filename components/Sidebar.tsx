@@ -12,11 +12,19 @@ type Props = {
   thruText: string;
 };
 
-const NAV = [
+const DESKTOP_NAV = [
   { label: "This Week", href: "/", icon: "⛳" },
   { label: "Picks", href: "/picks", icon: "🎯" },
   { label: "Results", href: "/results", icon: "📊" },
   { label: "Research", href: "/research", icon: "📈" },
+  { label: "The Wire", href: "/blog", icon: "📰" },
+];
+
+const MOBILE_NAV = [
+  { label: "This Week", href: "/", icon: "⛳" },
+  { label: "Picks", href: "/picks", icon: "🎯" },
+  { label: "Results", href: "/results", icon: "📊" },
+  { label: "The Wire", href: "/blog", icon: "📰" },
 ];
 
 export default function Sidebar({ standings, thruText }: Props) {
@@ -25,8 +33,8 @@ export default function Sidebar({ standings, thruText }: Props) {
   const isAdmin = session?.user?.isAdmin ?? false;
 
   const allNav = isAdmin
-    ? [...NAV, { label: "Admin", href: "/admin", icon: "⚙️" }]
-    : NAV;
+    ? [...DESKTOP_NAV, { label: "Admin", href: "/admin", icon: "⚙️" }]
+    : DESKTOP_NAV;
 
   return (
     <>
@@ -102,7 +110,7 @@ export default function Sidebar({ standings, thruText }: Props) {
 
       {/* ── Mobile Bottom Nav (< md) ── */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-slate-800 flex items-center justify-around h-16">
-        {[...NAV, { label: "Season", href: "/season", icon: "🏆" }].map(({ label, href, icon }) => {
+        {MOBILE_NAV.map(({ label, href, icon }) => {
           const active = pathname === href;
           return (
             <Link
