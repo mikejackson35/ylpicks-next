@@ -24,6 +24,7 @@ const MOBILE_NAV = [
   { label: "This Week", href: "/", icon: "⛳" },
   { label: "Picks", href: "/picks", icon: "🎯" },
   { label: "Results", href: "/results", icon: "📊" },
+  { label: "Season", href: "/season", icon: "🏆" },
   { label: "The Wire", href: "/blog", icon: "📰" },
 ];
 
