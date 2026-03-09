@@ -89,13 +89,15 @@ export async function generateRecap(
     .map((r, i) => `${i + 1}. ${r.display_name}: ${r.season_points} pts`)
     .join("\n");
 
-  // --- Build bios section ---
-  const biosSection = Object.entries(USER_BIOS)
-    .map(([username, bio]) => {
-      const displayName = picksRes.rows.find((r) => r.username === username)?.display_name ?? username;
-      return `${displayName}:\n${bio}`;
-    })
-    .join("\n\n");
+  // --- Build bios section (only if real content exists) ---
+  const isPlaceholder = (bio: string) => bio.toLowerCase().includes("fact 1");
+  const realBios = Object.entries(USER_BIOS).filter(([, bio]) => bio.trim() && !isPlaceholder(bio));
+  const biosSection = realBios.length > 0
+    ? realBios.map(([username, bio]) => {
+        const displayName = picksRes.rows.find((r) => r.username === username)?.display_name ?? username;
+        return `${displayName}:\n${bio}`;
+      }).join("\n\n")
+    : null;
 
   // --- Build prompt ---
   const prompt = `You are the AI commissioner of a 4-person golf picks league called "YL Picks". Write a weekly recap after the tournament results come in.
@@ -115,10 +117,10 @@ ${weeklySection}
 
 SEASON STANDINGS (after this tournament):
 ${standingsSection}
-
+${biosSection ? `
 REAL-LIFE FACTS ABOUT EACH PLAYER (use these for jokes and light roasting):
 ${biosSection}
-
+` : ""}
 Write a 3-4 paragraph weekly recap. Requirements:
 - Be funny and a little savage, but friendly — these are friends
 - Reference specific picks, scores, tier winners, and missed cuts from this tournament
