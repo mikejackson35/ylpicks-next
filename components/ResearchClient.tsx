@@ -7,8 +7,8 @@ type SortKey = "Player" | "Events" | typeof SG_COLS[number];
 
 const SG_COLS = ["SG Putt","SG ARG","SG APP","SG OTT","SG T2G","SG Total"] as const;
 const TIER_DOT: Record<number, string> = {
-  1: "bg-fuchsia-400 ring-1 ring-slate-200", 2: "bg-black ring-1 ring-slate-200", 3: "bg-blue-500 ring-1 ring-slate-200",
-  4: "bg-slate-300 ring-1 ring-slate-200", 5: "bg-violet-500 ring-1 ring-slate-200", 6: "bg-orange-400 ring-1 ring-slate-200",
+  1: "bg-fuchsia-400 ring-1 ring-slate-400", 2: "bg-black ring-1 ring-slate-400", 3: "bg-blue-500 ring-1 ring-slate-400",
+  4: "bg-slate-300 ring-1 ring-slate-400", 5: "bg-violet-500 ring-1 ring-slate-400", 6: "bg-orange-400 ring-1 ring-slate-400",
 };
 const LABELS: Record<string, string> = { "SG Putt":"Putt","SG ARG":"ARG","SG APP":"APP","SG OTT":"OTT","SG T2G":"T2G","SG Total":"Total" };
 
@@ -52,14 +52,14 @@ export default function ResearchClient() {
 
   function thCls(key: SortKey, highlight = false) {
     const active = sortKey === key;
-    return `px-3 py-2.5 text-center text-xs font-semibold uppercase cursor-pointer select-none transition-colors hover:text-white ${
-      active ? "text-white" : highlight ? "text-emerald-400" : "text-slate-400"
+    return `px-3 py-2.5 text-center text-xs font-semibold uppercase cursor-pointer select-none transition-colors hover:text-slate-900 ${
+      active ? "text-slate-900" : highlight ? "text-emerald-600" : "text-slate-500"
     }`;
   }
 
   if (loading) return (
-    <div className="flex items-center gap-2 text-slate-400 text-sm">
-      <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+    <div className="flex items-center gap-2 text-slate-500 text-sm">
+      <div className="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
       Loading...
     </div>
   );
@@ -68,13 +68,13 @@ export default function ResearchClient() {
     <div className="max-w-2xl">
       <div className="flex items-end justify-between mb-5">
         <div>
-          <h2 className="text-2xl font-bold text-white mb-1">Research</h2>
-          <p className="text-xs text-slate-400">SG Last 20 Rounds</p>
+          <h2 className="text-2xl font-bold text-slate-900 mb-1">Research</h2>
+          <p className="text-xs text-slate-500">SG Last 20 Rounds</p>
         </div>
         <select
           value={tierFilter}
           onChange={(e) => setTierFilter(e.target.value === "all" ? "all" : Number(e.target.value))}
-          className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="bg-slate-100 border border-slate-300 rounded-lg px-3 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600"
         >
           <option value="all">All Tiers</option>
           {[1,2,3,4,5,6].map((t) => (
@@ -82,13 +82,13 @@ export default function ResearchClient() {
           ))}
         </select>
       </div>
-      {!rows.length ? <p className="text-sm text-slate-400">No data available.</p> : (
-        <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-x-auto">
+      {!rows.length ? <p className="text-sm text-slate-500">No data available.</p> : (
+        <div className="bg-slate-100 rounded-xl border border-slate-200 overflow-x-auto">
           <table className="text-sm w-full border-collapse">
             <thead>
-              <tr className="bg-slate-900 border-b border-slate-700">
+              <tr className="bg-white border-b border-slate-200">
                 <th onClick={() => handleSort("Player")}
-                  className={`px-3 py-2.5 text-left text-xs font-semibold uppercase cursor-pointer select-none transition-colors hover:text-white sticky left-0 bg-slate-900 ${sortKey === "Player" ? "text-white" : "text-slate-400"}`}>
+                  className={`px-3 py-2.5 text-left text-xs font-semibold uppercase cursor-pointer select-none transition-colors hover:text-slate-900 sticky left-0 bg-white ${sortKey === "Player" ? "text-slate-900" : "text-slate-500"}`}>
                   Player {sortKey === "Player" ? (sortAsc ? "↑" : "↓") : ""}
                 </th>
                 <th onClick={() => handleSort("Events")} className={thCls("Events")}>
@@ -103,22 +103,22 @@ export default function ResearchClient() {
             </thead>
             <tbody>
               {sorted.map((row, i) => (
-                <tr key={i} className="border-b border-slate-700 last:border-0">
-                  <td className="px-3 py-2.5 font-medium text-white sticky left-0 bg-slate-800">
+                <tr key={i} className="border-b border-slate-200 last:border-0">
+                  <td className="px-3 py-2.5 font-medium text-slate-900 sticky left-0 bg-slate-100">
                     <div className="flex items-center gap-2">
                       {row.tier !== null
-                        ? <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[row.tier] ?? "bg-slate-600"}`} />
-                        : <div className="w-4 h-4 rounded-full shrink-0 bg-slate-700" />
+                        ? <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[row.tier] ?? "bg-slate-300"}`} />
+                        : <div className="w-4 h-4 rounded-full shrink-0 bg-slate-200" />
                       }
                       {row.Player}
                     </div>
                   </td>
-                  <td className="px-3 py-2.5 text-center text-slate-400">{fmt(row.Events, true)}</td>
+                  <td className="px-3 py-2.5 text-center text-slate-500">{fmt(row.Events, true)}</td>
                   {SG_COLS.map((c) => {
                     const n = num(row[c]);
                     return (
                       <td key={c}
-                        className={`px-3 py-2.5 text-center tabular-nums ${n !== null && n < 0 ? "text-red-400" : n !== null && n > 0 ? "text-emerald-400" : "text-slate-400"} ${c !== "SG T2G" ? "hidden md:table-cell" : ""}`}
+                        className={`px-3 py-2.5 text-center tabular-nums ${n !== null && n < 0 ? "text-red-600" : n !== null && n > 0 ? "text-emerald-600" : "text-slate-500"} ${c !== "SG T2G" ? "hidden md:table-cell" : ""}`}
                         style={c === "SG T2G" ? { backgroundColor: t2gBg(row[c]) } : {}}
                       >
                         {fmt(row[c])}

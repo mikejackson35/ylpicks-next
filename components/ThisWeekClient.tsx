@@ -14,8 +14,8 @@ type CacheRow = { player_id: string; score_to_par: string; status: string };
 type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string };
 
 const TIER_DOT: Record<number, string> = {
-  1: "bg-fuchsia-400 ring-1 ring-slate-200", 2: "bg-black ring-1 ring-slate-200", 3: "bg-blue-500 ring-1 ring-slate-200",
-  4: "bg-slate-300 ring-1 ring-slate-200", 5: "bg-violet-500 ring-1 ring-slate-200", 6: "bg-orange-400 ring-1 ring-slate-200",
+  1: "bg-fuchsia-400 ring-1 ring-slate-400", 2: "bg-black ring-1 ring-slate-400", 3: "bg-blue-500 ring-1 ring-slate-400",
+  4: "bg-slate-300 ring-1 ring-slate-400", 5: "bg-violet-500 ring-1 ring-slate-400", 6: "bg-orange-400 ring-1 ring-slate-400",
 };
 const TIER_RIBBON: Record<number, string> = {
   1: "bg-fuchsia-700", 2: "bg-zinc-600", 3: "bg-blue-700",
@@ -70,12 +70,12 @@ export default function ThisWeekClient() {
   if (tournament && previewLocked) tournament.locked = true;
 
   if (loading) return (
-    <div className="flex items-center gap-2 text-slate-400 text-sm">
-      <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+    <div className="flex items-center gap-2 text-slate-500 text-sm">
+      <div className="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
       Loading...
     </div>
   );
-  if (!tournament) return <p className="text-slate-400">Season complete — check Results for final standings.</p>;
+  if (!tournament) return <p className="text-slate-500">Season complete — check Results for final standings.</p>;
 
   const lastNames: Record<string, string> = {};
   tiers.forEach((t) => { lastNames[t.player_id] = t.name_last; });
@@ -134,26 +134,26 @@ export default function ThisWeekClient() {
 
       {/* Tournament header */}
       <div className="mb-5 md:mb-8 text-center">
-        <h2 className="text-lg md:text-3xl font-bold text-white">{tournament.name}</h2>
+        <h2 className="text-lg md:text-3xl font-bold text-slate-900">{tournament.name}</h2>
       </div>
 
       {/* Picks grid — score cards in header, aligned to columns */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-2 md:mb-4">
+      <div className="bg-slate-100 rounded-xl border border-slate-200 overflow-hidden mb-2 md:mb-4">
         <table className="text-sm w-full border-collapse table-fixed">
           <thead>
             {/* Score cards row */}
-            <tr className="border-b border-slate-700">
+            <tr className="border-b border-slate-200">
               <th className="w-16 hidden md:table-cell" />
               {users.map((u) => {
                 const pts = wkPts[u.name] ?? 0;
                 const lead = teamLeaders.has(u.name) && tournament.locked;
                 return (
                   <th key={u.username} className="px-1 py-2 md:px-3 md:py-4">
-                    <div className="rounded-xl px-1 py-3 md:px-3 md:py-5 text-center border bg-slate-900 border-slate-700">
-                      <p className="text-[10px] md:text-sm text-slate-400 font-medium mb-1 uppercase tracking-wide">
+                    <div className="rounded-xl px-1 py-3 md:px-3 md:py-5 text-center border bg-white border-slate-200">
+                      <p className="text-[10px] md:text-sm text-slate-500 font-medium mb-1 uppercase tracking-wide">
                         {u.name}{autoPickedUsernames.has(u.username) ? "*" : ""}
                       </p>
-                      <p className="text-lg md:text-3xl font-bold tabular-nums text-white">
+                      <p className="text-lg md:text-3xl font-bold tabular-nums text-slate-900">
                         {pts}
                       </p>
                     </div>
@@ -164,15 +164,15 @@ export default function ThisWeekClient() {
           </thead>
           <tbody>
             {/* Team total row */}
-            <tr className="border-b border-slate-700 bg-slate-900/50">
-              <td className="px-4 py-2.5 md:py-3 text-xs md:text-sm font-semibold text-slate-500 uppercase hidden md:table-cell">Team</td>
+            <tr className="border-b border-slate-200 bg-slate-100/50">
+              <td className="px-4 py-2.5 md:py-3 text-xs md:text-sm font-semibold text-slate-400 uppercase hidden md:table-cell">Team</td>
               {users.map((u) => {
                 const s = teamTotals[u.name];
                 const lead = teamLeaders.has(u.name);
                 const disp = !tournament.locked ? "—" : s === 999 ? "E" : fmtScore(s);
                 return (
                   <td key={u.username} className={`px-2 py-2 md:px-4 md:py-3 text-center text-xs md:text-base font-semibold ${
-                    lead && tournament.locked && s !== 999 ? "font-bold text-emerald-400" : "text-slate-400"
+                    lead && tournament.locked && s !== 999 ? "font-bold text-emerald-600" : "text-slate-500"
                   }`}>
                     {disp}
                   </td>
@@ -181,11 +181,11 @@ export default function ThisWeekClient() {
             </tr>
             {/* Tier rows */}
             {[1,2,3,4,5,6].map((tier) => (
-              <tr key={tier} className="border-b border-slate-700 last:border-0">
+              <tr key={tier} className="border-b border-slate-200 last:border-0">
                 <td className="px-4 py-2 md:py-3 hidden md:table-cell">
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tier]}`} />
-                    <span className="text-xs font-medium text-slate-400">T{tier}</span>
+                    <span className="text-xs font-medium text-slate-500">T{tier}</span>
                   </div>
                 </td>
                 {users.map((u) => {
@@ -202,14 +202,14 @@ export default function ThisWeekClient() {
                     : null;
                   return (
                     <td key={u.username} className={`px-2 py-2 md:px-4 md:py-3 text-center text-xs md:text-base ${
-                      !tournament.locked ? "text-slate-600"
-                      : win && !mc ? "font-bold text-emerald-400"
-                      : !win && mc ? "text-red-400"
-                      : "text-slate-200"
+                      !tournament.locked ? "text-slate-400"
+                      : win && !mc ? "font-bold text-emerald-600"
+                      : !win && mc ? "text-red-600"
+                      : "text-slate-700"
                     }`}>
                       {txt}
                       {scoreTxt && (
-                        <p className="text-[9px] text-slate-400 font-normal mt-1 md:hidden">{scoreTxt}</p>
+                        <p className="text-[9px] text-slate-500 font-normal mt-1 md:hidden">{scoreTxt}</p>
                       )}
                     </td>
                   );
@@ -222,7 +222,7 @@ export default function ThisWeekClient() {
 
       {/* Auto-picks footnote */}
       {autoPickedUsernames.size > 0 && (
-        <p className="text-[10px] md:text-xs text-slate-500 italic mt-2 mb-4 md:mb-6 text-right">* denotes lazy player using auto-picks this week</p>
+        <p className="text-[10px] md:text-xs text-slate-400 italic mt-2 mb-4 md:mb-6 text-right">* denotes lazy player using auto-picks this week</p>
       )}
 
       {/* Leaderboard dropdown */}
@@ -230,11 +230,11 @@ export default function ThisWeekClient() {
         <div className="mt-4 md:mt-6">
           <button
             onClick={() => setLbOpen((o) => !o)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-700 transition-colors"
+            className="w-full flex items-center justify-between px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-200 transition-colors"
           >
             <span>Live Leaderboard</span>
             <svg
-              className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${lbOpen ? "rotate-180" : ""}`}
+              className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${lbOpen ? "rotate-180" : ""}`}
               fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -244,18 +244,18 @@ export default function ThisWeekClient() {
           {lbOpen && (
             <div className="mt-2">
               {lbLoading ? (
-                <div className="flex items-center gap-2 text-slate-400 text-sm px-1 py-4">
-                  <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                <div className="flex items-center gap-2 text-slate-500 text-sm px-1 py-4">
+                  <div className="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
                   Loading leaderboard...
                 </div>
               ) : hasLb ? (
                 <>
                   {/* View toggle */}
-                  <div className="flex gap-1 mb-2 bg-slate-800 border border-slate-700 rounded-lg p-1">
+                  <div className="flex gap-1 mb-2 bg-slate-100 border border-slate-200 rounded-lg p-1">
                     <button
                       onClick={() => setLbView("score")}
                       className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                        lbView === "score" ? "bg-slate-600 text-slate-100" : "text-slate-400 hover:text-slate-200"
+                        lbView === "score" ? "bg-slate-300 text-slate-800" : "text-slate-500 hover:text-slate-700"
                       }`}
                     >
                       By Score
@@ -263,7 +263,7 @@ export default function ThisWeekClient() {
                     <button
                       onClick={() => setLbView("tier")}
                       className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                        lbView === "tier" ? "bg-slate-600 text-slate-100" : "text-slate-400 hover:text-slate-200"
+                        lbView === "tier" ? "bg-slate-300 text-slate-800" : "text-slate-500 hover:text-slate-700"
                       }`}
                     >
                       By Tier
@@ -271,25 +271,25 @@ export default function ThisWeekClient() {
                   </div>
 
                   {lbView === "score" ? (
-                    <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                    <div className="bg-slate-100 rounded-xl border border-slate-200 overflow-hidden">
                       <table className="text-sm w-full border-collapse">
                         <thead>
-                          <tr className="bg-slate-900 border-b border-slate-700">
+                          <tr className="bg-white border-b border-slate-200">
                             <th className="w-8 py-2 pl-3" />
-                            <th className="px-2 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Pos</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
-                            <th className="px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
+                            <th className="px-2 py-2 text-center text-xs font-semibold text-slate-400 uppercase">Pos</th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-slate-400 uppercase">Player</th>
+                            <th className="px-4 py-2 text-center text-xs font-semibold text-slate-400 uppercase">Score</th>
                           </tr>
                         </thead>
                         <tbody>
                           {lb.map((row) => (
-                            <tr key={row.playerId} className="border-b border-slate-700 last:border-0">
+                            <tr key={row.playerId} className="border-b border-slate-200 last:border-0">
                               <td className="pl-3 py-2">
-                                <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
+                                <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-300"}`} />
                               </td>
-                              <td className="px-2 py-2 text-center text-slate-400 text-xs">{row.pos}</td>
-                              <td className="px-4 py-2 font-medium text-slate-100">{row.player}</td>
-                              <td className="px-4 py-2 text-center font-bold tabular-nums text-white">{row.score}</td>
+                              <td className="px-2 py-2 text-center text-slate-500 text-xs">{row.pos}</td>
+                              <td className="px-4 py-2 font-medium text-slate-800">{row.player}</td>
+                              <td className="px-4 py-2 text-center font-bold tabular-nums text-slate-900">{row.score}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -314,19 +314,19 @@ export default function ThisWeekClient() {
                           })
                           .sort((a, b) => parseScore(a.score) - parseScore(b.score));
                         return (
-                          <div key={tier} className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                          <div key={tier} className="bg-slate-100 rounded-xl border border-slate-200 overflow-hidden">
                             <div className={`h-1.5 ${TIER_RIBBON[tier]}`} />
                             <table className="text-sm w-full border-collapse">
                               <tbody>
                                 {tierRows.map((row) => {
                                   const isCut = row.status === "cut";
                                   return (
-                                    <tr key={row.playerId} className="border-b border-slate-700 last:border-0">
-                                      <td className="px-3 py-2 text-center text-xs w-10 text-slate-500">{row.pos}</td>
-                                      <td className={`px-4 py-2 font-medium ${isCut ? "text-red-400" : row.isPicked ? "text-slate-100" : "text-slate-500"}`}>
+                                    <tr key={row.playerId} className="border-b border-slate-200 last:border-0">
+                                      <td className="px-3 py-2 text-center text-xs w-10 text-slate-400">{row.pos}</td>
+                                      <td className={`px-4 py-2 font-medium ${isCut ? "text-red-600" : row.isPicked ? "text-slate-800" : "text-slate-400"}`}>
                                         {row.player}
                                       </td>
-                                      <td className={`px-4 py-2 text-center font-bold tabular-nums w-16 ${isCut ? "text-red-400" : row.isPicked ? "text-white" : "text-slate-500"}`}>
+                                      <td className={`px-4 py-2 text-center font-bold tabular-nums w-16 ${isCut ? "text-red-600" : row.isPicked ? "text-slate-900" : "text-slate-400"}`}>
                                         {row.score}
                                       </td>
                                     </tr>
@@ -341,7 +341,7 @@ export default function ThisWeekClient() {
                   )}
                 </>
               ) : (
-                <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 text-center text-slate-500 text-sm">
+                <div className="bg-slate-100 border border-slate-200 rounded-xl p-6 text-center text-slate-400 text-sm">
                   🏌️ Live leaderboard will appear once play begins
                 </div>
               )}

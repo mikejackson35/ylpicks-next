@@ -41,34 +41,34 @@ export default async function SeasonPage() {
 
   return (
     <div className="flex flex-col justify-center min-h-[calc(100svh-6rem)] max-w-sm">
-      <h2 className="text-4xl font-bold text-white mb-1 text-center">Season</h2>
-      <p className="text-xs text-slate-400 mb-10 text-center">{thruText}</p>
+      <h2 className="text-4xl font-bold text-slate-900 mb-1 text-center">Season</h2>
+      <p className="text-xs text-slate-500 mb-10 text-center">{thruText}</p>
 
       {/* Standings */}
       <div className="flex flex-col gap-5 mb-14 px-8">
         {standings.map((row) => (
           <div key={row.name} className="flex justify-between items-center">
-            <span className="text-white text-3xl font-medium">{row.name}</span>
-            <span className="text-3xl font-bold tabular-nums text-white">{row.points}</span>
+            <span className="text-slate-900 text-3xl font-medium">{row.name}</span>
+            <span className="text-3xl font-bold tabular-nums text-slate-900">{row.points}</span>
           </div>
         ))}
       </div>
 
       {/* Scoring */}
-      <details className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mx-10">
-        <summary className="px-5 py-3.5 text-xs font-semibold uppercase tracking-widest text-white cursor-pointer select-none list-none flex justify-between items-center">
+      <details className="bg-slate-100 rounded-xl border border-slate-200 overflow-hidden mx-10">
+        <summary className="px-5 py-3.5 text-xs font-semibold uppercase tracking-widest text-slate-900 cursor-pointer select-none list-none flex justify-between items-center">
           Scoring
-          <span className="text-slate-400 text-base">›</span>
+          <span className="text-slate-500 text-base">›</span>
         </summary>
-        <div className="border-t border-slate-700">
+        <div className="border-t border-slate-200">
           {SCORING.map(({ label, pts }) => (
-            <div key={label} className="flex justify-between items-center px-5 py-3.5 border-b border-slate-700 last:border-0">
-              <span className="text-slate-300 text-sm">{label}</span>
-              <span className="text-white font-semibold text-sm">{pts}</span>
+            <div key={label} className="flex justify-between items-center px-5 py-3.5 border-b border-slate-200 last:border-0">
+              <span className="text-slate-600 text-sm">{label}</span>
+              <span className="text-slate-900 font-semibold text-sm">{pts}</span>
             </div>
           ))}
           <div className="px-5 py-3.5">
-            <p className="text-slate-500 text-sm">$100 to season winner</p>
+            <p className="text-slate-400 text-sm">$100 to season winner</p>
           </div>
         </div>
       </details>

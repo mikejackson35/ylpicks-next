@@ -24,7 +24,7 @@ export default function BlogClient() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20 text-slate-400 text-sm">
+      <div className="flex items-center justify-center py-20 text-slate-500 text-sm">
         Loading...
       </div>
     );
@@ -33,30 +33,30 @@ export default function BlogClient() {
   if (posts.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-10">
-        <h2 className="text-2xl font-bold text-white mb-1">The Raw Room</h2>
+        <h2 className="text-2xl font-bold text-slate-900 mb-1">The Raw Room</h2>
         <div className="mb-8" />
-        <p className="text-slate-500 text-sm">The The Raw Room is a blog for blogsters and others in the league so stay tuned for that maybe</p>
+        <p className="text-slate-400 text-sm">The The Raw Room is a blog for blogsters and others in the league so stay tuned for that maybe</p>
       </div>
     );
   }
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <h2 className="text-2xl font-bold text-white mb-1">The Raw Room</h2>
-      <p className="text-xs text-slate-400 mb-8">AI-generated weekly recaps</p>
+      <h2 className="text-2xl font-bold text-slate-900 mb-1">The Raw Room</h2>
+      <p className="text-xs text-slate-500 mb-8">AI-generated weekly recaps</p>
 
       <div className="flex flex-col gap-10">
         {posts.map((post) => (
-          <article key={post.tournament_id} className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-            <h3 className="text-base font-semibold text-emerald-400 mb-1">{post.tournament_name}</h3>
-            <p className="text-xs text-slate-500 mb-4">
+          <article key={post.tournament_id} className="bg-slate-100 border border-slate-200 rounded-xl p-6">
+            <h3 className="text-base font-semibold text-emerald-600 mb-1">{post.tournament_name}</h3>
+            <p className="text-xs text-slate-400 mb-4">
               {new Date(post.created_at).toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
                 year: "numeric",
               })}
             </p>
-            <div className="text-sm text-slate-300 leading-relaxed space-y-4">
+            <div className="text-sm text-slate-600 leading-relaxed space-y-4">
               {post.content.split("\n\n").map((para, i) => (
                 <p key={i}>{para}</p>
               ))}

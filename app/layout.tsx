@@ -59,7 +59,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="antialiased bg-slate-950 text-white">
+      <body className="antialiased bg-slate-50 text-slate-900">
         <SessionProvider>
           {session ? (
             <div className="md:flex min-h-screen">

@@ -123,7 +123,7 @@ export default function AdminClient() {
         <button
           onClick={handleFinalize}
           disabled={finalizing}
-          className="bg-blue-600 text-white rounded px-4 py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-40"
+          className="bg-blue-600 text-slate-900 rounded px-4 py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-40"
         >
           {finalizing ? "Finalizing…" : "🔄 Finalize Last Tournament"}
         </button>
@@ -182,7 +182,7 @@ export default function AdminClient() {
       <button
         onClick={handleSaveTiers}
         disabled={saving}
-        className="mt-5 bg-gray-900 text-white rounded px-4 py-2 text-sm font-medium hover:bg-gray-700 disabled:opacity-40"
+        className="mt-5 bg-gray-900 text-slate-900 rounded px-4 py-2 text-sm font-medium hover:bg-gray-700 disabled:opacity-40"
       >
         {saving ? "Saving…" : "💾 Save Tiers"}
       </button>

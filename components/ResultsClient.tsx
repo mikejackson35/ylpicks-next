@@ -34,15 +34,15 @@ export default function ResultsClient() {
   }, []);
 
   if (loading) return (
-    <div className="flex items-center gap-2 text-slate-400 text-sm">
-      <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+    <div className="flex items-center gap-2 text-slate-500 text-sm">
+      <div className="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
       Loading...
     </div>
   );
   if (!tournaments.length) return (
     <div>
-      <h2 className="text-2xl font-bold text-white mb-4">Results</h2>
-      <p className="text-sm text-slate-400">No completed tournaments yet.</p>
+      <h2 className="text-2xl font-bold text-slate-900 mb-4">Results</h2>
+      <p className="text-sm text-slate-500">No completed tournaments yet.</p>
     </div>
   );
 
@@ -54,7 +54,7 @@ export default function ResultsClient() {
 
   return (
     <div className="max-w-3xl">
-      <h2 className="text-2xl font-bold text-white mb-6">Results</h2>
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">Results</h2>
       <div className="flex flex-col gap-3">
         {tournaments.map((t) => {
           const isOpen = open.has(t.tournament_id);
@@ -72,41 +72,41 @@ export default function ResultsClient() {
           const bestTotal = validTotals.length ? Math.min(...validTotals) : null;
 
           return (
-            <div key={t.tournament_id} className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+            <div key={t.tournament_id} className="bg-slate-100 rounded-xl border border-slate-200 overflow-hidden">
               <button
                 onClick={() => setOpen((p) => { const n = new Set(p); n.has(t.tournament_id) ? n.delete(t.tournament_id) : n.add(t.tournament_id); return n; })}
-                className="w-full flex justify-between items-center px-5 py-4 text-left hover:bg-slate-700/50 transition-colors"
+                className="w-full flex justify-between items-center px-5 py-4 text-left hover:bg-slate-200/50 transition-colors"
               >
-                <span className="font-semibold text-white">{t.name}</span>
-                <span className="text-slate-400 text-xs">{isOpen ? "▲" : "▼"}</span>
+                <span className="font-semibold text-slate-900">{t.name}</span>
+                <span className="text-slate-500 text-xs">{isOpen ? "▲" : "▼"}</span>
               </button>
 
               {isOpen && (
-                <div className="px-2 md:px-5 pb-4 md:pb-5 border-t border-slate-700">
+                <div className="px-2 md:px-5 pb-4 md:pb-5 border-t border-slate-200">
                   {/* Weekly points score cards */}
                   <div className="grid grid-cols-4 gap-1 md:gap-3 my-4">
                     {users.map((u) => {
                       const pts = tWeekly[u.username];
                       const display = pts === undefined ? "-" : pts > 0 ? `+${pts}` : String(pts);
                       return (
-                        <div key={u.username} className="text-center rounded-xl p-1 md:p-2 bg-slate-900 border border-slate-700">
-                          <p className="text-[10px] md:text-xs text-slate-400 mb-0.5 uppercase tracking-wide truncate">{u.name}</p>
-                          <p className="text-base md:text-lg font-bold tabular-nums text-white">{display}</p>
+                        <div key={u.username} className="text-center rounded-xl p-1 md:p-2 bg-white border border-slate-200">
+                          <p className="text-[10px] md:text-xs text-slate-500 mb-0.5 uppercase tracking-wide truncate">{u.name}</p>
+                          <p className="text-base md:text-lg font-bold tabular-nums text-slate-900">{display}</p>
                         </div>
                       );
                     })}
                   </div>
 
-                  {!tPicks.length ? <p className="text-sm text-slate-400">No pick data.</p> : (
+                  {!tPicks.length ? <p className="text-sm text-slate-500">No pick data.</p> : (
                     <div className="overflow-x-auto">
                       <table className="text-sm w-full border-collapse table-fixed">
                         <thead>
-                          <tr className="bg-slate-900/50 border-b border-slate-700">
+                          <tr className="bg-slate-100/50 border-b border-slate-200">
                             {users.map((u) => {
                               const tot = teamTotals[u.username];
                               const best = tot !== null && tot === bestTotal;
                               return (
-                                <th key={u.username} className={`px-1 py-2 md:px-3 text-center text-xs md:text-sm font-semibold ${best ? "text-emerald-400" : "text-slate-400"}`}>
+                                <th key={u.username} className={`px-1 py-2 md:px-3 text-center text-xs md:text-sm font-semibold ${best ? "text-emerald-600" : "text-slate-500"}`}>
                                   {tot === null ? "-" : fmtScore(tot)}
                                 </th>
                               );
@@ -115,16 +115,16 @@ export default function ResultsClient() {
                         </thead>
                         <tbody>
                           {tiers.map((tier) => (
-                            <tr key={tier} className="border-b border-slate-700 last:border-0">
+                            <tr key={tier} className="border-b border-slate-200 last:border-0">
                               {users.map((u) => {
                                 const ps = tierData[tier]?.[u.username];
                                 if (!ps) return <td key={u.username} className="px-3 py-2.5" />;
                                 const ln = ps.player_name ? ps.player_name.split(" ").pop() : "?";
                                 const win = ps.tier_winner;
                                 const mc = ps.missed_cut;
-                                const cls = win && !mc ? "font-bold text-emerald-400"
-                                  : !win && mc ? "text-red-400"
-                                  : "text-slate-200";
+                                const cls = win && !mc ? "font-bold text-emerald-600"
+                                  : !win && mc ? "text-red-600"
+                                  : "text-slate-700";
                                 return <td key={u.username} className={`px-1 py-2 md:px-3 md:py-2.5 text-center text-xs md:text-sm truncate max-w-0 ${cls}`}>{ln}</td>;
                               })}
                             </tr>
