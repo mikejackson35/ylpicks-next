@@ -196,6 +196,10 @@ export default function ThisWeekClient() {
                   const txt = !tournament.locked ? "🔒"
                     : !pid ? "—"
                     : name;
+                  const scoreNum = pid ? scores[pid] : undefined;
+                  const scoreTxt = tournament.locked && pid && scoreNum !== undefined
+                    ? fmtScore(scoreNum)
+                    : null;
                   return (
                     <td key={u.username} className={`px-2 py-2 md:px-4 md:py-3 text-center text-xs md:text-base ${
                       !tournament.locked ? "text-slate-600"
@@ -204,6 +208,9 @@ export default function ThisWeekClient() {
                       : "text-slate-200"
                     }`}>
                       {txt}
+                      {scoreTxt && (
+                        <p className="text-[9px] md:text-xs text-slate-500 font-normal leading-tight">{scoreTxt}</p>
+                      )}
                     </td>
                   );
                 })}

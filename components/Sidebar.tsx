@@ -70,9 +70,9 @@ export default function Sidebar({ standings, thruText }: Props) {
           <p className="text-xs text-slate-500 mb-3 text-center">{thruText}</p>
           <div className="flex flex-col gap-2">
             {standings.map((row) => (
-              <div key={row.name} className="flex justify-between items-center">
-                <span className="text-base text-white">{row.name}</span>
-                <span className="text-base font-bold tabular-nums text-white">
+              <div key={row.name} className="flex items-center">
+                <span className="text-base text-white flex-1">{row.name}</span>
+                <span className="text-base font-bold tabular-nums text-white w-8 text-center">
                   {row.points}
                 </span>
               </div>
