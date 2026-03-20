@@ -248,7 +248,7 @@ export default function ThisWeekClient() {
                     <button
                       onClick={() => setLbView("score")}
                       className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                        lbView === "score" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-slate-200"
+                        lbView === "score" ? "bg-slate-600 text-slate-100" : "text-slate-400 hover:text-slate-200"
                       }`}
                     >
                       By Score
@@ -256,7 +256,7 @@ export default function ThisWeekClient() {
                     <button
                       onClick={() => setLbView("tier")}
                       className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                        lbView === "tier" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-slate-200"
+                        lbView === "tier" ? "bg-slate-600 text-slate-100" : "text-slate-400 hover:text-slate-200"
                       }`}
                     >
                       By Tier
