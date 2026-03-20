@@ -17,6 +17,10 @@ const TIER_DOT: Record<number, string> = {
   1: "bg-fuchsia-400 ring-1 ring-slate-200", 2: "bg-black ring-1 ring-slate-200", 3: "bg-blue-500 ring-1 ring-slate-200",
   4: "bg-slate-300 ring-1 ring-slate-200", 5: "bg-violet-500 ring-1 ring-slate-200", 6: "bg-orange-400 ring-1 ring-slate-200",
 };
+const TIER_RIBBON: Record<number, string> = {
+  1: "bg-fuchsia-700", 2: "bg-zinc-600", 3: "bg-blue-700",
+  4: "bg-slate-500", 5: "bg-violet-700", 6: "bg-orange-700",
+};
 
 function parseScore(s?: string | null): number {
   if (!s || s === "-") return 999;
@@ -42,6 +46,7 @@ export default function ThisWeekClient() {
   const [lbLoading, setLbLoading] = useState(false);
   const [autoPickedUsernames, setAutoPickedUsernames] = useState<Set<string>>(new Set());
   const [lbOpen, setLbOpen] = useState(false);
+  const [lbView, setLbView] = useState<"score" | "tier">("score");
 
   useEffect(() => {
     const url = previewLocked ? "/api/this-week?preview=true" : "/api/this-week";
@@ -114,11 +119,15 @@ export default function ThisWeekClient() {
     wkPts[u.name] = pts;
   });
 
-  const pickedIds = new Set(picks.map((p) => p.player_id));
+  const pickedIds = new Set(picks.map((p) => String(p.player_id)));
   const tierOf: Record<string, number> = {};
-  tiers.forEach((t) => { tierOf[t.player_id] = t.tier_number; });
-  const lb = lbRows.filter((r) => pickedIds.has(r.playerId)).sort((a, b) => parseScore(String(a.score)) - parseScore(String(b.score)));
+  tiers.forEach((t) => { tierOf[String(t.player_id)] = t.tier_number; });
+  // Build tier lookup from picks — guaranteed to match lb's playerId values
+  const pickTierMap: Record<string, number> = {};
+  picks.forEach((p) => { pickTierMap[String(p.player_id)] = p.tier_number; });
+  const lb = lbRows.filter((r) => pickedIds.has(String(r.playerId))).sort((a, b) => parseScore(String(a.score)) - parseScore(String(b.score)));
   const hasLb = lb.some((r) => r.score && r.score !== "-");
+
 
   return (
     <div className="max-w-3xl">
@@ -233,30 +242,97 @@ export default function ThisWeekClient() {
                   Loading leaderboard...
                 </div>
               ) : hasLb ? (
-                <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-                  <table className="text-sm w-full border-collapse">
-                    <thead>
-                      <tr className="bg-slate-900 border-b border-slate-700">
-                        <th className="w-8 py-2 pl-3" />
-                        <th className="px-2 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Pos</th>
-                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
-                        <th className="px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {lb.map((row) => (
-                        <tr key={row.playerId} className="border-b border-slate-700 last:border-0">
-                          <td className="pl-3 py-2">
-                            <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
-                          </td>
-                          <td className="px-2 py-2 text-center text-slate-400 text-xs">{row.pos}</td>
-                          <td className="px-4 py-2 font-medium text-slate-100">{row.player}</td>
-                          <td className="px-4 py-2 text-center font-bold tabular-nums text-white">{row.score}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <>
+                  {/* View toggle */}
+                  <div className="flex gap-1 mb-2 bg-slate-800 border border-slate-700 rounded-lg p-1">
+                    <button
+                      onClick={() => setLbView("score")}
+                      className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                        lbView === "score" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-slate-200"
+                      }`}
+                    >
+                      By Score
+                    </button>
+                    <button
+                      onClick={() => setLbView("tier")}
+                      className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                        lbView === "tier" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-slate-200"
+                      }`}
+                    >
+                      By Tier
+                    </button>
+                  </div>
+
+                  {lbView === "score" ? (
+                    <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                      <table className="text-sm w-full border-collapse">
+                        <thead>
+                          <tr className="bg-slate-900 border-b border-slate-700">
+                            <th className="w-8 py-2 pl-3" />
+                            <th className="px-2 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Pos</th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
+                            <th className="px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {lb.map((row) => (
+                            <tr key={row.playerId} className="border-b border-slate-700 last:border-0">
+                              <td className="pl-3 py-2">
+                                <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
+                              </td>
+                              <td className="px-2 py-2 text-center text-slate-400 text-xs">{row.pos}</td>
+                              <td className="px-4 py-2 font-medium text-slate-100">{row.player}</td>
+                              <td className="px-4 py-2 text-center font-bold tabular-nums text-white">{row.score}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {[1,2,3,4,5,6].map((tier) => {
+                        const tierPlayers = tiers.filter((t) => Number(t.tier_number) === tier);
+                        if (tierPlayers.length === 0) return null;
+                        const tierRows = tierPlayers
+                          .map((t) => {
+                            const lbRow = lbRows.find((r) => String(r.playerId) === String(t.player_id));
+                            return {
+                              playerId: String(t.player_id),
+                              player: lbRow?.player ?? t.name,
+                              score: lbRow ? String(lbRow.score) : "-",
+                              pos: lbRow?.pos ?? "-",
+                              status: lbRow?.status ?? "active",
+                              isPicked: pickedIds.has(String(t.player_id)),
+                            };
+                          })
+                          .sort((a, b) => parseScore(a.score) - parseScore(b.score));
+                        return (
+                          <div key={tier} className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                            <div className={`h-1.5 ${TIER_RIBBON[tier]}`} />
+                            <table className="text-sm w-full border-collapse">
+                              <tbody>
+                                {tierRows.map((row) => {
+                                  const isCut = row.status === "cut";
+                                  return (
+                                    <tr key={row.playerId} className="border-b border-slate-700 last:border-0">
+                                      <td className="px-3 py-2 text-center text-xs w-10 text-slate-500">{row.pos}</td>
+                                      <td className={`px-4 py-2 font-medium ${isCut ? "text-red-400" : row.isPicked ? "text-slate-100" : "text-slate-500"}`}>
+                                        {row.player}
+                                      </td>
+                                      <td className={`px-4 py-2 text-center font-bold tabular-nums w-16 ${isCut ? "text-red-400" : row.isPicked ? "text-white" : "text-slate-500"}`}>
+                                        {row.score}
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 text-center text-slate-500 text-sm">
                   🏌️ Live leaderboard will appear once play begins

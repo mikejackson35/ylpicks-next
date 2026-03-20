@@ -4,26 +4,26 @@
 
 export const USER_BIOS: Record<string, string> = {
   mj: `
-- Fact 1 about mj
-- Fact 2 about mj
-- Fact 3 about mj
+- Fact 1 about Mike
+- Fact 2 about Mike
+- Fact 3 about Mike
 `.trim(),
 
-  will: `
-- Fact 1 about will
-- Fact 2 about will
-- Fact 3 about will
+  pp: `
+- Fact 1 about Phil
+- Fact 2 about Phil
+- Fact 3 about Phil
 `.trim(),
 
-  tommy: `
-- Fact 1 about tommy
-- Fact 2 about tommy
-- Fact 3 about tommy
+  jc: `
+- Fact 1 about John
+- Fact 2 about John
+- Fact 3 about John
 `.trim(),
 
-  zack: `
-- Fact 1 about zack
-- Fact 2 about zack
-- Fact 3 about zack
+  jb: `
+- Fact 1 about Justin
+- Fact 2 about Justin
+- Fact 3 about Justin
 `.trim(),
 };
