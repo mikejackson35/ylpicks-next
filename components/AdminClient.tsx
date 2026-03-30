@@ -19,6 +19,7 @@ export default function AdminClient() {
   const [selectedTid, setSelectedTid] = useState<string>("");
   const [tierSelections, setTierSelections] = useState<Record<number, Set<string>>>({});
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [tierSearch, setTierSearch] = useState<Record<number, string>>({});
 
   useEffect(() => {
     fetch("/api/admin/tiers")
@@ -158,21 +159,30 @@ export default function AdminClient() {
                 Tier {tier}{" "}
                 <span className="text-gray-400 font-normal">({selectedCount} players)</span>
               </p>
-              <div className="max-h-40 overflow-y-auto border border-gray-200 rounded p-2 grid grid-cols-2 gap-x-4 gap-y-0.5">
-                {players.map((p) => (
-                  <label
-                    key={p.player_id}
-                    className="flex items-center gap-1.5 cursor-pointer text-xs py-0.5 hover:text-gray-700"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selected.has(p.player_id)}
-                      onChange={() => togglePlayer(tier, p.player_id)}
-                      className="rounded"
-                    />
-                    {p.name}
-                  </label>
-                ))}
+              <input
+                type="text"
+                placeholder="Search players…"
+                value={tierSearch[tier] ?? ""}
+                onChange={(e) => setTierSearch((prev) => ({ ...prev, [tier]: e.target.value }))}
+                className="w-full mb-1 border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-gray-400"
+              />
+              <div className="max-h-48 overflow-y-auto border border-gray-200 rounded p-2 grid grid-cols-2 gap-x-4 gap-y-1">
+                {players
+                  .filter((p) => p.name.toLowerCase().includes((tierSearch[tier] ?? "").toLowerCase()))
+                  .map((p) => (
+                    <label
+                      key={p.player_id}
+                      className="flex items-center gap-1.5 cursor-pointer text-xs py-1 hover:text-gray-700"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selected.has(p.player_id)}
+                        onChange={() => togglePlayer(tier, p.player_id)}
+                        className="rounded"
+                      />
+                      {p.name}
+                    </label>
+                  ))}
               </div>
             </div>
           );
