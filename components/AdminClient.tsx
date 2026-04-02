@@ -20,6 +20,13 @@ export default function AdminClient() {
   const [tierSelections, setTierSelections] = useState<Record<number, Set<string>>>({});
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [tierSearch, setTierSearch] = useState<Record<number, string>>({});
+  const [desktopVisits, setDesktopVisits] = useState<{ username: string; visited_at: string }[]>([]);
+
+  useEffect(() => {
+    fetch("/api/desktop-ping")
+      .then((r) => r.json())
+      .then((data) => setDesktopVisits(data.visits ?? []));
+  }, []);
 
   useEffect(() => {
     fetch("/api/admin/tiers")
@@ -206,6 +213,23 @@ export default function AdminClient() {
           {message.text}
         </p>
       )}
+
+      {/* Desktop visitors */}
+      <div className="mt-8">
+        <h3 className="font-semibold text-sm mb-3">🖥️ Desktop Visitors</h3>
+        {desktopVisits.length === 0 ? (
+          <p className="text-xs text-gray-400 italic">No clicks yet.</p>
+        ) : (
+          <div className="border border-gray-200 rounded overflow-hidden">
+            {desktopVisits.map((v, i) => (
+              <div key={i} className="flex items-center justify-between px-3 py-2 text-xs border-b border-gray-100 last:border-0">
+                <span className="font-medium">{v.username}</span>
+                <span className="text-gray-400">{new Date(v.visited_at).toLocaleString()}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
