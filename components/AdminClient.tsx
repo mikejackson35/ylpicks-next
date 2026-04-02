@@ -126,6 +126,23 @@ export default function AdminClient() {
     <div className="max-w-2xl">
       <h2 className="text-lg font-semibold mb-4">Admin</h2>
 
+      {/* Desktop visitors */}
+      <div className="mb-8">
+        <h3 className="font-semibold text-sm mb-3">🖥️ Desktop Visitors</h3>
+        {desktopVisits.length === 0 ? (
+          <p className="text-xs text-gray-400 italic">No clicks yet.</p>
+        ) : (
+          <div className="border border-gray-200 rounded overflow-hidden">
+            {desktopVisits.map((v, i) => (
+              <div key={i} className="flex items-center justify-between px-3 py-2 text-xs border-b border-gray-100 last:border-0">
+                <span className="font-medium">{v.username}</span>
+                <span className="text-gray-400">{new Date(v.visited_at).toLocaleString()}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Finalize button */}
       <div className="mb-6">
         <button
@@ -214,22 +231,6 @@ export default function AdminClient() {
         </p>
       )}
 
-      {/* Desktop visitors */}
-      <div className="mt-8">
-        <h3 className="font-semibold text-sm mb-3">🖥️ Desktop Visitors</h3>
-        {desktopVisits.length === 0 ? (
-          <p className="text-xs text-gray-400 italic">No clicks yet.</p>
-        ) : (
-          <div className="border border-gray-200 rounded overflow-hidden">
-            {desktopVisits.map((v, i) => (
-              <div key={i} className="flex items-center justify-between px-3 py-2 text-xs border-b border-gray-100 last:border-0">
-                <span className="font-medium">{v.username}</span>
-                <span className="text-gray-400">{new Date(v.visited_at).toLocaleString()}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
