@@ -45,6 +45,7 @@ export default function ThisWeekClient() {
   const [lbRows, setLbRows] = useState<LeaderboardRow[]>([]);
   const [lbLoading, setLbLoading] = useState(false);
   const [autoPickedUsernames, setAutoPickedUsernames] = useState<Set<string>>(new Set());
+  const [autoPickCounts, setAutoPickCounts] = useState<Record<string, number>>({});
   const [lbOpen, setLbOpen] = useState(false);
   const [lbView, setLbView] = useState<"score" | "tier">("score");
 
@@ -54,6 +55,7 @@ export default function ThisWeekClient() {
       setTournament(data.tournament); setUsers(data.users ?? []);
       setPicks(data.picks ?? []); setTiers(data.tiers ?? []);
       setCached(data.cached ?? []); setAutoPickedUsernames(new Set(data.autoPickedUsernames ?? []));
+      setAutoPickCounts(data.autoPickCounts ?? {});
       setLoading(false);
       if (data.tournament?.tourn_id) loadLb(data.tournament);
     });
@@ -146,12 +148,23 @@ export default function ThisWeekClient() {
               <th className="w-16 hidden md:table-cell" />
               {users.map((u) => {
                 const pts = wkPts[u.name] ?? 0;
-                const lead = teamLeaders.has(u.name) && tournament.locked;
+                const isAutoPicked = autoPickedUsernames.has(u.username);
+                const autoCount = autoPickCounts[u.username] ?? 0;
                 return (
                   <th key={u.username} className="px-1 py-2 md:px-3 md:py-4">
                     <div className="rounded-xl px-1 py-3 md:px-3 md:py-5 text-center border bg-slate-900 border-slate-700">
-                      <p className="text-[10px] md:text-sm text-slate-400 font-medium mb-1 uppercase tracking-wide">
-                        {u.name}{autoPickedUsernames.has(u.username) ? "*" : ""}
+                      <p className="text-[10px] md:text-sm text-slate-400 font-medium mb-1 uppercase tracking-wide inline-flex items-center gap-1 justify-center">
+                        {u.name}
+                        {isAutoPicked && (
+                          <span className="inline-flex items-center gap-0.5">
+                            <span>*</span>
+                            {autoCount >= 2 && (
+                              <span className="inline-flex items-center justify-center w-3.5 h-3.5 md:w-4 md:h-4 rounded-full bg-red-600 text-white text-[8px] md:text-[9px] font-bold leading-none">
+                                {autoCount}
+                              </span>
+                            )}
+                          </span>
+                        )}
                       </p>
                       <p className="text-lg md:text-3xl font-bold tabular-nums text-white">
                         {pts}

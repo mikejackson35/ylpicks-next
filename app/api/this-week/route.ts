@@ -91,7 +91,7 @@ export async function GET(request: Request) {
   // Auto-assign random picks for any user missing picks at lock time
   if (locked) await assignMissingPicks(tid);
 
-  const [usersRes, picksRes, tiersRes, cacheRes, manualPickersRes] = await Promise.all([
+  const [usersRes, picksRes, tiersRes, cacheRes, manualPickersRes, autoPickCountsRes] = await Promise.all([
     pool.query<{ username: string; name: string }>(
       "SELECT username, name FROM users"
     ),
@@ -114,12 +114,29 @@ export async function GET(request: Request) {
       `SELECT DISTINCT username FROM picks WHERE tournament_id = $1 AND timestamp::timestamptz < $2`,
       [tid, tournament.start_time]
     ),
+    pool.query<{ username: string; auto_count: string }>(
+      `SELECT p.username, COUNT(DISTINCT p.tournament_id) AS auto_count
+       FROM picks p
+       JOIN tournaments t ON t.tournament_id = p.tournament_id
+       WHERE NOT EXISTS (
+         SELECT 1 FROM picks p2
+         WHERE p2.tournament_id = p.tournament_id
+           AND p2.username = p.username
+           AND p2.timestamp::timestamptz < t.start_time
+       )
+       GROUP BY p.username`
+    ),
   ]);
 
   const manualPickers = new Set(manualPickersRes.rows.map((r) => r.username));
   const autoPickedUsernames = locked
     ? usersRes.rows.map((u) => u.username).filter((un) => !manualPickers.has(un))
     : [];
+
+  const autoPickCounts: Record<string, number> = {};
+  autoPickCountsRes.rows.forEach((r) => {
+    autoPickCounts[r.username] = parseInt(r.auto_count, 10);
+  });
 
   return NextResponse.json({
     tournament: { ...tournament, locked },
@@ -128,5 +145,6 @@ export async function GET(request: Request) {
     tiers: tiersRes.rows,
     cached: cacheRes.rows,
     autoPickedUsernames,
+    autoPickCounts,
   });
 }
