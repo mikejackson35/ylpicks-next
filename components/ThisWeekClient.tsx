@@ -158,7 +158,7 @@ export default function ThisWeekClient() {
                         {isAutoPicked && (
                           <span className="inline-flex items-center gap-0.5">
                             <span>*</span>
-                            {autoCount >= 2 && (
+                            {autoCount >= 1 && (
                               <span className="inline-flex items-center justify-center w-3.5 h-3.5 md:w-4 md:h-4 rounded-full bg-red-600 text-white text-[8px] md:text-[9px] font-bold leading-none">
                                 {autoCount}
                               </span>
