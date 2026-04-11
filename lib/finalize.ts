@@ -131,10 +131,11 @@ export async function finalizeTournament(
     const tierWinners: Record<number, Set<string>> = {};
     for (const [tierStr, pids] of Object.entries(pickedByTier)) {
       const tier = Number(tierStr);
-      const scores = [...pids].map((pid) => scoreLookup[pid] ?? 999);
+      const activePids = [...pids].filter((pid) => !cutStatus[pid]);
+      const scores = activePids.map((pid) => scoreLookup[pid] ?? 999);
       const best = Math.min(...scores);
       if (best !== 999) {
-        tierWinners[tier] = new Set([...pids].filter((pid) => (scoreLookup[pid] ?? 999) === best));
+        tierWinners[tier] = new Set(activePids.filter((pid) => (scoreLookup[pid] ?? 999) === best));
       }
     }
 

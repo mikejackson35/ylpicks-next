@@ -104,8 +104,9 @@ export default function ThisWeekClient() {
   const tierWin: Record<number, Set<string>> = {};
   for (let t = 1; t <= 6; t++) {
     const pids = users.map((u) => pickMap[u.username][t]).filter(Boolean) as string[];
-    const best = Math.min(...pids.map((p) => scores[p] ?? 999));
-    if (best !== 999) tierWin[t] = new Set(pids.filter((p) => (scores[p] ?? 999) === best));
+    const activePids = pids.filter((p) => !cut[p]);
+    const best = Math.min(...activePids.map((p) => scores[p] ?? 999));
+    if (best !== 999) tierWin[t] = new Set(activePids.filter((p) => (scores[p] ?? 999) === best));
   }
 
   const wkPts: Record<string, number> = {};
