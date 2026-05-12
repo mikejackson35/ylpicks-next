@@ -164,15 +164,17 @@ export default function StatsClient() {
   });
 
   // Player stats
-  type PlayerStat = { player_id: string; player_name: string; picks: number; wins: number; misses: number };
+  type PlayerStat = { player_id: string; player_name: string; picks: number; wins: number; misses: number; score: number };
   const playerMap: Record<string, PlayerStat> = {};
   pickScores.forEach((ps) => {
     if (!playerMap[ps.player_id]) {
-      playerMap[ps.player_id] = { player_id: ps.player_id, player_name: ps.player_name, picks: 0, wins: 0, misses: 0 };
+      playerMap[ps.player_id] = { player_id: ps.player_id, player_name: ps.player_name, picks: 0, wins: 0, misses: 0, score: 0 };
     }
     playerMap[ps.player_id].picks++;
     if (ps.tier_winner && !ps.missed_cut) playerMap[ps.player_id].wins++;
     if (ps.missed_cut) playerMap[ps.player_id].misses++;
+    const s = parseScore(ps.player_score);
+    if (s !== null) playerMap[ps.player_id].score += s;
   });
   const playerStats = Object.values(playerMap)
     .filter((p) => p.picks >= 2)
@@ -362,6 +364,7 @@ export default function StatsClient() {
                   <th className="px-3 py-2.5 text-center text-xs text-emerald-400 font-semibold">Wins</th>
                   <th className="px-3 py-2.5 text-center text-xs text-rose-400 font-semibold">Cuts</th>
                   <th className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold">Win%</th>
+                  <th className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold">Score</th>
                 </tr>
               </thead>
               <tbody>
@@ -375,6 +378,7 @@ export default function StatsClient() {
                       <td className="px-3 py-2.5 text-center tabular-nums font-semibold text-emerald-400">{p.wins || "—"}</td>
                       <td className="px-3 py-2.5 text-center tabular-nums font-semibold text-rose-400">{p.misses || "—"}</td>
                       <td className="px-3 py-2.5 text-center tabular-nums text-slate-300">{winPct > 0 ? `${winPct}%` : "—"}</td>
+                      <td className="px-3 py-2.5 text-center tabular-nums text-white">{fmtScore(p.score)}</td>
                     </tr>
                   );
                 })}
