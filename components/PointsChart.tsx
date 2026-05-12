@@ -95,6 +95,7 @@ export default function PointsChart({
           <Legend
             verticalAlign="top"
             align="center"
+            wrapperStyle={{ top: -8 }}
             formatter={(value) => {
               const u = users.find((u) => u.username === value);
               return <span style={{ color: "#cbd5e1", fontSize: 12 }}>{u?.name ?? value}</span>;
