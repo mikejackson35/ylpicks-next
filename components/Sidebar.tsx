@@ -26,6 +26,7 @@ const MOBILE_NAV = [
   { label: "Picks", href: "/picks", icon: "🎯" },
   { label: "Stats", href: "/stats", icon: "🔢" },
   { label: "Raw Room", href: "/blog", icon: "📰" },
+  { label: "Season", href: "/season", icon: "🏆" },
 ];
 
 export default function Sidebar({ standings, thruText }: Props) {
