@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -31,6 +32,14 @@ export default function PointsChart({
   users: User[];
   weeklyScores: WeeklyScore[];
 }) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   if (!tournaments.length || !users.length) return null;
 
   // Tournaments in chronological order (API returns DESC)
@@ -95,7 +104,7 @@ export default function PointsChart({
           <Legend
             verticalAlign="top"
             align="center"
-            wrapperStyle={{ top: -8 }}
+            wrapperStyle={{ top: -8, ...(isMobile ? { paddingLeft: 24 } : {}) }}
             formatter={(value) => {
               const u = users.find((u) => u.username === value);
               return <span style={{ color: "#cbd5e1", fontSize: 12 }}>{u?.name ?? value}</span>;
