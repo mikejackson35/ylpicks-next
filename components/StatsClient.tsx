@@ -196,7 +196,6 @@ export default function StatsClient() {
             );
           })}
         </div>
-        <p className="text-xs text-slate-500 mt-2">{weekCount} tournaments finalized</p>
       </section>
 
       {/* ── Season Line Chart ── */}
