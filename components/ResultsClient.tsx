@@ -55,7 +55,7 @@ export default function ResultsClient() {
   return (
     <div className="max-w-3xl">
       <h2 className="text-2xl font-bold text-white mb-6">Results</h2>
-      <div className="flex flex-col gap-3">
+<div className="flex flex-col gap-3">
         {tournaments.map((t) => {
           const isOpen = open.has(t.tournament_id);
           const tPicks = pickMap[t.tournament_id] ?? [];

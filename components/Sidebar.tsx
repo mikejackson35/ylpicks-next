@@ -15,8 +15,8 @@ type Props = {
 const DESKTOP_NAV = [
   { label: "This Week", href: "/", icon: "⛳" },
   { label: "Picks", href: "/picks", icon: "🎯" },
-  { label: "Porn", href: "/porn", icon: "🔞" },
   { label: "Results", href: "/results", icon: "📊" },
+  { label: "Statistics", href: "/stats", icon: "🔢" },
   { label: "Research", href: "/research", icon: "📈" },
   { label: "The Raw Room", href: "/blog", icon: "📰" },
 ];
@@ -24,9 +24,9 @@ const DESKTOP_NAV = [
 const MOBILE_NAV = [
   { label: "This Week", href: "/", icon: "⛳" },
   { label: "Picks", href: "/picks", icon: "🎯" },
+  { label: "Stats", href: "/stats", icon: "🔢" },
   { label: "Results", href: "/results", icon: "📊" },
   { label: "Raw Room", href: "/blog", icon: "📰" },
-  { label: "Season", href: "/season", icon: "🏆" },
 ];
 
 export default function Sidebar({ standings, thruText }: Props) {
