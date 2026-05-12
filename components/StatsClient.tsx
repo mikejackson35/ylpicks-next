@@ -64,6 +64,8 @@ export default function StatsClient() {
   const [users, setUsers] = useState<User[]>([]);
   const [pickScores, setPickScores] = useState<PickScore[]>([]);
   const [weeklyScores, setWeeklyScores] = useState<WeeklyScore[]>([]);
+  const [playerSortKey, setPlayerSortKey] = useState<"lastName" | "picks" | "wins" | "misses" | "score" | "ptsPer">("ptsPer");
+  const [playerSortDir, setPlayerSortDir] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
     fetch("/api/stats")
@@ -179,7 +181,24 @@ export default function StatsClient() {
   });
   const playerStats = Object.values(playerMap)
     .filter((p) => p.picks >= 2)
-    .sort((a, b) => b.wins - a.wins || a.misses - b.misses || b.picks - a.picks);
+    .sort((a, b) => {
+      const aLast = a.player_name?.split(" ").slice(1).join(" ") ?? "";
+      const bLast = b.player_name?.split(" ").slice(1).join(" ") ?? "";
+      const aVal = playerSortKey === "lastName" ? aLast : playerSortKey === "ptsPer" ? (a.picks > 0 ? a.points / a.picks : -999) : a[playerSortKey];
+      const bVal = playerSortKey === "lastName" ? bLast : playerSortKey === "ptsPer" ? (b.picks > 0 ? b.points / b.picks : -999) : b[playerSortKey];
+      if (aVal < bVal) return playerSortDir === "asc" ? -1 : 1;
+      if (aVal > bVal) return playerSortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+
+  function togglePlayerSort(key: typeof playerSortKey) {
+    if (key === playerSortKey) setPlayerSortDir((d) => d === "asc" ? "desc" : "asc");
+    else { setPlayerSortKey(key); setPlayerSortDir("desc"); }
+  }
+  function sortIcon(key: typeof playerSortKey) {
+    if (key !== playerSortKey) return <span className="text-slate-600 ml-0.5">↕</span>;
+    return <span className="text-slate-300 ml-0.5">{playerSortDir === "asc" ? "↑" : "↓"}</span>;
+  }
 
   // Heatmap cell normalization
   const allTierVals = Object.values(tierPoints).flatMap((row) => Object.values(row));
@@ -360,12 +379,12 @@ export default function StatsClient() {
             <table className="text-sm w-full border-collapse">
               <thead>
                 <tr className="border-b border-slate-700 bg-slate-900/50">
-                  <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold">Player</th>
-                  <th className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold">Picked</th>
-                  <th className="px-3 py-2.5 text-center text-xs text-emerald-400 font-semibold">Wins</th>
-                  <th className="px-3 py-2.5 text-center text-xs text-rose-400 font-semibold">Cuts</th>
-                  <th className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold">Pts/Pick</th>
-                  <th className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold">Score</th>
+                  <th onClick={() => togglePlayerSort("lastName")} className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold cursor-pointer hover:text-white select-none">Player{sortIcon("lastName")}</th>
+                  <th onClick={() => togglePlayerSort("picks")} className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold cursor-pointer hover:text-white select-none">Picked{sortIcon("picks")}</th>
+                  <th onClick={() => togglePlayerSort("wins")} className="px-3 py-2.5 text-center text-xs text-emerald-400 font-semibold cursor-pointer hover:text-emerald-200 select-none">Wins{sortIcon("wins")}</th>
+                  <th onClick={() => togglePlayerSort("misses")} className="px-3 py-2.5 text-center text-xs text-rose-400 font-semibold cursor-pointer hover:text-rose-200 select-none">Cuts{sortIcon("misses")}</th>
+                  <th onClick={() => togglePlayerSort("score")} className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold cursor-pointer hover:text-white select-none">Score{sortIcon("score")}</th>
+                  <th onClick={() => togglePlayerSort("ptsPer")} className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold cursor-pointer hover:text-white select-none">Pts/Pick{sortIcon("ptsPer")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -378,8 +397,8 @@ export default function StatsClient() {
                       <td className="px-3 py-2.5 text-center text-slate-400 tabular-nums">{p.picks}</td>
                       <td className="px-3 py-2.5 text-center tabular-nums font-semibold text-emerald-400">{p.wins || "—"}</td>
                       <td className="px-3 py-2.5 text-center tabular-nums font-semibold text-rose-400">{p.misses || "—"}</td>
-                      <td className="px-3 py-2.5 text-center tabular-nums text-slate-300">{ptsPer}</td>
                       <td className="px-3 py-2.5 text-center tabular-nums text-white">{fmtScore(p.score)}</td>
+                      <td className="px-3 py-2.5 text-center tabular-nums text-slate-300">{ptsPer}</td>
                     </tr>
                   );
                 })}
