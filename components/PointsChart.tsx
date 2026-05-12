@@ -65,11 +65,26 @@ export default function PointsChart({
           <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
           <XAxis
             dataKey="week"
-            tick={{ fill: "#94a3b8", fontSize: 10 }}
             interval={0}
-            angle={-30}
-            textAnchor="end"
             height={48}
+            tick={(props: { x: number | string; y: number | string; index: number; payload: { value: string } }) => {
+              const { x, y, index, payload } = props;
+              const isFirst = index === 0;
+              const isLast = index === chartData.length - 1;
+              if (!isFirst && !isLast) return <g />;
+              return (
+                <g transform={`translate(${x},${y})`}>
+                  <text
+                    x={0} y={0} dy={12}
+                    textAnchor={isFirst ? "start" : "end"}
+                    fill="#94a3b8"
+                    fontSize={10}
+                  >
+                    {payload.value}
+                  </text>
+                </g>
+              );
+            }}
           />
           <YAxis tick={{ fill: "#94a3b8", fontSize: 11 }} />
           <Tooltip
