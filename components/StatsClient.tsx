@@ -383,19 +383,18 @@ export default function StatsClient() {
               <thead>
                 <tr className="border-b border-slate-700 bg-slate-900/50">
                   <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold">vs.</th>
-                  {users.map((u, i) => (
-                    <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[i]}`}>{u.name.split(" ")[0]}</th>
+                  {sortedUsers.map((u) => (
+                    <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name.split(" ")[0]}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {users.map((rowUser, ri) => {
-                  // For each opponent, count weeks where rowUser beat opponent
+                {sortedUsers.map((rowUser) => {
                   const tournIds = [...new Set(weeklyScores.map((w) => w.tournament_id))];
                   return (
                     <tr key={rowUser.username} className="border-b border-slate-700 last:border-0">
-                      <td className={`px-4 py-2.5 text-xs font-semibold ${USER_COLORS[ri]}`}>{rowUser.name.split(" ")[0]}</td>
-                      {users.map((colUser, ci) => {
+                      <td className={`px-4 py-2.5 text-xs font-semibold ${USER_COLORS[users.indexOf(rowUser)]}`}>{rowUser.name.split(" ")[0]}</td>
+                      {sortedUsers.map((colUser) => {
                         if (rowUser.username === colUser.username) {
                           return <td key={colUser.username} className="px-3 py-2.5 text-center text-slate-600">—</td>;
                         }
