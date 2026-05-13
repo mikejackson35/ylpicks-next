@@ -104,6 +104,8 @@ export default function StatsClient() {
     seasonTotals[w.username] = (seasonTotals[w.username] ?? 0) + Number(w.points);
   });
 
+  const sortedUsers = [...users].sort((a, b) => (seasonTotals[b.username] ?? 0) - (seasonTotals[a.username] ?? 0));
+
   // Best / worst week per user
   const weeklyByUser: Record<string, number[]> = {};
   weeklyScores.forEach((w) => {
@@ -213,7 +215,8 @@ export default function StatsClient() {
       <section>
         <SectionHeader title="Season Summary" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {users.map((u, i) => {
+          {sortedUsers.map((u) => {
+            const i = users.indexOf(u);
             const total = seasonTotals[u.username] ?? 0;
             const weeks = weeklyByUser[u.username] ?? [];
             const avg = weeks.length ? (total / weeks.length).toFixed(1) : "—";
@@ -253,8 +256,8 @@ export default function StatsClient() {
               <thead>
                 <tr className="border-b border-slate-700 bg-slate-900/50">
                   <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold w-14">Tier</th>
-                  {users.map((u, i) => (
-                    <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[i]}`}>{u.name}</th>
+                  {sortedUsers.map((u) => (
+                    <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name}</th>
                   ))}
                 </tr>
               </thead>
@@ -262,7 +265,7 @@ export default function StatsClient() {
                 {[1, 2, 3, 4, 5, 6].map((tier) => (
                   <tr key={tier} className="border-b border-slate-700 last:border-0">
                     <td className="px-4 py-2.5 text-xs text-slate-400 font-semibold">T{tier}</td>
-                    {users.map((u) => {
+                    {sortedUsers.map((u) => {
                       const val = tierPoints[tier]?.[u.username] ?? 0;
                       return (
                         <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-semibold tabular-nums ${pointsColor(val)} ${cellBg(val, heatMax, heatMin)}`}>
@@ -275,7 +278,7 @@ export default function StatsClient() {
                 {/* Totals row */}
                 <tr className="border-t-2 border-slate-600 bg-slate-900/30">
                   <td className="px-4 py-2.5 text-xs text-slate-300 font-bold">Total</td>
-                  {users.map((u) => {
+                  {sortedUsers.map((u) => {
                     const tot = Object.values(tierPoints).reduce((s, row) => s + (row[u.username] ?? 0), 0);
                     return (
                       <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-bold tabular-nums ${pointsColor(tot)}`}>
