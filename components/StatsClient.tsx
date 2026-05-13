@@ -182,7 +182,7 @@ export default function StatsClient() {
     playerMap[ps.player_id].points += Number(ps.points);
   });
   const playerStats = Object.values(playerMap)
-    .filter((p) => p.picks >= 2)
+    .filter((p) => p.picks >= 3)
     .sort((a, b) => {
       const aLast = a.player_name?.split(" ").slice(1).join(" ") ?? "";
       const bLast = b.player_name?.split(" ").slice(1).join(" ") ?? "";
@@ -426,9 +426,10 @@ export default function StatsClient() {
       {/* ── 5. Player Stats ── */}
       <section>
         <SectionHeader title="Player Performance" />
-        <p className="text-xs text-slate-500 mb-3">Players picked 2+ times across all users</p>
+        <p className="text-xs text-slate-500 mb-3">Players picked 3+ times across all users</p>
         <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="relative">
+            <div className="overflow-x-auto">
             <table className="text-sm w-full border-collapse">
               <thead>
                 <tr className="border-b border-slate-700 bg-slate-900/50">
@@ -457,6 +458,8 @@ export default function StatsClient() {
                 })}
               </tbody>
             </table>
+            </div>
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-slate-800 to-transparent md:hidden" />
           </div>
         </div>
       </section>
