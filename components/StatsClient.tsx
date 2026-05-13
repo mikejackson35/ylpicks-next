@@ -25,8 +25,8 @@ type WeeklyScore = {
   points: number;
 };
 
-const USER_COLORS = ["text-emerald-400", "text-sky-400", "text-amber-400", "text-rose-400"];
-const USER_BG = ["bg-emerald-400", "bg-sky-400", "bg-amber-400", "bg-rose-400"];
+const USER_COLORS = ["text-indigo-400", "text-sky-400", "text-amber-400", "text-orange-400"];
+const USER_BG = ["bg-indigo-400", "bg-sky-400", "bg-amber-400", "bg-orange-400"];
 
 function SectionHeader({ title }: { title: string }) {
   return (

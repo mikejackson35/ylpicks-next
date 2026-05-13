@@ -16,7 +16,7 @@ type User = { username: string; name: string };
 type WeeklyScore = { tournament_id: string; username: string; points: number };
 type Tournament = { tournament_id: string; name: string; start_time: string };
 
-const USER_COLORS = ["#34d399", "#38bdf8", "#fbbf24", "#f87171"];
+const USER_COLORS = ["#818cf8", "#38bdf8", "#fbbf24", "#fb923c"];
 
 function shortName(name: string): string {
   const words = name.replace(/ Open$| Championship$| Classic$| Invitational$| Masters$| Tournament$/, "").trim();
