@@ -305,19 +305,19 @@ export default function StatsClient() {
                 <thead>
                   <tr className="border-b border-slate-700 bg-slate-900/50">
                     <th className="px-3 py-2 text-left text-xs text-slate-400 font-semibold w-12">Tier</th>
-                    {users.map((u, i) => (
-                      <th key={u.username} className={`px-2 py-2 text-center text-xs font-semibold ${USER_COLORS[i]}`}>{u.name.split(" ")[0]}</th>
+                    {sortedUsers.map((u) => (
+                      <th key={u.username} className={`px-2 py-2 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name.split(" ")[0]}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {[1, 2, 3, 4, 5, 6].map((tier) => {
                     const row = tierWinsByTier[tier] ?? {};
-                    const maxWins = Math.max(...users.map((u) => row[u.username] ?? 0));
+                    const maxWins = Math.max(...sortedUsers.map((u) => row[u.username] ?? 0));
                     return (
                       <tr key={tier} className="border-b border-slate-700 last:border-0">
                         <td className="px-3 py-2 text-xs text-slate-400 font-semibold">T{tier}</td>
-                        {users.map((u) => {
+                        {sortedUsers.map((u) => {
                           const w = row[u.username] ?? 0;
                           const best = w > 0 && w === maxWins;
                           return (
@@ -342,19 +342,19 @@ export default function StatsClient() {
                 <thead>
                   <tr className="border-b border-slate-700 bg-slate-900/50">
                     <th className="px-3 py-2 text-left text-xs text-slate-400 font-semibold w-12">Tier</th>
-                    {users.map((u, i) => (
-                      <th key={u.username} className={`px-2 py-2 text-center text-xs font-semibold ${USER_COLORS[i]}`}>{u.name.split(" ")[0]}</th>
+                    {sortedUsers.map((u) => (
+                      <th key={u.username} className={`px-2 py-2 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name.split(" ")[0]}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {[1, 2, 3, 4, 5, 6].map((tier) => {
                     const row = missedByTier[tier] ?? {};
-                    const maxMiss = Math.max(...users.map((u) => row[u.username] ?? 0));
+                    const maxMiss = Math.max(...sortedUsers.map((u) => row[u.username] ?? 0));
                     return (
                       <tr key={tier} className="border-b border-slate-700 last:border-0">
                         <td className="px-3 py-2 text-xs text-slate-400 font-semibold">T{tier}</td>
-                        {users.map((u) => {
+                        {sortedUsers.map((u) => {
                           const m = row[u.username] ?? 0;
                           const worst = m > 0 && m === maxMiss;
                           return (
