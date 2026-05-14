@@ -257,7 +257,7 @@ export default function StatsClient() {
               <table className="text-sm w-full border-collapse">
                 <thead>
                   <tr className="border-b border-slate-700 bg-slate-900/50">
-                    <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold w-14">Tier</th>
+                    <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold w-20">Tier</th>
                     {sortedUsers.map((u) => (
                       <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name}</th>
                     ))}
@@ -302,7 +302,7 @@ export default function StatsClient() {
               <table className="text-sm w-full border-collapse">
                 <thead>
                   <tr className="border-b border-slate-700 bg-slate-900/50">
-                    <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold"></th>
+                    <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold w-20"></th>
                     {sortedUsers.map((u) => (
                       <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name.split(" ")[0]}</th>
                     ))}
