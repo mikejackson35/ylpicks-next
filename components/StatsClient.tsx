@@ -247,60 +247,110 @@ export default function StatsClient() {
         weeklyScores={weeklyScores}
       />
 
-      {/* ── 2 & 4. Tier Heatmap + H2H side by side on desktop ── */}
-      <div className="md:grid md:grid-cols-2 md:gap-4 flex flex-col gap-8">
+      {/* ── 2. Tier Points Heatmap + H2H — side by side on desktop ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-      {/* ── 2. Tier Points Heatmap ── */}
-      <section>
-        <SectionHeader title="Points by Tier" />
-        <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="text-sm w-full border-collapse">
-              <thead>
-                <tr className="border-b border-slate-700 bg-slate-900/50">
-                  <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold w-14">Tier</th>
-                  {sortedUsers.map((u) => (
-                    <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name}</th>
+        <section>
+          <SectionHeader title="Points by Tier" />
+          <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="text-sm w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-700 bg-slate-900/50">
+                    <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold w-14">Tier</th>
+                    {sortedUsers.map((u) => (
+                      <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[1, 2, 3, 4, 5, 6].map((tier) => (
+                    <tr key={tier} className="border-b border-slate-700 last:border-0">
+                      <td className="px-4 py-2.5 text-xs text-slate-400 font-semibold">T{tier}</td>
+                      {sortedUsers.map((u) => {
+                        const val = tierPoints[tier]?.[u.username] ?? 0;
+                        return (
+                          <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-semibold tabular-nums ${pointsColor(val)} ${cellBg(val, heatMax, heatMin)}`}>
+                            {val > 0 ? `+${val}` : val === 0 ? "—" : val}
+                          </td>
+                        );
+                      })}
+                    </tr>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[1, 2, 3, 4, 5, 6].map((tier) => (
-                  <tr key={tier} className="border-b border-slate-700 last:border-0">
-                    <td className="px-4 py-2.5 text-xs text-slate-400 font-semibold">T{tier}</td>
+                  <tr className="border-t-2 border-slate-600 bg-slate-900/30">
+                    <td className="px-4 py-2.5 text-xs text-slate-300 font-bold">Total</td>
                     {sortedUsers.map((u) => {
-                      const val = tierPoints[tier]?.[u.username] ?? 0;
+                      const tot = Object.values(tierPoints).reduce((s, row) => s + (row[u.username] ?? 0), 0);
                       return (
-                        <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-semibold tabular-nums ${pointsColor(val)} ${cellBg(val, heatMax, heatMin)}`}>
-                          {val > 0 ? `+${val}` : val === 0 ? "—" : val}
+                        <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-bold tabular-nums ${pointsColor(tot)}`}>
+                          {tot > 0 ? `+${tot}` : tot === 0 ? "0" : tot}
                         </td>
                       );
                     })}
                   </tr>
-                ))}
-                {/* Totals row */}
-                <tr className="border-t-2 border-slate-600 bg-slate-900/30">
-                  <td className="px-4 py-2.5 text-xs text-slate-300 font-bold">Total</td>
-                  {sortedUsers.map((u) => {
-                    const tot = Object.values(tierPoints).reduce((s, row) => s + (row[u.username] ?? 0), 0);
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">Net points earned per tier</p>
+        </section>
+
+        <section className="min-w-0">
+          <SectionHeader title="Head-to-Head Record" />
+          <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="text-sm w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-700 bg-slate-900/50">
+                    <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold"></th>
+                    {sortedUsers.map((u) => (
+                      <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name.split(" ")[0]}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...sortedUsers].reverse().map((rowUser) => {
+                    const tournIds = [...new Set(weeklyScores.map((w) => w.tournament_id))];
                     return (
-                      <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-bold tabular-nums ${pointsColor(tot)}`}>
-                        {tot > 0 ? `+${tot}` : tot === 0 ? "0" : tot}
-                      </td>
+                      <tr key={rowUser.username} className="border-b border-slate-700 last:border-0">
+                        <td className="px-3 py-2.5 text-xs font-semibold text-slate-400">
+                          <span className="block text-[9px] font-normal text-slate-600 leading-none mb-0.5">vs.</span>
+                          {rowUser.name.split(" ")[0]}
+                        </td>
+                        {sortedUsers.map((colUser) => {
+                          if (rowUser.username === colUser.username) {
+                            return <td key={colUser.username} className="px-3 py-2.5 text-center text-slate-600">—</td>;
+                          }
+                          let wins = 0, losses = 0;
+                          tournIds.forEach((tid) => {
+                            const rScore = weeklyScores.find((w) => w.tournament_id === tid && w.username === rowUser.username)?.points;
+                            const cScore = weeklyScores.find((w) => w.tournament_id === tid && w.username === colUser.username)?.points;
+                            if (rScore !== undefined && cScore !== undefined) {
+                              if (Number(rScore) > Number(cScore)) wins++;
+                              else if (Number(rScore) < Number(cScore)) losses++;
+                            }
+                          });
+                          const ahead = wins > losses;
+                          return (
+                            <td key={colUser.username} className={`px-2 py-2.5 text-center tabular-nums text-[11px] font-semibold whitespace-nowrap ${!ahead && wins < losses ? "text-emerald-400" : ahead ? "text-rose-400" : "text-slate-400"}`}>
+                              {losses}–{wins}
+                            </td>
+                          );
+                        })}
+                      </tr>
                     );
                   })}
-                </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <p className="text-xs text-slate-500 mt-2">Net points earned per tier</p>
-      </section>
+        </section>
+
+      </div>
 
       {/* ── 3. Wins & Cuts by Tier ── */}
       <section>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Tier Wins */}
           <div>
             <SectionHeader title="Tier Wins by Tier" />
             <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
@@ -336,8 +386,6 @@ export default function StatsClient() {
               </table>
             </div>
           </div>
-
-          {/* Missed Cuts */}
           <div>
             <SectionHeader title="Missed Cuts by Tier" />
             <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
@@ -375,60 +423,6 @@ export default function StatsClient() {
           </div>
         </div>
       </section>
-
-      {/* ── 4. Head-to-Head Weekly Record ── */}
-      <section className="min-w-0">
-        <SectionHeader title="Head-to-Head Record" />
-        <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="text-sm w-full border-collapse">
-              <thead>
-                <tr className="border-b border-slate-700 bg-slate-900/50">
-                  <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold"></th>
-                  {sortedUsers.map((u) => (
-                    <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name.split(" ")[0]}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[...sortedUsers].reverse().map((rowUser) => {
-                  const tournIds = [...new Set(weeklyScores.map((w) => w.tournament_id))];
-                  return (
-                    <tr key={rowUser.username} className="border-b border-slate-700 last:border-0">
-                      <td className="px-3 py-2.5 text-xs font-semibold text-slate-400">
-                        <span className="block text-[9px] font-normal text-slate-600 leading-none mb-0.5">vs.</span>
-                        {rowUser.name.split(" ")[0]}
-                      </td>
-                      {sortedUsers.map((colUser) => {
-                        if (rowUser.username === colUser.username) {
-                          return <td key={colUser.username} className="px-3 py-2.5 text-center text-slate-600">—</td>;
-                        }
-                        let wins = 0, losses = 0;
-                        tournIds.forEach((tid) => {
-                          const rScore = weeklyScores.find((w) => w.tournament_id === tid && w.username === rowUser.username)?.points;
-                          const cScore = weeklyScores.find((w) => w.tournament_id === tid && w.username === colUser.username)?.points;
-                          if (rScore !== undefined && cScore !== undefined) {
-                            if (Number(rScore) > Number(cScore)) wins++;
-                            else if (Number(rScore) < Number(cScore)) losses++;
-                          }
-                        });
-                        const ahead = wins > losses;
-                        return (
-                          <td key={colUser.username} className={`px-2 py-2.5 text-center tabular-nums text-[11px] font-semibold whitespace-nowrap ${!ahead && wins < losses ? "text-emerald-400" : ahead ? "text-rose-400" : "text-slate-400"}`}>
-                            {losses}–{wins}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      </div>{/* end side-by-side grid */}
 
       {/* ── 5. Player Stats ── */}
       <section>
