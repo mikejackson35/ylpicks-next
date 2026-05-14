@@ -43,7 +43,7 @@ export default function BlogClient() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
       <h2 className="text-2xl font-bold text-white mb-1">The Raw Room</h2>
-      <p className="text-xs text-slate-400 mb-8">AI-generated weekly recaps</p>
+      <p className="text-xs text-slate-400 mb-8">Slop</p>
 
       <div className="flex flex-col gap-10">
         {posts.map((post) => (
