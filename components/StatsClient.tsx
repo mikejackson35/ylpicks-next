@@ -388,7 +388,7 @@ export default function StatsClient() {
                 </tr>
               </thead>
               <tbody>
-                {sortedUsers.map((rowUser) => {
+                {[...sortedUsers].reverse().map((rowUser) => {
                   const tournIds = [...new Set(weeklyScores.map((w) => w.tournament_id))];
                   return (
                     <tr key={rowUser.username} className="border-b border-slate-700 last:border-0">
@@ -408,7 +408,7 @@ export default function StatsClient() {
                         });
                         const ahead = wins > losses;
                         return (
-                          <td key={colUser.username} className={`px-3 py-2.5 text-center tabular-nums text-xs font-semibold ${ahead ? "text-emerald-400" : wins < losses ? "text-rose-400" : "text-slate-400"}`}>
+                          <td key={colUser.username} className={`px-3 py-2.5 text-center tabular-nums text-xs font-semibold ${!ahead && wins < losses ? "text-emerald-400" : ahead ? "text-rose-400" : "text-slate-400"}`}>
                             {wins}–{losses}
                           </td>
                         );
