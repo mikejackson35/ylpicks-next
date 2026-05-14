@@ -381,7 +381,7 @@ export default function StatsClient() {
             <table className="text-sm w-full border-collapse">
               <thead>
                 <tr className="border-b border-slate-700 bg-slate-900/50">
-                  <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold">vs.</th>
+                  <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold"></th>
                   {sortedUsers.map((u) => (
                     <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name.split(" ")[0]}</th>
                   ))}
@@ -392,7 +392,7 @@ export default function StatsClient() {
                   const tournIds = [...new Set(weeklyScores.map((w) => w.tournament_id))];
                   return (
                     <tr key={rowUser.username} className="border-b border-slate-700 last:border-0">
-                      <td className="px-4 py-2.5 text-xs font-semibold text-slate-400">{rowUser.name.split(" ")[0]}</td>
+                      <td className="px-4 py-2.5 text-xs font-semibold text-slate-400"><span className="text-slate-600 font-normal">vs. </span>{rowUser.name.split(" ")[0]}</td>
                       {sortedUsers.map((colUser) => {
                         if (rowUser.username === colUser.username) {
                           return <td key={colUser.username} className="px-3 py-2.5 text-center text-slate-600">—</td>;
@@ -409,7 +409,7 @@ export default function StatsClient() {
                         const ahead = wins > losses;
                         return (
                           <td key={colUser.username} className={`px-3 py-2.5 text-center tabular-nums text-xs font-semibold ${!ahead && wins < losses ? "text-emerald-400" : ahead ? "text-rose-400" : "text-slate-400"}`}>
-                            {wins}–{losses}
+                            {losses}–{wins}
                           </td>
                         );
                       })}
