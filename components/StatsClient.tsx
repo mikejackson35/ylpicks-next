@@ -291,7 +291,7 @@ export default function StatsClient() {
             </table>
           </div>
         </div>
-        <p className="text-xs text-slate-500 mt-2">Net points earned per tier (tier win +1, missed cut −1)</p>
+        <p className="text-xs text-slate-500 mt-2">Net points earned per tier</p>
       </section>
 
       {/* ── 3. Wins & Cuts by Tier ── */}
@@ -376,7 +376,6 @@ export default function StatsClient() {
       {/* ── 4. Head-to-Head Weekly Record ── */}
       <section>
         <SectionHeader title="Head-to-Head Record" />
-        <p className="text-xs text-slate-500 mb-3">W–L each week vs. every other user (higher score wins)</p>
         <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="text-sm w-full border-collapse">
