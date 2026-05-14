@@ -427,12 +427,11 @@ export default function StatsClient() {
         <SectionHeader title="Player Performance" />
         <p className="text-xs text-slate-500 mb-3">Players picked 3+ times across all users</p>
         <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="relative">
-            <div className="overflow-x-auto">
+          <div className="overflow-x-auto">
             <table className="text-sm w-full border-collapse">
               <thead>
                 <tr className="border-b border-slate-700 bg-slate-900/50">
-                  <th onClick={() => togglePlayerSort("lastName")} className="sticky left-0 z-10 bg-slate-900 px-4 py-2.5 text-left text-xs text-slate-400 font-semibold cursor-pointer hover:text-white select-none">Player{sortIcon("lastName")}</th>
+                  <th onClick={() => togglePlayerSort("lastName")} className="sticky left-0 z-10 bg-slate-900 px-4 py-2.5 text-left text-xs text-slate-400 font-semibold cursor-pointer hover:text-white select-none" style={{ boxShadow: '4px 0 8px rgba(0,0,0,0.6)' }}>Player{sortIcon("lastName")}</th>
                   <th onClick={() => togglePlayerSort("picks")} className="px-3 py-2.5 text-center text-xs text-slate-400 font-semibold cursor-pointer hover:text-white select-none">Picked{sortIcon("picks")}</th>
                   <th onClick={() => togglePlayerSort("wins")} className="px-3 py-2.5 text-center text-xs text-emerald-400 font-semibold cursor-pointer hover:text-emerald-200 select-none">Wins{sortIcon("wins")}</th>
                   <th onClick={() => togglePlayerSort("misses")} className="px-3 py-2.5 text-center text-xs text-rose-400 font-semibold cursor-pointer hover:text-rose-200 select-none">Cuts{sortIcon("misses")}</th>
@@ -446,7 +445,7 @@ export default function StatsClient() {
                   const lastName = p.player_name ? p.player_name.split(" ").slice(1).join(" ") || p.player_name : "—";
                   return (
                     <tr key={p.player_id} className="border-b border-slate-700 last:border-0 hover:bg-slate-700/30 group">
-                      <td className="sticky left-0 z-10 bg-slate-800 group-hover:bg-slate-700/80 px-4 py-2.5 text-slate-200">{lastName}</td>
+                      <td className="sticky left-0 z-10 bg-slate-800 group-hover:bg-slate-700/80 px-4 py-2.5 text-slate-200" style={{ boxShadow: '4px 0 8px rgba(0,0,0,0.6)' }}>{lastName}</td>
                       <td className="px-3 py-2.5 text-center text-slate-400 tabular-nums">{p.picks}</td>
                       <td className="px-3 py-2.5 text-center tabular-nums font-semibold text-emerald-400">{p.wins || "—"}</td>
                       <td className="px-3 py-2.5 text-center tabular-nums font-semibold text-rose-400">{p.misses || "—"}</td>
@@ -457,8 +456,6 @@ export default function StatsClient() {
                 })}
               </tbody>
             </table>
-            </div>
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-slate-800 to-transparent md:hidden" />
           </div>
         </div>
       </section>
