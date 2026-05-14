@@ -57,7 +57,7 @@ export default function BlogClient() {
               })}
             </p>
             <div className="text-sm text-slate-300 leading-relaxed space-y-4">
-              {post.content.split("\n\n").map((para, i) => (
+              {post.content.split("\n\n").filter((para) => !para.trimStart().startsWith("#")).map((para, i) => (
                 <p key={i}>{para}</p>
               ))}
             </div>
