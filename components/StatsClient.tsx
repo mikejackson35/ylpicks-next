@@ -247,8 +247,8 @@ export default function StatsClient() {
         weeklyScores={weeklyScores}
       />
 
-      {/* ── 2. Tier Points Heatmap + H2H — side by side on desktop ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* ── 2. Tier Points Heatmap + H2H ── */}
+      <div className="flex flex-col gap-8">
 
         <section>
           <SectionHeader title="Points by Tier" />
