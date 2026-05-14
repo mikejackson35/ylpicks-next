@@ -247,6 +247,9 @@ export default function StatsClient() {
         weeklyScores={weeklyScores}
       />
 
+      {/* ── 2 & 4. Tier Heatmap + H2H side by side on desktop ── */}
+      <div className="md:grid md:grid-cols-2 md:gap-4 flex flex-col gap-8">
+
       {/* ── 2. Tier Points Heatmap ── */}
       <section>
         <SectionHeader title="Points by Tier" />
@@ -374,7 +377,7 @@ export default function StatsClient() {
       </section>
 
       {/* ── 4. Head-to-Head Weekly Record ── */}
-      <section>
+      <section className="min-w-0">
         <SectionHeader title="Head-to-Head Record" />
         <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
           <div className="overflow-x-auto">
@@ -424,6 +427,8 @@ export default function StatsClient() {
           </div>
         </div>
       </section>
+
+      </div>{/* end side-by-side grid */}
 
       {/* ── 5. Player Stats ── */}
       <section>
