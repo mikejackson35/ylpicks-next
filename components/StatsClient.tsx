@@ -113,6 +113,13 @@ export default function StatsClient() {
     weeklyByUser[w.username].push(Number(w.points));
   });
 
+  function median(arr: number[]): number | null {
+    if (!arr.length) return null;
+    const sorted = [...arr].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+  }
+
   // Season score to par per user (sum of all player_score values)
   function parseScore(s?: string | null): number | null {
     if (!s || s === "-" || s === "CUT") return null;
@@ -220,6 +227,7 @@ export default function StatsClient() {
             const total = seasonTotals[u.username] ?? 0;
             const weeks = weeklyByUser[u.username] ?? [];
             const avg = weeks.length ? (total / weeks.length).toFixed(1) : "—";
+            const med = median(weeks);
             const best = weeks.length ? Math.max(...weeks) : null;
             const worst = weeks.length ? Math.min(...weeks) : null;
             return (
@@ -227,7 +235,8 @@ export default function StatsClient() {
                 <p className={`text-xs font-semibold uppercase tracking-wide ${USER_COLORS[i]}`}>{u.name}</p>
                 <p className={`text-3xl font-bold tabular-nums ${USER_COLORS[i]}`}>{total > 0 ? `+${total}` : total}</p>
                 <div className="text-xs text-slate-400 space-y-1 mt-1">
-                  <div className="flex justify-between"><span>Avg/wk</span><span className="text-white">{avg}</span></div>
+                  <div className="flex justify-between"><span>Wkly Avg</span><span className="text-white">{avg}</span></div>
+                  <div className="flex justify-between"><span>Wkly Med</span><span className="text-white">{med !== null ? med.toFixed(1) : "—"}</span></div>
                   <div className="flex justify-between"><span>Tier wins</span><span className="text-emerald-400">{tierWins[u.username] ?? 0}</span></div>
                   <div className="flex justify-between"><span>Missed cuts</span><span className="text-rose-400">{missedCuts[u.username] ?? 0}</span></div>
                   <div className="flex justify-between"><span>Score to Par</span><span className="text-white">{scoreToPar[u.username] !== undefined ? fmtScore(scoreToPar[u.username]) : "—"}</span></div>
