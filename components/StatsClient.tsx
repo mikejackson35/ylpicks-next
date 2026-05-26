@@ -226,7 +226,7 @@ export default function StatsClient() {
             const i = users.indexOf(u);
             const total = seasonTotals[u.username] ?? 0;
             const weeks = weeklyByUser[u.username] ?? [];
-            const avg = weeks.length ? (total / weeks.length).toFixed(2) : "—";
+            const avg = weeks.length ? (total / weeks.length).toFixed(0) : "—";
             const med = median(weeks);
             const best = weeks.length ? Math.max(...weeks) : null;
             const worst = weeks.length ? Math.min(...weeks) : null;
@@ -236,7 +236,7 @@ export default function StatsClient() {
                 <p className={`text-3xl font-bold tabular-nums ${USER_COLORS[i]}`}>{total > 0 ? `+${total}` : total}</p>
                 <div className="text-xs text-slate-400 space-y-1 mt-1">
                   <div className="flex justify-between"><span>Average</span><span className="text-white">{avg}</span></div>
-                  <div className="flex justify-between"><span>Median</span><span className="text-white">{med !== null ? med.toFixed(2) : "—"}</span></div>
+                  <div className="flex justify-between"><span>Median</span><span className="text-white">{med !== null ? med.toFixed(0) : "—"}</span></div>
                   <div className="flex justify-between"><span>Tier wins</span><span className="text-emerald-400">{tierWins[u.username] ?? 0}</span></div>
                   <div className="flex justify-between"><span>Missed cuts</span><span className="text-rose-400">{missedCuts[u.username] ?? 0}</span></div>
                   <div className="flex justify-between"><span>Score to Par</span><span className="text-white">{scoreToPar[u.username] !== undefined ? fmtScore(scoreToPar[u.username]) : "—"}</span></div>
