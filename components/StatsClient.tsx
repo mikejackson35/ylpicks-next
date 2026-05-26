@@ -226,7 +226,7 @@ export default function StatsClient() {
             const i = users.indexOf(u);
             const total = seasonTotals[u.username] ?? 0;
             const weeks = weeklyByUser[u.username] ?? [];
-            const avg = weeks.length ? (total / weeks.length).toFixed(0) : "—";
+            const avg = weeks.length ? (total / weeks.length).toFixed(1) : "—";
             const med = median(weeks);
             const best = weeks.length ? Math.max(...weeks) : null;
             const worst = weeks.length ? Math.min(...weeks) : null;
