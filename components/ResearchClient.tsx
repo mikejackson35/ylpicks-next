@@ -31,6 +31,7 @@ export default function ResearchClient() {
   const [sortKey, setSortKey] = useState<SortKey>("SG T2G");
   const [sortAsc, setSortAsc] = useState(false);
   const [tierFilter, setTierFilter] = useState<number | "all">("all");
+  const [thisWeekOnly, setThisWeekOnly] = useState(false);
 
   useEffect(() => { fetch("/api/research").then((r) => r.json()).then((d) => { setRows(d.rows ?? []); setLoading(false); }); }, []);
 
@@ -39,7 +40,9 @@ export default function ResearchClient() {
     else { setSortKey(key); setSortAsc(key === "Player"); }
   }
 
-  const filtered = tierFilter === "all" ? rows : rows.filter((r) => Number(r.tier) === tierFilter);
+  const filtered = rows
+    .filter((r) => !thisWeekOnly || r.tier !== null)
+    .filter((r) => tierFilter === "all" || Number(r.tier) === tierFilter);
 
   const sorted = [...filtered].sort((a, b) => {
     if (sortKey === "Player") {
@@ -71,16 +74,29 @@ export default function ResearchClient() {
           <h2 className="text-2xl font-bold text-white mb-1">Research</h2>
           <p className="text-xs text-slate-400">SG Last 20 Rounds</p>
         </div>
-        <select
-          value={tierFilter}
-          onChange={(e) => setTierFilter(e.target.value === "all" ? "all" : Number(e.target.value))}
-          className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-        >
-          <option value="all">All Tiers</option>
-          {[1,2,3,4,5,6].map((t) => (
-            <option key={t} value={t}>Tier {t}</option>
-          ))}
-        </select>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setThisWeekOnly((v) => !v)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+              thisWeekOnly
+                ? "bg-emerald-600 border-emerald-500 text-white"
+                : "bg-slate-800 border-slate-600 text-slate-400 hover:text-white"
+            }`}
+          >
+            <span className={`w-2 h-2 rounded-full ${thisWeekOnly ? "bg-white" : "bg-slate-600"}`} />
+            This Week
+          </button>
+          <select
+            value={tierFilter}
+            onChange={(e) => setTierFilter(e.target.value === "all" ? "all" : Number(e.target.value))}
+            className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option value="all">All Tiers</option>
+            {[1,2,3,4,5,6].map((t) => (
+              <option key={t} value={t}>Tier {t}</option>
+            ))}
+          </select>
+        </div>
       </div>
       {!rows.length ? <p className="text-sm text-slate-400">No data available.</p> : (
         <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-x-auto">
