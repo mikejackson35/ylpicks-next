@@ -257,7 +257,7 @@ export default function StatsClient() {
       />
 
       {/* ── 2. Tier Points Heatmap + H2H ── */}
-      <div className="flex flex-col gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <section>
           <SectionHeader title="Points by Tier" />
