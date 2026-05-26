@@ -256,53 +256,8 @@ export default function StatsClient() {
         weeklyScores={weeklyScores}
       />
 
-      {/* ── 2. Tier Points Heatmap + H2H ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-        <section>
-          <SectionHeader title="Points by Tier" />
-          <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="text-sm w-full border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-700 bg-slate-900/50">
-                    <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold w-20">Tier</th>
-                    {sortedUsers.map((u) => (
-                      <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[1, 2, 3, 4, 5, 6].map((tier) => (
-                    <tr key={tier} className="border-b border-slate-700 last:border-0">
-                      <td className="px-4 py-2.5 text-xs text-slate-400 font-semibold">T{tier}</td>
-                      {sortedUsers.map((u) => {
-                        const val = tierPoints[tier]?.[u.username] ?? 0;
-                        return (
-                          <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-semibold tabular-nums ${pointsColor(val)} ${cellBg(val, heatMax, heatMin)}`}>
-                            {val > 0 ? `+${val}` : val === 0 ? "—" : val}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                  <tr className="border-t-2 border-slate-600 bg-slate-900/30">
-                    <td className="px-4 py-2.5 text-xs text-slate-300 font-bold">Total</td>
-                    {sortedUsers.map((u) => {
-                      const tot = Object.values(tierPoints).reduce((s, row) => s + (row[u.username] ?? 0), 0);
-                      return (
-                        <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-bold tabular-nums ${pointsColor(tot)}`}>
-                          {tot > 0 ? `+${tot}` : tot === 0 ? "0" : tot}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <p className="text-xs text-slate-500 mt-2">Net points earned per tier</p>
-        </section>
+      {/* ── 2. H2H + Tier Points Heatmap ── */}
+      <div className="flex flex-col gap-8">
 
         <section className="min-w-0">
           <SectionHeader title="Head-to-Head Record" />
@@ -353,6 +308,51 @@ export default function StatsClient() {
               </table>
             </div>
           </div>
+        </section>
+
+        <section>
+          <SectionHeader title="Points by Tier" />
+          <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="text-sm w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-700 bg-slate-900/50">
+                    <th className="px-4 py-2.5 text-left text-xs text-slate-400 font-semibold w-20">Tier</th>
+                    {sortedUsers.map((u) => (
+                      <th key={u.username} className={`px-3 py-2.5 text-center text-xs font-semibold ${USER_COLORS[users.indexOf(u)]}`}>{u.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[1, 2, 3, 4, 5, 6].map((tier) => (
+                    <tr key={tier} className="border-b border-slate-700 last:border-0">
+                      <td className="px-4 py-2.5 text-xs text-slate-400 font-semibold">T{tier}</td>
+                      {sortedUsers.map((u) => {
+                        const val = tierPoints[tier]?.[u.username] ?? 0;
+                        return (
+                          <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-semibold tabular-nums ${pointsColor(val)} ${cellBg(val, heatMax, heatMin)}`}>
+                            {val > 0 ? `+${val}` : val === 0 ? "—" : val}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                  <tr className="border-t-2 border-slate-600 bg-slate-900/30">
+                    <td className="px-4 py-2.5 text-xs text-slate-300 font-bold">Total</td>
+                    {sortedUsers.map((u) => {
+                      const tot = Object.values(tierPoints).reduce((s, row) => s + (row[u.username] ?? 0), 0);
+                      return (
+                        <td key={u.username} className={`px-3 py-2.5 text-center text-sm font-bold tabular-nums ${pointsColor(tot)}`}>
+                          {tot > 0 ? `+${tot}` : tot === 0 ? "0" : tot}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">Net points earned per tier</p>
         </section>
 
       </div>
