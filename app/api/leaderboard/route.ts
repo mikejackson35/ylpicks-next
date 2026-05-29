@@ -41,6 +41,7 @@ export async function GET(req: NextRequest) {
       score: p.total ?? "-",
       pos: p.position ?? "",
       status: String(p.status ?? "active").toLowerCase(),
+      thru: p.thru != null ? String(p.thru) : "-",
     }));
 
     return NextResponse.json({ rows });

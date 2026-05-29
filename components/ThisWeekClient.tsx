@@ -11,7 +11,7 @@ type User = { username: string; name: string };
 type Pick = { username: string; tier_number: number; player_id: string };
 type TierPlayer = { tier_number: number; player_id: string; name_last: string; name: string };
 type CacheRow = { player_id: string; score_to_par: string; status: string };
-type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string };
+type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string; thru?: string };
 
 const TIER_DOT: Record<number, string> = {
   1: "bg-fuchsia-400 ring-1 ring-slate-200", 2: "bg-black ring-1 ring-slate-200", 3: "bg-blue-500 ring-1 ring-slate-200",
@@ -292,6 +292,7 @@ export default function ThisWeekClient() {
                             <th className="w-8 py-2 pl-3" />
                             <th className="px-2 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Pos</th>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
+                            <th className="px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Thru</th>
                             <th className="px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
                           </tr>
                         </thead>
@@ -303,6 +304,7 @@ export default function ThisWeekClient() {
                               </td>
                               <td className="px-2 py-2 text-center text-slate-400 text-xs">{row.pos}</td>
                               <td className="px-4 py-2 font-medium text-slate-100">{row.player}</td>
+                              <td className="px-4 py-2 text-center tabular-nums text-slate-400 text-xs">{row.thru ?? "-"}</td>
                               <td className="px-4 py-2 text-center font-bold tabular-nums text-white">{row.score}</td>
                             </tr>
                           ))}
@@ -323,6 +325,7 @@ export default function ThisWeekClient() {
                               score: lbRow ? String(lbRow.score) : "-",
                               pos: lbRow?.pos ?? "-",
                               status: lbRow?.status ?? "active",
+                              thru: lbRow?.thru ?? "-",
                               isPicked: pickedIds.has(String(t.player_id)),
                             };
                           })
@@ -339,6 +342,9 @@ export default function ThisWeekClient() {
                                       <td className="px-3 py-2 text-center text-xs w-10 text-slate-500">{row.pos}</td>
                                       <td className={`px-4 py-2 font-medium ${isCut ? "text-red-400" : row.isPicked ? "text-slate-100" : "text-slate-500"}`}>
                                         {row.player}
+                                      </td>
+                                      <td className="px-3 py-2 text-center tabular-nums text-xs text-slate-500 w-10">
+                                        {row.thru}
                                       </td>
                                       <td className={`px-4 py-2 text-center font-bold tabular-nums w-16 ${isCut ? "text-red-400" : row.isPicked ? "text-white" : "text-slate-500"}`}>
                                         {row.score}
