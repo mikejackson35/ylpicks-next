@@ -322,7 +322,7 @@ export default function ThisWeekClient() {
                             <th className="w-8 py-2 pl-3" />
                             <th className="px-2 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Pos</th>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Player</th>
-                            <th className="px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Thru</th>
+                            <th className="hidden md:table-cell px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Thru</th>
                             <th className="px-4 py-2 text-center text-xs font-semibold text-slate-500 uppercase">Score</th>
                           </tr>
                         </thead>
@@ -333,8 +333,11 @@ export default function ThisWeekClient() {
                                 <div className={`w-4 h-4 rounded-full shrink-0 ${TIER_DOT[tierOf[row.playerId]] ?? "bg-slate-600"}`} />
                               </td>
                               <td className="px-2 py-2 text-center text-slate-400 text-xs">{row.pos}</td>
-                              <td className="px-4 py-2 font-medium text-slate-100">{row.player}</td>
-                              <td className="px-4 py-2 text-center tabular-nums text-slate-400 text-xs">{row.thru ?? "-"}</td>
+                              <td className="px-4 py-2 font-medium text-slate-100">
+                                {row.player}
+                                {row.thru && <span className="md:hidden block text-[10px] text-slate-500 font-normal">{row.thru}</span>}
+                              </td>
+                              <td className="hidden md:table-cell px-4 py-2 text-center tabular-nums text-slate-400 text-xs">{row.thru ?? "-"}</td>
                               <td className="px-4 py-2 text-center font-bold tabular-nums text-white">{row.score}</td>
                             </tr>
                           ))}
@@ -372,8 +375,9 @@ export default function ThisWeekClient() {
                                       <td className="px-3 py-2 text-center text-xs w-10 text-slate-500">{row.pos}</td>
                                       <td className={`px-4 py-2 font-medium ${isCut ? "text-red-400" : row.isPicked ? "text-slate-100" : "text-slate-500"}`}>
                                         {row.player}
+                                        {row.thru && row.thru !== "-" && <span className="md:hidden block text-[10px] text-slate-500 font-normal">{row.thru}</span>}
                                       </td>
-                                      <td className="px-3 py-2 text-center tabular-nums text-xs text-slate-500 w-10">
+                                      <td className="hidden md:table-cell px-3 py-2 text-center tabular-nums text-xs text-slate-500 w-10">
                                         {row.thru}
                                       </td>
                                       <td className={`px-4 py-2 text-center font-bold tabular-nums w-16 ${isCut ? "text-red-400" : row.isPicked ? "text-white" : "text-slate-500"}`}>
