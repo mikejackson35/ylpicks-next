@@ -223,7 +223,7 @@ export default function ThisWeekClient() {
                     }`}>
                       {txt}
                       {scoreTxt && (
-                        <p className="text-[9px] text-slate-400 font-normal mt-1 md:hidden">{scoreTxt}</p>
+                        <p className="text-[9px] md:text-xs text-slate-400 font-normal mt-1">{scoreTxt}</p>
                       )}
                     </td>
                   );
