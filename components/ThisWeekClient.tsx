@@ -11,7 +11,7 @@ type User = { username: string; name: string };
 type Pick = { username: string; tier_number: number; player_id: string };
 type TierPlayer = { tier_number: number; player_id: string; name_last: string; name: string };
 type CacheRow = { player_id: string; score_to_par: string; status: string };
-type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string; thru?: string };
+type LeaderboardRow = { playerId: string; player: string; score: string; pos: string; status: string; thru?: string; currentRound?: number };
 
 const TIER_DOT: Record<number, string> = {
   1: "bg-fuchsia-400 ring-1 ring-slate-200", 2: "bg-black ring-1 ring-slate-200", 3: "bg-blue-500 ring-1 ring-slate-200",
@@ -122,6 +122,22 @@ export default function ThisWeekClient() {
     wkPts[u.name] = pts;
   });
 
+  // PHR (Player Holes Remaining)
+  const thruMap: Record<string, string> = {};
+  const roundMap: Record<string, number> = {};
+  lbRows.forEach((r) => { thruMap[String(r.playerId)] = r.thru ?? "-"; roundMap[String(r.playerId)] = r.currentRound ?? 1; });
+
+  function holesRemaining(pid: string): number {
+    if (cut[pid]) return 0;
+    const thruVal = thruMap[pid] ?? "-";
+    const round = roundMap[pid] ?? 1;
+    let holesCompleted: number;
+    if (thruVal === "F") holesCompleted = round * 18;
+    else if (thruVal === "-" || thruVal === "") holesCompleted = (round - 1) * 18;
+    else holesCompleted = (round - 1) * 18 + parseInt(thruVal, 10);
+    return Math.max(0, 72 - holesCompleted);
+  }
+
   const pickedIds = new Set(picks.map((p) => String(p.player_id)));
   const tierOf: Record<string, number> = {};
   tiers.forEach((t) => { tierOf[String(t.player_id)] = t.tier_number; });
@@ -189,6 +205,20 @@ export default function ThisWeekClient() {
                     lead && tournament.locked && s !== 999 ? "font-bold text-emerald-400" : "text-slate-400"
                   }`}>
                     {disp}
+                  </td>
+                );
+              })}
+            </tr>
+            {/* PHR row */}
+            <tr className="border-b border-slate-700 bg-slate-900/50">
+              <td className="px-4 py-2 text-xs font-semibold text-slate-500 uppercase hidden md:table-cell">PHR</td>
+              {users.map((u) => {
+                const phr = tournament.locked && lbRows.length > 0
+                  ? Object.values(pickMap[u.username]).filter(Boolean).reduce((sum, pid) => sum + holesRemaining(pid!), 0)
+                  : null;
+                return (
+                  <td key={u.username} className="px-2 py-1.5 md:px-4 text-center text-xs text-slate-400 tabular-nums">
+                    {phr !== null ? phr : "—"}
                   </td>
                 );
               })}

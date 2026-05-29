@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
       pos: p.position ?? "",
       status: String(p.status ?? "active").toLowerCase(),
       thru: p.thru != null ? String(p.thru) : "-",
+      currentRound: p.currentRound != null ? Number((p.currentRound as Record<string,unknown>)?.["$numberInt"] ?? p.currentRound) : 1,
     }));
 
     return NextResponse.json({ rows });
