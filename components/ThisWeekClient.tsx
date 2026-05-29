@@ -130,11 +130,11 @@ export default function ThisWeekClient() {
   function holesRemaining(pid: string): number {
     if (cut[pid]) return 0;
     const thruVal = thruMap[pid] ?? "-";
-    const round = roundMap[pid] ?? 1;
+    const round = roundMap[pid] || 1;
     let holesCompleted: number;
     if (thruVal === "F") holesCompleted = round * 18;
     else if (thruVal === "-" || thruVal === "") holesCompleted = (round - 1) * 18;
-    else holesCompleted = (round - 1) * 18 + parseInt(thruVal, 10);
+    else { const h = parseInt(thruVal, 10); holesCompleted = (round - 1) * 18 + (isNaN(h) ? 0 : h); }
     return Math.max(0, 72 - holesCompleted);
   }
 

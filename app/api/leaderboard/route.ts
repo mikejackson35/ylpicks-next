@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
       pos: p.position ?? "",
       status: String(p.status ?? "active").toLowerCase(),
       thru: p.thru != null ? String(p.thru) : "-",
-      currentRound: p.currentRound != null ? Number((p.currentRound as Record<string,unknown>)?.["$numberInt"] ?? p.currentRound) : 1,
+      currentRound: (() => { const r = p.currentRound; if (!r) return 1; if (typeof r === "number") return r; if (typeof r === "object") return Number((r as Record<string,unknown>)["$numberInt"] ?? 1) || 1; return Number(r) || 1; })(),
     }));
 
     return NextResponse.json({ rows });
