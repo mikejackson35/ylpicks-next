@@ -19,6 +19,21 @@ export default function MakePicksClient() {
   const [playersByTier, setPlayersByTier] = useState<Record<number, Player[]>>({});
   const [picks, setPicks] = useState<Record<number, string>>({});
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [timeLeft, setTimeLeft] = useState<string>("");
+
+  useEffect(() => {
+    if (!tournament || tournament.locked) return;
+    function update() {
+      const diff = new Date(tournament!.start_time).getTime() - Date.now();
+      if (diff <= 0) { setTimeLeft("Locking..."); return; }
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      setTimeLeft(h > 0 ? `${h}h ${m}m` : `${m}m`);
+    }
+    update();
+    const id = setInterval(update, 30000);
+    return () => clearInterval(id);
+  }, [tournament]);
 
   useEffect(() => {
     fetch("/api/picks").then((r) => r.json()).then((data) => {
@@ -86,6 +101,7 @@ export default function MakePicksClient() {
         <div>
           <h2 className="text-2xl md:text-3xl font-bold text-white">Make Picks</h2>
           <p className="text-sm md:text-base text-slate-400 mt-1">{tournament.name}</p>
+          {timeLeft && <p className="text-xs text-amber-400 mt-1">Locks in {timeLeft}</p>}
         </div>
         {/* Save button in header — mobile only */}
         <button

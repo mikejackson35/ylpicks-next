@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 type Tournament = {
   tournament_id: string; name: string; start_time: string;
@@ -35,6 +37,7 @@ function fmtScore(n: number): string {
 export default function ThisWeekClient() {
   const searchParams = useSearchParams();
   const previewLocked = searchParams.get("preview") === "true";
+  const { data: session } = useSession();
 
   const [loading, setLoading] = useState(true);
   const [tournament, setTournament] = useState<Tournament | null>(null);
@@ -148,6 +151,10 @@ export default function ThisWeekClient() {
   const hasLb = lb.some((r) => r.score && r.score !== "-");
 
 
+  const currentUsername = session?.user?.username;
+  const userPickCount = currentUsername ? [1,2,3,4,5,6].filter(t => pickMap[currentUsername]?.[t]).length : 6;
+  const showPicksReminder = !tournament.locked && currentUsername && userPickCount < 6;
+
   return (
     <div className="max-w-3xl">
 
@@ -155,6 +162,14 @@ export default function ThisWeekClient() {
       <div className="mb-5 md:mb-8 text-center">
         <h2 className="text-lg md:text-3xl font-bold text-white">{tournament.name}</h2>
       </div>
+
+      {/* Picks reminder banner */}
+      {showPicksReminder && (
+        <Link href="/picks" className="flex items-center justify-between gap-3 mb-4 px-4 py-3 bg-amber-950/60 border border-amber-700 rounded-xl text-sm text-amber-300 hover:bg-amber-950 transition-colors">
+          <span>⚠️ You haven't submitted your picks yet</span>
+          <span className="text-amber-400 font-semibold shrink-0">Make picks →</span>
+        </Link>
+      )}
 
       {/* Picks grid — score cards in header, aligned to columns */}
       <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mb-2 md:mb-4">

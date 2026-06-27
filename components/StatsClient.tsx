@@ -106,12 +106,24 @@ export default function StatsClient() {
 
   const sortedUsers = [...users].sort((a, b) => (seasonTotals[b.username] ?? 0) - (seasonTotals[a.username] ?? 0));
 
-  // Best / worst week per user
+  // Best / worst week per user (sorted chronologically for streak)
   const weeklyByUser: Record<string, number[]> = {};
-  weeklyScores.forEach((w) => {
+  const sortedWeekly = [...weeklyScores].sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
+  sortedWeekly.forEach((w) => {
     if (!weeklyByUser[w.username]) weeklyByUser[w.username] = [];
     weeklyByUser[w.username].push(Number(w.points));
   });
+
+  function currentStreak(pts: number[]): { count: number; hot: boolean } | null {
+    if (!pts.length) return null;
+    const hot = pts[pts.length - 1] > 0;
+    let count = 0;
+    for (let i = pts.length - 1; i >= 0; i--) {
+      if (hot ? pts[i] > 0 : pts[i] <= 0) count++;
+      else break;
+    }
+    return count >= 2 ? { count, hot } : null;
+  }
 
   function median(arr: number[]): number | null {
     if (!arr.length) return null;
@@ -230,6 +242,7 @@ export default function StatsClient() {
             const med = median(weeks);
             const best = weeks.length ? Math.max(...weeks) : null;
             const worst = weeks.length ? Math.min(...weeks) : null;
+            const streak = currentStreak(weeks);
             return (
               <div key={u.username} className="bg-slate-800 rounded-xl border border-slate-700 p-4 flex flex-col gap-2">
                 <p className={`text-xs font-semibold uppercase tracking-wide ${USER_COLORS[i]}`}>{u.name}</p>
@@ -242,6 +255,9 @@ export default function StatsClient() {
                   <div className="flex justify-between"><span>Score to Par</span><span className="text-white">{scoreToPar[u.username] !== undefined ? fmtScore(scoreToPar[u.username]) : "—"}</span></div>
                   <div className="flex justify-between"><span>Best wk</span><span className="text-white">{best !== null ? (best > 0 ? `+${best}` : best) : "—"}</span></div>
                   <div className="flex justify-between"><span>Worst wk</span><span className="text-white">{worst !== null ? (worst > 0 ? `+${worst}` : worst) : "—"}</span></div>
+                  {streak && (
+                    <div className="flex justify-between"><span>Streak</span><span className={streak.hot ? "text-emerald-400" : "text-rose-400"}>{streak.hot ? "🔥" : "🥶"} {streak.count} wks</span></div>
+                  )}
                 </div>
               </div>
             );
