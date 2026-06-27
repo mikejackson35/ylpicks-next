@@ -31,7 +31,7 @@ export default function MakePicksClient() {
       setTimeLeft(h > 0 ? `${h}h ${m}m` : `${m}m`);
     }
     update();
-    const id = setInterval(update, 30000);
+    const id = setInterval(update, 3600000);
     return () => clearInterval(id);
   }, [tournament]);
 
