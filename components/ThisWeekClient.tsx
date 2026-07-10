@@ -51,8 +51,9 @@ export default function ThisWeekClient() {
   const [autoPickCounts, setAutoPickCounts] = useState<Record<string, number>>({});
   const [lbOpen, setLbOpen] = useState(false);
   const [lbView, setLbView] = useState<"score" | "tier">("score");
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
+  function loadData() {
     const url = previewLocked ? "/api/this-week?preview=true" : "/api/this-week";
     fetch(url).then((r) => r.json()).then((data) => {
       setTournament(data.tournament); setUsers(data.users ?? []);
@@ -60,9 +61,17 @@ export default function ThisWeekClient() {
       setCached(data.cached ?? []); setAutoPickedUsernames(new Set(data.autoPickedUsernames ?? []));
       setAutoPickCounts(data.autoPickCounts ?? {});
       setLoading(false);
+      setRefreshing(false);
       if (data.tournament?.tourn_id) loadLb(data.tournament);
     });
-  }, []);
+  }
+
+  useEffect(() => { loadData(); }, []);
+
+  function handleRefresh() {
+    setRefreshing(true);
+    loadData();
+  }
 
   function loadLb(t: Tournament) {
     setLbLoading(true);
@@ -159,8 +168,21 @@ export default function ThisWeekClient() {
     <div className="max-w-3xl">
 
       {/* Tournament header */}
-      <div className="mb-5 md:mb-8 text-center">
-        <h2 className="text-lg md:text-3xl font-bold text-white">{tournament.name}</h2>
+      <div className="mb-5 md:mb-8 flex items-center justify-between md:block md:text-center">
+        <h2 className="text-lg md:text-3xl font-bold text-white text-left md:text-center">{tournament.name}</h2>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          aria-label="Refresh"
+          className="md:hidden p-1.5 -mr-1.5 text-slate-500 hover:text-slate-300 active:text-slate-200 transition-colors disabled:opacity-50"
+        >
+          <svg
+            className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h5M20 20v-5h-5M4.5 9a8 8 0 0114.13-3.36M19.5 15a8 8 0 01-14.13 3.36" />
+          </svg>
+        </button>
       </div>
 
       {/* Picks reminder banner */}
