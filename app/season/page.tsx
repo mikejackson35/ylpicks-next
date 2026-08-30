@@ -42,7 +42,14 @@ export default async function SeasonPage() {
   return (
     <div className="flex flex-col justify-center min-h-[calc(100svh-6rem)] max-w-sm">
       <h2 className="text-4xl font-bold text-white mb-1 text-center">Season</h2>
-      <p className="text-xs text-slate-400 mb-10 text-center">{thruText}</p>
+      <p className="text-xs text-slate-400 mb-6 text-center">{thruText}</p>
+
+      {/* Season-end note — remove next season and restore the Scoring dropdown below */}
+      <div className="md:hidden bg-slate-800 rounded-xl border border-slate-700 px-5 py-4 mx-6 mb-10">
+        <p className="text-white text-sm text-center leading-relaxed">
+          Congrats to Phil. Everyone is impressed. Next season starts October 1st.
+        </p>
+      </div>
 
       {/* Standings */}
       <div className="flex flex-col gap-5 mb-14 px-8">
@@ -54,8 +61,8 @@ export default async function SeasonPage() {
         ))}
       </div>
 
-      {/* Scoring */}
-      <details className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mx-10">
+      {/* Scoring — hidden during the season-end note; restore next season */}
+      <details className="hidden md:block bg-slate-800 rounded-xl border border-slate-700 overflow-hidden mx-10">
         <summary className="px-5 py-3.5 text-xs font-semibold uppercase tracking-widest text-white cursor-pointer select-none list-none flex justify-between items-center">
           Scoring
           <span className="text-slate-400 text-base">›</span>
