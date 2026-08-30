@@ -56,10 +56,10 @@ export default async function SeasonPage() {
         {standings.map((row, i) => (
           <div key={row.name} className="flex justify-between items-center">
             <span className="text-white text-3xl font-medium">
-              {row.name}
               {["🥇", "🥈", "🥉", "💩"][i] && (
-                <span className="ml-2">{["🥇", "🥈", "🥉", "💩"][i]}</span>
+                <span className="mr-2">{["🥇", "🥈", "🥉", "💩"][i]}</span>
               )}
+              {row.name}
             </span>
             <span className="text-3xl font-bold tabular-nums text-white">{row.points}</span>
           </div>
